@@ -1,5 +1,6 @@
 import socket
 import subprocess
+from dotenv import load_dotenv
 
 def crear_interfaz_virtual(nombre_interfaz, direccion_ip, mascara_red):
     try:
@@ -22,6 +23,13 @@ def crear_interfaz_virtual(nombre_interfaz, direccion_ip, mascara_red):
     except Exception as e:
         print(f"Error creando interfaz virtual: {e}")
 
+def iniciar_interfaz_virtual(nombre_interfaz):
+    try:
+        # Iniciar la interfaz virtual
+        subprocess.run(["wg", "set", nombre_interfaz, "up"])
+    except Exception as e:
+        print(f"Error iniciando interfaz virtual: {e}")
+
 def cargar_configuracion_wireguard(nombre_interfaz, archivo_configuracion):
     try:
         # Cargar la configuración de WireGuard desde el archivo de configuración
@@ -36,12 +44,15 @@ def cargar_configuracion_wireguard(nombre_interfaz, archivo_configuracion):
     except Exception as e:
         print(f"Error cargando la configuración de WireGuard: {e}")
 
-def iniciar_wireguard(lista_configuracion_peers):
-    for peer in lista_configuracion_peers:
-        # Ejemplo de configuración de peer:
-        delattr
 
-
+def iniciar_wireguard(listen_port, lista_peers,private_key):
+    # Crear la configuración de los peers
+    conf_peers = ""
+    for peer in lista_peers:
+        conf_peers += f"peer {peer}\n"
+        conf_peers += f"allowed-ips: {peer['allowed_ips']}\n"
+        conf_peers += f"endpoint {peer['endpoint']}\n"
+    
     #wg set wg0 listen-port 51820 private-key /path/to/private-key peer ABCDEF... allowed-ips 192.168.88.0/24 endpoint 209.202.254.14:8172 
     try:
         # Iniciar WireGuard
@@ -51,13 +62,13 @@ def iniciar_wireguard(lista_configuracion_peers):
                 "set",
                 "wg0",
                 "listen-port",
-                "51820",
-                "private-key",
+                listen_port,
+                private_key,
                 "/path/to/private-key",
-                "peer",
-                "ABCDEF...",
-                "allowed-ips",
-                "
+                conf_peers
+            ])
+    except Exception as e:
+        print(f"Error iniciando WireGuard: {e}")
 
 # main
 if __name__ == "__main__":
@@ -65,7 +76,7 @@ if __name__ == "__main__":
     udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 
-    puerto_origen = 1024
+    puerto = 1024
     direccion_ip = "localhost"
     mascara_red = "24"
 
