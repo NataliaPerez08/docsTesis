@@ -1,0 +1,14 @@
+\babel@toc {spanish}{}\relax 
+\contentsline {chapter}{Agradecimientos}{\es@scroman {ii}}{}%
+\contentsline {chapter}{Prefacio}{\es@scroman {iv}}{}%
+\contentsline {chapter}{\numberline {1}Introducción}{1}{}%
+\contentsline {section}{\numberline {1.1}Protocolo IP}{1}{}%
+\contentsline {section}{\numberline {1.2}Protocolo UDP}{1}{}%
+\contentsline {section}{\numberline {1.3}VPN}{1}{}%
+\contentsline {section}{\numberline {1.4}Wireguard}{1}{}%
+\contentsline {section}{\numberline {1.5}NAT}{1}{}%
+\contentsline {section}{\numberline {1.6}IP Masquerade}{1}{}%
+\contentsline {section}{\numberline {1.7}Sección}{1}{}%
+\contentsline {subsection}{\numberline {1.7.1}Subsecci\'on uno}{1}{}%
+\contentsline {chapter}{\numberline {2}Resultados}{2}{}%
+\contentsline {chapter}{\numberline {3}Conclusiones}{3}{}%
