@@ -40,6 +40,9 @@ def iniciar_interfaz_virtual(nombre_interfaz):
 
         # Iniciar la interfaz virtual
         subprocess.run(["wg", "set", nombre_interfaz, "up"])
+
+        # Iniciar la interfaz virtual con ip
+        subprocess.run(["ip", "link", "set", "dev", nombre_interfaz, "up"])
     except Exception as e:
         print(f"Error iniciando interfaz virtual: {e}")
 
@@ -99,6 +102,3 @@ def crear_peer(endpoint, allowed_ips, public_key, private_key=""):
             "private_key": private_key,
         }
     return peer
-
-
-crear_interfaz_virtual("wg0", "localhost", "24")

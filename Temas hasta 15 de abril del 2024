@@ -1,0 +1,45 @@
+Temas hasta 15 de abril del 2024
+
+Estrategias de páginacion
+OPT
+LRU
+
+
+
+prueba stack property
+Anomalia de Belady
+
+Mitigación de hyperpaginación
+
+---- Tema Nuevo ---
+
+Productores/Consumidores
+
+Estructura Entrada/Salida diagrama de interacción
+
+
+System Calls Manu
+ioctl -> Metallamada a sistema, cuando son necesarios más de write y read.
+
+open 
+read
+write
+ioctl cuando las anteriores no son suficientes.
+
+Device Handler a cada dispositivo le corresponde un handler, que es el que se encarga de las operaciones de lectura y escritura.
+
+DOIO
+
+Video for Linux API
+
+Proceso driver
+
+Driver es consumidor
+
+
+Semaforo
+Implentar ioctl -> tiende a manejar solucitudes sincronas       .
+
+Solicitud io es rápido, pero el controlador puede tardar en responder.
+
+
