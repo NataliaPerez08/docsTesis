@@ -43,3 +43,40 @@ Implentar ioctl -> tiende a manejar solucitudes sincronas       .
 Solicitud io es rápido, pero el controlador puede tardar en responder.
 
 
+---
+16-Abril-2024
+
+Actividades concurrentes.
+
+request pending
+
+operation complete
+
+
+Interface (API): DOIO() / ioctl()
+
+Unidad de transferencia
+
+
+
+
+Descriptor de dispositivo.
+Input
+Output
+Request
+Block
+
+
+Driver -> Controladores asociados con procesos drivers
+-> Actuar como maquina de estado. 
+
+
+Driver, duerme sobre operation_complete
+es despertado el sistema de servición de interrupciones por el controlador (indirectamente)
+este despierta al proceso que incio el servicio
+
+
+Open cl
+
+
+
