@@ -6,6 +6,8 @@ from _thread import start_new_thread
 import WG.setup_wg 
 # Incluir el modulo de recuperación de registros
 import usuario 
+# Incluir el modulo de configuración de la interfaz de red
+import WG.networking_info
  
 # Función que atiende una conexión. Recibe como parámetro el socket de 
 # la conexión y la dirección del cliente
@@ -42,6 +44,10 @@ def threaded(conn, addr):
 
                     # Envia los endpoints al cliente
                     conn.sendall(json.dumps(endpoints).encode())
+
+                    # Muestra la configuración de la interfaz de red iptables
+                    print(WG.networking_info.recupera_iptables())
+
 
 
 

@@ -34,6 +34,8 @@
 \usepackage[spanish,es-nodecimaldot,es-tabla]{babel}
 \usepackage{graphicx}
 \usepackage{tikz}
+% use hyperref to make the table of contents clickable
+\usepackage{hyperref}
 
 \graphicspath{{./figs/}}
 \usepackage{setspace}
@@ -72,35 +74,13 @@
 \input{intro.tex}
 
   
-
 \section{Sección}
-    
-    \subsection{Subsecci\'on uno}
-    \begin{equation}
-    	x_n = c \, x_n(1 - x_n)
-    	\label{Ec:logis}
-    \end{equation}
+\lipsum[1-2]
 
 \chapter{Resultados}  %
 
 \chapter{Conclusiones}  %
 
-\bibliographystyle{humannat}
-%s
-\bibliography{references}
-
-\backmatter@sglvgdor
-
-% Referencias
-%https://www.overleaf.com/learn/latex/Bibliography_management_with_bibtex
-
-\begin{thebibliography}{9}
-\bibitem{computerNetworking}
-  Kurose, J. F., \& Ross, K. W. (2017).
-  \emph{Computer networking: a top-down approach},
-  Pearson,
-  7th edition,
-  2017.
-\end{thebibliography}
+\input{bibliografia.tex}
 
 \end{document}
