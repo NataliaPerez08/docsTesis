@@ -1,12 +1,12 @@
 # Fdb version 4
-["bibtex UNAMdissertemplate"] 0 "UNAMdissertemplate.aux" "UNAMdissertemplate.bbl" "UNAMdissertemplate" 1713285759.25167 0
+["bibtex UNAMdissertemplate"] 0 "UNAMdissertemplate.aux" "UNAMdissertemplate.bbl" "UNAMdissertemplate" 1713667166.04284 0
   "UNAMdissertemplate.aux" 0 -1 0 "pdflatex"
   "references.bib" 0 -1 0 ""
   (generated)
   "UNAMdissertemplate.bbl"
   "UNAMdissertemplate.blg"
   (rewritten before read)
-["pdflatex"] 1713285757.60179 "/home/natalia/Documentos/docsTesis/LaTex-Tesis/UNAMdissertemplate.tex" "UNAMdissertemplate.pdf" "UNAMdissertemplate" 1713285759.25241 0
+["pdflatex"] 1713667164.70582 "/home/natalia/Documentos/docsTesis/LaTex-Tesis/UNAMdissertemplate.tex" "UNAMdissertemplate.pdf" "UNAMdissertemplate" 1713667166.04343 0
   "/home/natalia/Documentos/docsTesis/LaTex-Tesis/UNAMdissertemplate.tex" 1713282270.9755 2196 f7bb8f4874971e96912e7c0c18c11edf ""
   "/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc" 1713199481 2971 def0b6c1f0b107b3b936def894055589 ""
   "/usr/share/texmf-dist/fonts/map/fontname/texfonts.map" 1713199481 3524 cb3e574dea2d1052e39280babc910dc8 ""
@@ -143,12 +143,12 @@
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1713281612 7112999 111a085a8f7a982a38bc0274604cce7f ""
   "Escudo-FCIENCIAS.pdf" 1712615302.2464 46570 7b73fc86371e69f47b98681ff8785c82 ""
   "Escudo-UNAM.pdf" 1712615302.2464 123815 c61a84fb0e6cb60ce22c76d8cb2accce ""
-  "UNAMdissertemplate.aux" 1713285758.82582 2242 f9dc9b1db83c5f1f319e3ba4053096eb "pdflatex"
+  "UNAMdissertemplate.aux" 1713667165.66831 2347 96325ea565d35d27760373b47f261f5c "pdflatex"
   "UNAMdissertemplate.bbl" 0 -1 0 "bibtex UNAMdissertemplate"
   "UNAMdissertemplate.tex" 1713282270.9755 2196 f7bb8f4874971e96912e7c0c18c11edf ""
-  "UNAMdissertemplate.toc" 1713285758.85582 983 99c56feec49b59e074f3214557f059ee "pdflatex"
+  "UNAMdissertemplate.toc" 1713667165.69839 1046 f1f7013c27e82b07846ade69bda354ef "pdflatex"
   "bachelorstitlepageUNAM.sty" 1712615302.2464 2592 337a91fd81649af49e54b0e883156168 ""
-  "intro.tex" 1713285754.47245 1233 1d46a8c1211aec4d13c91423cc177e27 ""
+  "intro.tex" 1713667162.33145 2116 d361c3ee1cef60f2f8cab19f79c29434 ""
   (generated)
   "UNAMdissertemplate.aux"
   "UNAMdissertemplate.log"

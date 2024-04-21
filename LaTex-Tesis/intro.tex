@@ -1,34 +1,35 @@
 \section{Protocolo IP} %
 
-\lipsum[3-9][4-8].
-
 El protocolo IP (Internet Protocol) Junto con el protocolo TCP (Transmission Control Protocol) son los dos protocolos más importantes en el Internet.
 
 IP determinará el formato de los paquetes de datos que se envían y reciben a través de la red. TCP se encargará de la transmisión de los datos.
 
 Existen dos versiones de IP, la versión 4 (IPv4) y la versión 6 (IPv6). La versión 4 es la más utilizada en la actualidad, pero se está migrando a la versión 6 debido a la falta de direcciones IP disponibles en la versión 4.
 
+\section{Protocolo TCP} %
+El protocolo TCP (Transmission Control Protocol) es un protocolo de transporte orientado a conexión. TCP se encarga de la transmisión de los datos de manera fiable, es decir, garantiza que los datos lleguen a su destino en el orden correcto y sin errores. TCP también se encarga de controlar el flujo de datos, es decir, de evitar que el emisor sature al receptor con datos.
+
 \section{Protocolo UDP} %
 
-
+El protocolo UDP provee un servicio de transporte no orientado a conexión. UDP es más simple que TCP, ya que no tiene control de flujo, control de errores, ni retransmisión de paquetes.
 
 \section{VPN} %
+Las VPN (Virtual Private Network) son redes privadas virtuales que permiten a los usuarios conectarse a una red privada a través de una red pública, como Internet. Las VPN se utilizan para proteger la privacidad y la seguridad de la información transmitida a través de la red.
+
 \section{Wireguard} %
+Wireguard es un protocolo de VPN de código abierto y de alto rendimiento. Wireguard es más simple y más rápido que otros protocolos de VPN, como OpenVPN y IPsec.
+
 
 \section{NAT} %
 \section{IP Masquerade} %
 
-\section{Tablas de routeo}  %https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Route_Tables.html
+\section{Tablas de routeo}  
 
 
-\section{IPTables} %
-IPTables es una herramienta de filtrado de paquetes de red que se utiliza en sistemas operativos basados en Linux.
+\section{IPTables} %https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Route_Tables.html
+IPTables es una herramienta de configuración de firewall en sistemas operativos basados en Linux. Entre sus funciones se encuentran el filtrado de paquetes, redireccionamiento de paquetes, traducción de direcciones de red, etc.
 
-Es una utilidad de línea de comandos que permite configurar el firewall de Linux. 
-
-IPTables es una herramienta muy poderosa que permite configurar reglas de filtrado de paquetes, redireccionamiento de paquetes, traducción de direcciones de red, etc.
-
-
-\section{Relay network}%
 
 %\section{Firewall} %
+
+\section{Relay network}%
