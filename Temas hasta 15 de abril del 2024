@@ -109,9 +109,23 @@ Un proceso tiene una tabla de descriptores de archivos, las solicitudes se hacen
 Un proceso tiene asignado un directorio actual
 
 
-FAT, NFTS, 
+at ntfs exfat
+
+Mapear nombre a estructura de datos
+
+
+bloques en lugar de bytes
+
+Recortar datos de un archivo
+
+open(), read() ubicar bloques del archivo
+truncate()
+
+link()
+
+seek() -> fileseek
 
 ....
 
 
-mvn archetype:generate -DgroupId=com.mycompany.app -DartifactId=practica-6 -DarchetypeArtifactId=maven-archetype-quickstart -DarchetypeVersion=1.4 -DinteractiveMode=false
+mvn archetype:generate -DgroupId=com.concurrente.app -DartifactId=Practica6 -DarchetypeArtifactId=maven-archetype-quickstart -DarchetypeVersion=1.4 -DinteractiveMode=false
