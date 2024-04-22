@@ -35,12 +35,25 @@ def threaded(conn, addr):
                     ip_wireguard = msg_decoded['ip_interfaz_wireguard']
                     WG.setup_wg.crear_interfaz_virtual('wg0', ip_wireguard, 24)
 
-                    usr = usuario.Usuario(cliente, "1234")
-    
+                    usr = usuario.Usuario(cliente)
 
+                    print("Usuario:", usr)
+                    print("Interfaz:", ip_wg_cliente)
+
+                    # Agrega el endpoint del cliente
+                    usr.agregar_endpoint(ip_wg_cliente)
+                    print("Usuario:", usr)
+                    
                     # Recupera los endpoints del cliente
                     endpoints = usr.recuperar_endpoints()
                     print("Endpoints:", endpoints)
+
+                    # Imprime la información de la interfaz de red
+                    print(WG.networking_info.ipaddr('wg0'))
+
+                    # Imprime la configuración de la interfaz de red
+                    print(WG.networking_info.recupera_iptables())
+                    
 
                     # Envia los endpoints al cliente
                     conn.sendall(json.dumps(endpoints).encode())

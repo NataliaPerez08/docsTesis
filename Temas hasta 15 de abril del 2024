@@ -78,5 +78,40 @@ este despierta al proceso que incio el servicio
 
 Open cl
 
+-----
+
+22-Abril-2024
+
+Manejo de memoria
+Archivos, "contenedores" de información
+
+Directorios. Nombre simbólico para comodidad del usuario.
+
+Tienen que estar en almacenamiento secundario,
+
+Arbol de directorios
+
+chroot
+
+-> Instalación nuevas bibliotecas,
+-> Restringir acceso
 
 
+Linux containers
+
+Docker
+
+
+Perspectiva desde un proceso
+
+Un proceso tiene una tabla de descriptores de archivos, las solicitudes se hacen relativas a estos descriptores.
+
+Un proceso tiene asignado un directorio actual
+
+
+FAT, NFTS, 
+
+....
+
+
+mvn archetype:generate -DgroupId=com.mycompany.app -DartifactId=practica-6 -DarchetypeArtifactId=maven-archetype-quickstart -DarchetypeVersion=1.4 -DinteractiveMode=false

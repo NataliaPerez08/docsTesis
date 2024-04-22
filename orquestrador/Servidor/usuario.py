@@ -1,7 +1,6 @@
 class Usuario:
-    def __init__(self, nombre,contra):
+    def __init__(self, nombre):
         self.nombre = nombre
-        self.contra = contra
         self.endpoints = []
         self.subred = None # 
 
