@@ -1,5 +1,6 @@
 from xmlrpc.server import SimpleXMLRPCServer
 # Mis clases
+from usuario import Usuario
 import RedPrivada as rp
 import WG.setup_wg as wg
 
@@ -8,12 +9,18 @@ class Servidor:
         self.servidor = SimpleXMLRPCServer(("localhost", 8000))
         self.servidor.register_instance(self)
         self.private_networks = list()
+        self.usuario = None
 
     def iniciar(self):
         self.servidor.serve_forever()
 
     def is_even(self, n):
         return n % 2 == 0
+    
+    def set_user(self, name, email, password):
+        print("Setting user...")
+        self.usuario = Usuario(name, email, password)
+        print("User set successfully!")
 
     def create_private_network(self,nombre_red) -> int:
         print("Creating private network...")
