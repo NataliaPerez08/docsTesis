@@ -37,7 +37,7 @@
 % use hyperref to make the table of contents clickable
 \usepackage{hyperref}
 
-\graphicspath{{./figs/}}
+\graphicspath{{"imagenes/"}}
 \usepackage{setspace}
 %\usepackage[round]{natbib}
 
@@ -73,7 +73,12 @@
 
 \input{intro.tex}
 
-  
+\chapter{Desarrollo}
+
+\section{Casos de uso}
+\include{casos-uso.tex}
+
+
 \section{Sección}
 \lipsum[1-2]
 

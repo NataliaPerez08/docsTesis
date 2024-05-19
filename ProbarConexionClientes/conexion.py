@@ -13,6 +13,6 @@ def check_udp_port(host, port):
         udp_socket.close()
 
 # Example usage:
-host = '192.168.2.1'
-port = 12345
+host = '34.30.103.249'
+port = 51820
 check_udp_port(host, port)

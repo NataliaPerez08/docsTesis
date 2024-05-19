@@ -1,0 +1,13 @@
+# Archivos de python
+*.pyc
+*.pyo
+# Auxiliates de latex
+LaTex-Tesis/UNAMdissertemplate.aux
+LaTex-Tesis/UNAMdissertemplate.bbl
+LaTex-Tesis/UNAMdissertemplate.flg
+LaTex-Tesis/UNAMdissertemplate.log
+LaTex-Tesis/UNAMdissertemplate.out
+LaTex-Tesis/UNAMdissertemplate.toc
+LaTex-Tesis/UNAMdissertemplate.blg
+LaTex-Tesis/UNAMdissertemplate.fdb_latexmk
+LaTex-Tesis/UNAMdissertemplate.synctex.gz
