@@ -6,7 +6,7 @@ class Usuario:
         self.private_networks = list()
 
     def __str__(self):
-        return f'Nome: {self.name}, Email: {self.email}
+        return "Name: " + self.name
 
     def add_private_network(self, private_network):
         self.private_networks.append(private_network)
