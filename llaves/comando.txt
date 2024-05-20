@@ -1,1 +1,0 @@
-wg set wg0 listen-port 51820 private-key arch-privetekey peer hRZQpoD9SEil5cE7vNj3pLc0WXPkt0rb8xK3hOG2qX8= allowed-ips 192.168.2.1/32 endpoint 10.0.0.13:51820
