@@ -7,13 +7,17 @@ class RedPrivada:
         self.name = name
         if ip_addr is not None:
            self.ip_addr = ipaddress.IPv4Address(ip_addr)
+        else:
+            self.ip_addr = None
         if mask_network is not None:
             self.mask_network = mask_network
+        else:
+            self.mask_network = None
 
         self.endpoints = list()
 
         self.avaliable_hosts = list()
-        self.last_host_assigned = 0
+        self.last_host_assigned = ""
 
         self.num_endpoints = 0
 
@@ -65,6 +69,22 @@ class RedPrivada:
         endpoint = Endpoint(self, num_endpoints, name, self.id)
         self.num_endpoints += 1
         self.endpoints.append(endpoint)
+
+    def calculate_next_host(self):
+        """Calcula la siguiente dirección IP disponible en la red privada.
+            TODO: Validar que la dirección IP no esté en uso, y que no se haya llegado al límite de direcciones IP disponibles.
+
+            return: str
+        """
+        if self.last_host_assigned == "":
+            self.last_host_assigned = self.ip_addr.network_address
+
+        last_host = str(self.last_host_assigned)
+        last_host = last_host.split('.')
+        last_host[3] = str(int(last_host[3]) + 1)
+        self.last_host_assigned = str('.'.join(last_host))
+        return self.last_host_assigned
+
 
     def __str__(self):
         return "ID: " + str(self.id) + " IP Address: " + str(self.ip_addr) + " Mask Network: " + str(self.mask_network) 

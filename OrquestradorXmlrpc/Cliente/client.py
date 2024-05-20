@@ -5,14 +5,12 @@ import ipaddress
 from conn_scapy import verificar_conectividad
 
 with xmlrpc.client.ServerProxy("http://localhost:8000/") as proxy:
-    print("100 is even: %s" % str(proxy.is_even(100))) 
-
     opcion = ""
     while True:
-        print("1. Crear Red Privada"+
-              "2. Ver Redes Privadas"+ 
-              "3. Crear Endpoint"+
-              "4. Conectar a endpoint"+
+        print("1. Crear Red Privada "+
+              "2. Ver Redes Privadas "+ 
+              "3. Crear Endpoint "+
+              "4. Conectar a endpoint "+
               "5. Salir")
         opcion = input("Opción: ")
 
@@ -28,8 +26,8 @@ with xmlrpc.client.ServerProxy("http://localhost:8000/") as proxy:
         elif opcion == "3":
             print("Ver Redes Privadas: ")
             private_network_id = input("ID de la red privada: ")
-            endpoint_ip = input("Endpoint IP: ")
-            endpoint_id = proxy.create_endpoint(private_network_id, endpoint_ip)
+            endpoint_name = input("Nombre del endpoint: ")
+            endpoint_id = proxy.create_endpoint(private_network_id, endpoint_name)
             print(f"Endpoint ID: {endpoint_id}")
 
         elif opcion == "4":

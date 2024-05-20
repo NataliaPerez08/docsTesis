@@ -13,9 +13,6 @@ class Servidor:
 
     def iniciar(self):
         self.servidor.serve_forever()
-
-    def is_even(self, n):
-        return n % 2 == 0
     
     def set_user(self, name, email, password):
         print("Setting user...")
@@ -31,6 +28,7 @@ class Servidor:
         # Asignar máscara de red. Rango de 16 hosts: 14 hosts + 2 direcciones de red y broadcast
         red.set_ip_addr('10.0.0.0')
         red.set_network_mask(28)
+        red.set_last_host_assigned('10.0.0.1')
 
         print(f"IP address: {red.get_ip_addr()}")
         print(f"Network mask: {red.get_network_mask()}")
@@ -54,6 +52,25 @@ class Servidor:
             str_private_networks += private_network.__str__() + "\n"
         return str_private_networks
 
+    def create_endpoint(self, private_network_id, endpoint_name):
+        print("Creating endpoint...")
+        # Obtener la red privada
+        private_network = self.get_private_network_by_id(private_network_id)
+        # Crear la dirección IP del endpoint
+        endpoint_ip = private_network.get_last_host_assigned()
+        private_network.set_last_host_assigned('10.0.0.3')
+        # Crear el endpoint
+        endpoint = rp.Endpoint(0, endpoint_ip)
+        # Agregar el endpoint a la red privada
+        private_network.add_endpoint(endpoint)
+        print("Endpoint created successfully!")
+        return endpoint.id
+    
+    def get_private_network_by_id(self, private_network_id):
+        for private_network in self.private_networks:
+            if private_network.id == private_network_id:
+                return private_network
+        return None
 
 server = Servidor()
 print("Listening on port 8000...")
