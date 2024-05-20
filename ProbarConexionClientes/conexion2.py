@@ -15,7 +15,7 @@ def verificar_conectividad(direccion_ip, puerto):
         print(f"No se pudo establecer la conexión con {direccion_ip} en el puerto {puerto}: {e}")
 
 # Dirección IP y puerto del dispositivo de destino
-direccion_ip_destino = '192.168.1.1'
+direccion_ip_destino = '34.30.103.249'
 puerto_destino = 80  # Puedes cambiar el puerto según el servicio que desees verificar
 
 verificar_conectividad(direccion_ip_destino, puerto_destino)

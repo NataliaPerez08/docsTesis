@@ -14,5 +14,5 @@ def check_udp_port(host, port):
 
 # Example usage:
 host = '34.30.103.249'
-port = 51820
+port = 80
 check_udp_port(host, port)

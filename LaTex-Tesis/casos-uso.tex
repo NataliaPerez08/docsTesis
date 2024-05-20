@@ -51,6 +51,8 @@ Uno de los objetivos del orquestrador será registrar los dispositivos finales c
 El cliente deberá informar al orquestrador si es posible que se comunique con los demás dispositivos finales de la red privada, para ello deberá enviar un mensaje al orquestrador para conocer que dispositivos finales supone que están conectados a la red privada.
 Luego este cliente verificara si alcanza a los demás dispositivos finales de la red privada, mediante un mensaje enviado desde la interfaz Wireguard, es decir, usando las IP asignadas por el orquestrador.
 
+Este caso de uso se deberá hacer con cierta periodicidad, para que el cliente pueda tener información actualizada de la red privada. Y que en caso de que el orquestrador la solicite el cliente tendrá la información de la red privada actualizada.
+
 \begin{figure}[h!]
     \centering
     \includegraphics[width=\textwidth]{cliente-alcanza-endpoints.png}
@@ -78,6 +80,8 @@ El cliente deberá poder consultar las redes privadas disponibles, para ello deb
 
 \subsection{Orquestrador divulga tablero de red privada}
 Si el cliente envia una solicitud del estado de una red privada al orquestrador, este deberá responder con un tablero de la red privada, que contiene la información de los dispositivos finales conectados a la red privada, las conexiones entre los dispositivos finales y la alcanzabilidad de los dispositivos finales desde el punto de vista del orquestrador.
+
+Esto se deberá hacer con cierta periodicidad, para que el cliente pueda tener información actualizada de la red privada.
 
 \begin{figure}[h!]
     \centering
