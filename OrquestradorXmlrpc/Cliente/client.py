@@ -1,6 +1,9 @@
 import xmlrpc.client
 import ipaddress
 
+
+from conn_scapy import verificar_conectividad
+
 with xmlrpc.client.ServerProxy("http://localhost:8000/") as proxy:
     print("100 is even: %s" % str(proxy.is_even(100))) 
 
@@ -18,11 +21,13 @@ with xmlrpc.client.ServerProxy("http://localhost:8000/") as proxy:
 
             conectar = input(str("¿Desea conectar a un endpoint? (s/n)"))
             if conectar == "s":
-                endpoint_id = input("Endpoint: ")
+                endpoint_ip = input("Endpoint: ")
+                # Si la conexion es directa
+                verificar_conectividad(endpoint_ip)
+                
 
-
-                # 
-                proxy.connect_to_private_network(private_network_id, endpoint_id)
+                # Si la conexion es por relay- INDIRECTA
+                #proxy.connect_to_private_network(private_network_id, endpoint_ip)
                 print("Conectado a la red privada")
             else:
                 print("No se conectó a ningún endpoint")

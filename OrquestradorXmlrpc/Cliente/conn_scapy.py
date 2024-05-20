@@ -17,7 +17,3 @@ def verificar_conectividad(direccion_ip):
     except Exception as e:
         print(f"Error al enviar o recibir paquete ICMP: {e}")
 
-# Dirección IP del dispositivo de destino
-direccion_ip_destino = '10.0.0.9'
-
-verificar_conectividad(direccion_ip_destino)
