@@ -56,9 +56,11 @@ class Servidor:
         print("Creating endpoint...")
         # Obtener la red privada
         private_network = self.get_private_network_by_id(private_network_id)
+        if private_network is None:
+            print("Private network not found!")
+            return None
         # Crear la dirección IP del endpoint
-        endpoint_ip = private_network.get_last_host_assigned()
-        private_network.set_last_host_assigned('10.0.0.3')
+        endpoint_ip = private_network.calculate_next_host()
         # Crear el endpoint
         endpoint = rp.Endpoint(0, endpoint_ip)
         # Agregar el endpoint a la red privada
