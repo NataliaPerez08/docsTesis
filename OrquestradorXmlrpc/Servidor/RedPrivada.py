@@ -43,6 +43,7 @@ class RedPrivada:
         return self.last_host_assigned
     
     def add_endpoint(self, endpoint):
+        print("Agregando endpoint")
         self.endpoint.append(endpoint)
 
     def get_network_mask(self):
