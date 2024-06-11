@@ -1,5 +1,5 @@
 class Endpoint:
-    def __init__(self, iden, name, private_network_id):
+    def __init__(self, iden, name,ip_addr, private_network_id):
         self.id = iden
         self.name = name
         self.private_network_id = ""
@@ -41,5 +41,6 @@ class Endpoint:
 
     def save_wireguard_config(self, config):
         self.config_wireguard = config
-
-   
+        
+    def __str__(self) -> str:
+        return "Name: " + self.name

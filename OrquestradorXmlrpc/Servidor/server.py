@@ -1,6 +1,7 @@
 from xmlrpc.server import SimpleXMLRPCServer
 # Mis clases
 from usuario import Usuario
+import EndPoint as ep
 import RedPrivada as rp
 import WG.setup_wg as wg
 
@@ -10,6 +11,10 @@ class Servidor:
         self.servidor.register_instance(self)
         self.private_networks = list()
         self.usuario = None
+        
+        # Contador de redes privadas
+        self.private_network_counter = 0
+        
 
     def iniciar(self):
         self.servidor.serve_forever()
@@ -22,7 +27,8 @@ class Servidor:
     def create_private_network(self,nombre_red) -> int:
         print("Creating private network...")
         # Crear la red privada
-        red = rp.RedPrivada(0,nombre_red)
+        red = rp.RedPrivada(self.private_network_counter,nombre_red)
+        self.private_network_counter += 1
 
         # Asignar dirección IP
         # Asignar máscara de red. Rango de 16 hosts: 14 hosts + 2 direcciones de red y broadcast
@@ -41,7 +47,7 @@ class Servidor:
 
         # Interfaz de red privada
         print("Creating private network interface...")
-        wg.create_interface(red.id, red.ip_addr, red.mask_network)
+        wg.create_interface(interface_name=nombre_red, ip_addr='10.0.0.0', mask_network=28)
         # Retornar el identificador de la red
         return red.id
     
@@ -51,6 +57,12 @@ class Servidor:
         for private_network in self.private_networks:
             str_private_networks += private_network.__str__() + "\n"
         return str_private_networks
+
+    def get_private_network_by_id(self, net_id):
+        for private_network in self.private_networks:
+            if int(private_network.id) == int(net_id):
+                return private_network
+        return None
 
     def create_endpoint(self, private_network_id, endpoint_name):
         print("Creating endpoint...")
@@ -62,17 +74,26 @@ class Servidor:
         # Crear la dirección IP del endpoint
         endpoint_ip = private_network.calculate_next_host()
         # Crear el endpoint
-        endpoint = rp.Endpoint(0, endpoint_ip)
+        endpoint = ep.Endpoint(iden=0, name=endpoint_name, ip_addr=endpoint_ip, private_network_id=private_network_id)
         # Agregar el endpoint a la red privada
         private_network.add_endpoint(endpoint)
         print("Endpoint created successfully!")
         return endpoint.id
     
-    def get_private_network_by_id(self, private_network_id):
-        for private_network in self.private_networks:
-            if private_network.id == private_network_id:
-                return private_network
-        return None
+    def get_endpoints(self, private_network_id):
+        print("Getting endpoints...")
+        private_network = self.get_private_network_by_id(private_network_id)
+        print(private_network)
+        if private_network is None:
+            print("Private network not found!")
+            return None
+        str_endpoints = ""
+        print(private_network.get_endpoints())
+        for endpoint in private_network.get_endpoints():
+            print(endpoint)
+            str_endpoints += endpoint.__str__() + "\n"
+            
+        return str_endpoints 
 
 server = Servidor()
 print("Listening on port 8000...")
