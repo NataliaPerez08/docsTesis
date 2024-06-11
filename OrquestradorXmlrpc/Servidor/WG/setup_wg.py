@@ -1,23 +1,39 @@
 import subprocess
+import os
 
 def create_interface(interface_name, ip_addr, mask_network):
     try:
-        # Crear una interfaz virtual
-        subprocess.run(
-            ["ip", "link", "add", "dev", interface_name, "type", "wireguard"]
-        )
+        # Verificar si es windows o linux
+        if os.name == "nt":
+            print("Windows")
+            print(type(interface_name))
+            print(type(ip_addr))
+            ip_addr = ip_addr.__str__()
+            print(type(mask_network))
 
-        # Establecer la dirección IP y la máscara de red para la interfaz virtual
-        subprocess.run(
-            ["ip", "address", "add", f"{ip_addr}/{mask_network}", "dev", interface_name]
-        )
+            #subprocess.run(["netsh", "interface", "ipv4", "set", "address", "name=", interface_name, "source=static", f"address={ip_addr}", f"mask={mask_network}"])
 
-        # Levantar la interfaz virtual
-        subprocess.run(["ip", "link", "set", "dev", interface_name, "up"])
+            print(f"Netsh interface ipv4 set address name={interface_name} source=static address={ip_addr} mask={mask_network}")
+        else:
+            print("Linux")
+            # Crear una interfaz virtual
+            subprocess.run(
+                ["ip", "link", "add", "dev", interface_name, "type", "wireguard"]
+            )
+            print("IP link add dev wg0 type wireguard")
 
-        print(
-            f"Interfaz virtual {interface_name} creada exitosamente con IP {ip_addr}/{mask_network}"
-        )
+            # Establecer la dirección IP y la máscara de red para la interfaz virtual
+            subprocess.run(
+                ["ip", "address", "add", f"{ip_addr}/{mask_network}", "dev", interface_name]
+            )
+            print(f"IP address add {ip_addr}/{mask_network} dev {interface_name}")
+
+            # Levantar la interfaz virtual
+            subprocess.run(["ip", "link", "set", "dev", interface_name, "up"])
+
+            print(
+                f"Interfaz virtual {interface_name} creada exitosamente con IP {ip_addr}/{mask_network}"
+            )
     except Exception as e:
         print(f"Error creando interfaz virtual: {e}")
 
