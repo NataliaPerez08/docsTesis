@@ -26,12 +26,10 @@ class Servidor:
         print("User set successfully!")
 
     def create_private_network(self,nombre_red) -> int:
-        print("Creating private network...")
         # Crear la red privada
         red = rp.RedPrivada(self.private_network_counter,nombre_red)
         self.private_network_counter += 1
-        # Asignar dirección IP
-        # Asignar máscara de red. Rango de 16 hosts: 14 hosts + 2 direcciones de red y broadcast
+        # Asignar dirección IP. Asignar máscara de red. Rango de 16 hosts: 14 hosts + 2 direcciones de red y broadcast
         red.set_ip_addr('10.0.0.0')
         red.set_network_mask(28)
         red.set_last_host_assigned('10.0.0.1')
@@ -43,10 +41,7 @@ class Servidor:
         return self.private_networks
 
     def get_private_network_by_id(self, net_id):
-        for private_network in self.private_networks:
-            if int(private_network.id) == int(net_id):
-                return private_network
-        return None
+        return self.private_networks[str(net_id)]        
 
     def create_endpoint(self, private_network_id, endpoint_name):
         print("Creating endpoint...")
