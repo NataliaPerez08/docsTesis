@@ -5,15 +5,10 @@ def create_interface(interface_name, ip_addr, mask_network):
     try:
         # Verificar si es windows o linux
         if os.name == "nt":
-            print("Windows")
-            print(type(interface_name))
-            print(type(ip_addr))
             ip_addr = ip_addr.__str__()
-            print(type(mask_network))
-
-            #subprocess.run(["netsh", "interface", "ipv4", "set", "address", "name=", interface_name, "source=static", f"address={ip_addr}", f"mask={mask_network}"])
-
+            subprocess.run(["netsh", "interface", "ipv4", "set", "address", "name=", interface_name, "source=static", f"address={ip_addr}", f"mask={mask_network}"])
             print(f"Netsh interface ipv4 set address name={interface_name} source=static address={ip_addr} mask={mask_network}")
+            return
         else:
             print("Linux")
             # Crear una interfaz virtual
