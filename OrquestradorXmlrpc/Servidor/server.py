@@ -7,7 +7,7 @@ import WG.setup_wg as wg
 
 class Servidor:
     def __init__(self):
-        self.servidor = SimpleXMLRPCServer(("localhost", 8000))
+        self.servidor = SimpleXMLRPCServer(("0.0.0.0", 8000))
         self.servidor.register_instance(self)
         # Diccionario de redes privadas {id: RedPrivada}
         self.private_networks = dict()
