@@ -1,8 +1,8 @@
 class Endpoint:
-    def __init__(self, iden, name,ip_addr, private_network_id):
-        self.id = iden
+    def __init__(self, id_endpoint, name, private_network_id):
+        self.id = id_endpoint
         self.name = name
-        self.private_network_id = ""
+        self.private_network_id = private_network_id
         self.wireguard_ip = ""
         self.wireguard_port = ""
         self.wireguard_private_key = ""

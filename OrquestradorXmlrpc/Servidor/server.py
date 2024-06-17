@@ -2,7 +2,7 @@ from xmlrpc.server import SimpleXMLRPCServer
 # Mis clases
 from usuario import Usuario
 import EndPoint as ep
-import RedPrivada as rp
+import PrivateNetwork as rp
 import WG.setup_wg as wg
 
 class Servidor:
@@ -25,16 +25,16 @@ class Servidor:
         self.usuario = Usuario(name, email, password)
         print("User set successfully!")
 
-    def create_private_network(self,nombre_red) -> int:
+    def create_private_network(self,net_name) -> int:
         # Crear la red privada
-        red = rp.RedPrivada(self.private_network_counter,nombre_red)
+        red = rp.PrivateNetwork(self.private_network_counter, net_name)
         self.private_network_counter += 1
         # Asignar dirección IP. Asignar máscara de red. Rango de 16 hosts: 14 hosts + 2 direcciones de red y broadcast
         red.set_ip_addr('10.0.0.0')
         red.set_network_mask(28)
         red.set_last_host_assigned('10.0.0.1')
         # Agregar la red a la lista de redes privadas
-        self.private_networks[str(red.id)] = str(red)
+        self.private_networks[str(red.id)] = red
         return red.id
     
     def get_private_networks(self)->str:
@@ -44,19 +44,8 @@ class Servidor:
         return self.private_networks[str(net_id)]        
 
     def create_endpoint(self, private_network_id, endpoint_name):
-        print("Creating endpoint...")
-        # Obtener la red privada
         private_network = self.get_private_network_by_id(private_network_id)
-        if private_network is None:
-            print("Private network not found!")
-            return None
-        # Crear la dirección IP del endpoint
-        endpoint_ip = private_network.calculate_next_host()
-        # Crear el endpoint
-        endpoint = ep.Endpoint(iden=0, name=endpoint_name, ip_addr=endpoint_ip, private_network_id=private_network_id)
-        # Agregar el endpoint a la red privada
-        private_network.add_endpoint(endpoint)
-        print("Endpoint created successfully!")
+        endpoint = private_network.create_endpoint(endpoint_name)
         return endpoint.id
     
     def get_endpoints(self, private_network_id):

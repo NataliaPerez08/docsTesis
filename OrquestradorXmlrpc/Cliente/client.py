@@ -2,7 +2,12 @@ import xmlrpc.client
 import sys
 from conn_scapy import verificar_conectividad
 
-with xmlrpc.client.ServerProxy("http://localhost:8000/") as proxy:
+import ipaddress
+
+# Servidor en la nube
+#with xmlrpc.client.ServerProxy("http://34.42.253.180:8000/") as proxy:
+# Servidor local
+with xmlrpc.client.ServerProxy("http://0.0.0.0:8000/") as proxy:
     # Manejo por linea de comandos
     # python3 client.py crear_red_privada
     # python3 client.py ver_redes_privadas
