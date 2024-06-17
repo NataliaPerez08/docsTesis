@@ -27,12 +27,8 @@ class Servidor:
 
     def create_private_network(self,net_name) -> int:
         # Crear la red privada
-        red = rp.PrivateNetwork(self.private_network_counter, net_name)
+        red = rp.PrivateNetwork(self.private_network_counter, net_name,'10.0.0.0', 28)
         self.private_network_counter += 1
-        # Asignar dirección IP. Asignar máscara de red. Rango de 16 hosts: 14 hosts + 2 direcciones de red y broadcast
-        red.set_ip_addr('10.0.0.0')
-        red.set_network_mask(28)
-        red.set_last_host_assigned('10.0.0.1')
         # Agregar la red a la lista de redes privadas
         self.private_networks[str(red.id)] = red
         return red.id

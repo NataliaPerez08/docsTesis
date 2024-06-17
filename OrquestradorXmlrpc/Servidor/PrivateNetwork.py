@@ -2,24 +2,14 @@ import ipaddress
 from EndPoint import Endpoint
 
 class PrivateNetwork:
-    def __init__(self, id_red, name, ip_addr=None, mask_network=None):
+    def __init__(self, id_red, name, ip_addr, mask_network):
         self.id = id_red
         self.name = name
         
-        if ip_addr is not None:
-           self.ip_addr = ipaddress.IPv4Address(ip_addr)
-           self.last_host_assigned = str(ip_addr)
-        else:
-            self.ip_addr = None
-        if mask_network is not None:
-            self.mask_network = mask_network
-        else:
-            self.mask_network = None
-
-
-        self.available_hosts = list()
-        self.last_host_assigned = ""
-
+        self.mask_network = mask_network
+        self.ip_addr = ipaddress.IPv4Network(f"{ip_addr}/{mask_network}")
+        
+        self.available_hosts = self.calcule_network_range()
         self.num_endpoints = 0
         
         # Diccionario de endpoints {id: Endpoint}
@@ -43,11 +33,7 @@ class PrivateNetwork:
     def get_available_hosts(self):
         return self.available_hosts
     
-    def get_last_host_assigned(self):
-        return self.last_host_assigned
-    
     def add_endpoint(self, endpoint):
-        print("Agregando endpoint")
         self.endpoints[str(endpoint.id)] = endpoint
 
     def get_network_mask(self):
@@ -61,9 +47,6 @@ class PrivateNetwork:
         ip = self.ip_addr.exploded.split('/')[0]
         self.ip_addr = ipaddress.IPv4Network(f"{ip}/{mask_network}")
 
-    def set_last_host_assigned(self, last_host_assigned):
-        self.last_host_assigned = last_host_assigned
-    
     def calcule_network_range(self):
         hosts = list(self.ip_addr.hosts())
         self.available_hosts = hosts
@@ -76,24 +59,21 @@ class PrivateNetwork:
 
             return: str
         """
-        if self.last_host_assigned == "":
-            self.last_host_assigned = self.ip_addr.network_address
-
-        last_host = str(self.last_host_assigned)
-        last_host = last_host.split('.')
-        last_host[3] = str(int(last_host[3]) + 1)
-        self.last_host_assigned = str('.'.join(last_host))
-        return self.last_host_assigned
+        if len(self.available_hosts) == 0:
+            print("No hay direcciones IP disponibles!")
+            return None
+        next_host = self.available_hosts.pop(0)
+        return str(next_host)
     
     def create_endpoint(self, name) -> Endpoint:
-        print("Creando endpoint, nombre: " + name, "ID: " + str(self.num_endpoints))
+        endpoint = Endpoint(id_endpoint=self.num_endpoints, name=name, private_network_id=self.id)
         
-        print(type(self.num_endpoints))
+        endpoint.wireguard_ip = self.calculate_next_host()
+        endpoint.wireguard_port = "51820"
         
-        endpoint = Endpoint(id_endpoint=0, name=name, private_network_id=self.id)
+        self.add_endpoint(endpoint)
+        
         self.num_endpoints += 1
-        #self.add_endpoint(endpoint)
-        
         return endpoint 
 
     def __str__(self):

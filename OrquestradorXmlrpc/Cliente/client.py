@@ -31,8 +31,16 @@ with xmlrpc.client.ServerProxy("http://0.0.0.0:8000/") as proxy:
         print("Creando endpoint...")
         private_network_id = sys.argv[2]
         endpoint_name = sys.argv[3]
-        endpoint_id = proxy.create_endpoint(private_network_id, endpoint_name)
-        print(f"ID del endpoint: {endpoint_id}")
+        
+        
+        endpoint_ip_WG = proxy.create_endpoint(private_network_id, endpoint_name)
+        # Generar configuración de Wireguard.
+        # Crear endpoint en la red privada.
+        # Asignar dirección IP a endpoint.
+         
+        
+        
+        print("IP de Wireguard asignada: ", endpoint_ip_WG)
         
     elif opcion == "ver_endpoints":
         print("Obteniendo endpoints...")
