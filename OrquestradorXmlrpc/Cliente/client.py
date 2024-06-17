@@ -9,10 +9,11 @@ import ipaddress
 # Servidor local
 with xmlrpc.client.ServerProxy("http://0.0.0.0:8000/") as proxy:
     # Manejo por linea de comandos
-    # python3 client.py crear_red_privada
-    # python3 client.py ver_redes_privadas
-    # python3 client.py crear_endpoint
-    # python3 client.py conectar_endpoint
+    # python3 client.py crear_red_privada <nombre>
+    # python3 client.py ver_redes_privadas 
+    # python3 client.py crear_endpoint <id_red_privada> <nombre_endpoint>
+    # python3 client.py ver_endpoints <id_red_privada>
+    # python3 client.py conectar_endpoint <id_endpoint> <id_red_privada>
     # python3 client.py salir
     opcion = sys.argv[1] 
     
@@ -32,6 +33,11 @@ with xmlrpc.client.ServerProxy("http://0.0.0.0:8000/") as proxy:
         endpoint_name = sys.argv[3]
         endpoint_id = proxy.create_endpoint(private_network_id, endpoint_name)
         print(f"ID del endpoint: {endpoint_id}")
+        
+    elif opcion == "ver_endpoints":
+        print("Obteniendo endpoints...")
+        private_network_id = sys.argv[2]
+        print(proxy.get_endpoints(private_network_id))
 
     elif opcion == "conectar_endpoint":
         print("Conectando endpoint...")

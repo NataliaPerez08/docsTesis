@@ -38,7 +38,8 @@ class Servidor:
         return red.id
     
     def get_private_networks(self)->str:
-        return self.private_networks
+        return [str(red) for red in self.private_networks.values()]
+    
 
     def get_private_network_by_id(self, net_id):
         return self.private_networks[str(net_id)]        
