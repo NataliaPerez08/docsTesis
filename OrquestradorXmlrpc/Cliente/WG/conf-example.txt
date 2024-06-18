@@ -1,0 +1,9 @@
+[Interface]
+PrivateKey = YOUR_PRIVATE_KEY
+Address = YOUR_CLIENT_IP/24
+DNS = YOUR_PREFERRED_DNS
+
+[Peer]
+PublicKey = YOUR_SERVER_PUBLIC_KEY
+AllowedIPs = 0.0.0.0/0
+Endpoint = YOUR_SERVER_IP:YOUR_SERVER_PORT

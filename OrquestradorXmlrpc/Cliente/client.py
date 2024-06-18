@@ -2,7 +2,7 @@ import xmlrpc.client
 import sys
 from conn_scapy import verificar_conectividad
 
-import ipaddress
+import WG.setup_wg as wg
 
 # Servidor en la nube
 #with xmlrpc.client.ServerProxy("http://34.42.253.180:8000/") as proxy:
@@ -35,6 +35,8 @@ with xmlrpc.client.ServerProxy("http://0.0.0.0:8000/") as proxy:
         
         endpoint_ip_WG = proxy.create_endpoint(private_network_id, endpoint_name)
         # Generar configuración de Wireguard.
+        wg.create_keys()
+        
         # Crear endpoint en la red privada.
         # Asignar dirección IP a endpoint.
          

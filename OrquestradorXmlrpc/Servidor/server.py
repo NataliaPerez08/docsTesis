@@ -1,7 +1,6 @@
 from xmlrpc.server import SimpleXMLRPCServer
 # Mis clases
 from usuario import Usuario
-import EndPoint as ep
 import PrivateNetwork as rp
 import WG.setup_wg as wg
 
@@ -15,7 +14,6 @@ class Servidor:
         
         # Contador de redes privadas
         self.private_network_counter = 0
-        
 
     def iniciar(self):
         self.servidor.serve_forever()
@@ -46,19 +44,8 @@ class Servidor:
         return endpoint.id
     
     def get_endpoints(self, private_network_id):
-        print("Getting endpoints...")
         private_network = self.get_private_network_by_id(private_network_id)
-        print(private_network)
-        if private_network is None:
-            print("Private network not found!")
-            return None
-        str_endpoints = ""
-        print(private_network.get_endpoints())
-        for endpoint in private_network.get_endpoints():
-            print(endpoint)
-            str_endpoints += endpoint.__str__() + "\n"
-            
-        return str_endpoints 
+        return [str(endpoint) for endpoint in private_network.endpoints]
 
 server = Servidor()
 print("Listening on port 8000...")

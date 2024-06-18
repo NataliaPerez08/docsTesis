@@ -10,7 +10,7 @@ class Endpoint:
 
         self.public_ip = ""
 
-        self.config_wireguard = dict
+        self.config_wireguard = dict()
 
     def get_id(self):
         return self.id
@@ -43,4 +43,4 @@ class Endpoint:
         self.config_wireguard = config
         
     def __str__(self) -> str:
-        return "Name: " + self.name
+        return "Name: " + self.name+ " IP: " + self.wireguard_ip + " Port: " + self.wireguard_port
