@@ -41,11 +41,11 @@ class Servidor:
     def create_endpoint(self, private_network_id, endpoint_name):
         private_network = self.get_private_network_by_id(private_network_id)
         endpoint = private_network.create_endpoint(endpoint_name)
-        return endpoint.id
+        return endpoint.get_wireguard_ip()
     
     def get_endpoints(self, private_network_id):
         private_network = self.get_private_network_by_id(private_network_id)
-        return [str(endpoint) for endpoint in private_network.endpoints]
+        return private_network.endpoints
 
 server = Servidor()
 print("Listening on port 8000...")
