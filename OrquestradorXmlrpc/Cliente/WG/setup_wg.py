@@ -20,3 +20,19 @@ def create_keys():
     private_key = private_key.decode("utf-8").strip()
     
     return private_key, public_key
+
+def create_peer(public_key, allowIPs, endpoint, port):
+    """Crea un peer en la configuración de Wireguard.
+    """
+    print("Creando peer...")
+    
+def obtener_ip():
+    """Obtiene la dirección IP de la máquina.
+    """
+    print("Obteniendo dirección IP...")
+    ip = subprocess.run(["hostname", "-I"], stdout=subprocess.PIPE)
+    ip = ip.stdout.decode("utf-8").strip()
+    
+    return ip
+
+print(obtener_ip())
