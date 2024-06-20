@@ -36,7 +36,11 @@ class Servidor:
     
 
     def get_private_network_by_id(self, net_id):
-        return self.private_networks[str(net_id)]        
+        return self.private_networks[str(net_id)]    
+    
+    def get_allowed_ips(self, private_network_id):
+        private_network = self.get_private_network_by_id(private_network_id)
+        return str(private_network.get_ip_addr())
 
     def create_endpoint(self, private_network_id, endpoint_name):
         private_network = self.get_private_network_by_id(private_network_id)
