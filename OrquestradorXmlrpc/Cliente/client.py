@@ -2,7 +2,7 @@ import xmlrpc.client
 import sys
 from conn_scapy import verificar_conectividad
 
-import WG.setup_wg as wg
+import WG.configGenerator as wg
 
 # Servidor en la nube
 #with xmlrpc.client.ServerProxy("http://34.42.253.180:8000/") as proxy:
@@ -16,7 +16,6 @@ with xmlrpc.client.ServerProxy(dir_servidor) as proxy:
     # python3 client.py ver_endpoints <id_red_privada>
     # python3 client.py conectar_endpoint <id_endpoint> <id_red_privada>
     # python3 client.py conectar_endpoint_directo <ip_wg_endpoint> <puerto_wg_endpoint>
-    # python3 client.py salir
     opcion = sys.argv[1] 
     
     if opcion == "crear_red_privada":
@@ -35,7 +34,6 @@ with xmlrpc.client.ServerProxy(dir_servidor) as proxy:
         private_network_id = sys.argv[2]
         endpoint_name = sys.argv[3]
         
-        
         endpoint_ip_WG = proxy.create_endpoint(private_network_id, endpoint_name)
         # Registrar el host actual como endpoint en la red privada con el servidor.
         # Generar configuración de Wireguard.
@@ -44,9 +42,13 @@ with xmlrpc.client.ServerProxy(dir_servidor) as proxy:
         # Recuperar las allowed IPs de la red privada.
         allowed_ips = proxy.get_allowed_ips(private_network_id)
         
+        server_wg_public_key = proxy.get_public_key()
         
-        wg.create_interface_config_wg(private_key,endpoint_ip_WG)
-        wg.create_peer(public_key, allowed_ips, endpoint_ip_WG, listen_port)
+        # Crear peer en el servidor
+        proxy.create_peer(public_key, allowed_ips, endpoint_ip_WG, listen_port)
+        
+        # Crear interfaz de Wireguard (En el cliente)
+        #wg.create_interface(ip_wg=endpoint_ip_WG, private_key=private_key, peer_public_key=public_key, peer_allowed_ips=allowed_ips, peer_endpoint_ip="34.42.253.180", peer_listen_port=listen_port)
         
         
         print("IP de Wireguard asignada: ", endpoint_ip_WG)
@@ -73,4 +75,3 @@ with xmlrpc.client.ServerProxy(dir_servidor) as proxy:
         ip_endpoint = sys.argv[2]
         puerto_endpoint = sys.argv[3]
         verificar_conectividad(ip_endpoint)
-        

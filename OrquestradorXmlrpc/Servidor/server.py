@@ -2,7 +2,7 @@ from xmlrpc.server import SimpleXMLRPCServer
 # Mis clases
 from usuario import Usuario
 import PrivateNetwork as rp
-import WG.setup_wg as wg
+import WG.configGenerator as wg
 
 class Servidor:
     def __init__(self):
@@ -14,6 +14,10 @@ class Servidor:
         
         # Contador de redes privadas
         self.private_network_counter = 0
+        
+        # Llave pública de Wireguard del orquestrador
+        self.wg_private_key = None
+        self.wg_public_key = None
 
     def iniciar(self):
         self.servidor.serve_forever()
@@ -37,10 +41,6 @@ class Servidor:
 
     def get_private_network_by_id(self, net_id):
         return self.private_networks[str(net_id)]    
-    
-    def get_allowed_ips(self, private_network_id):
-        private_network = self.get_private_network_by_id(private_network_id)
-        return str(private_network.get_ip_addr())
 
     def create_endpoint(self, private_network_id, endpoint_name):
         private_network = self.get_private_network_by_id(private_network_id)
@@ -50,8 +50,23 @@ class Servidor:
     def get_endpoints(self, private_network_id):
         private_network = self.get_private_network_by_id(private_network_id)
         return private_network.endpoints
+    
+    def get_public_key(self):
+        return self.wg_public_key
+    
+    def get_allowed_ips(self, private_network_id):
+        private_network = self.get_private_network_by_id(private_network_id)
+        return private_network.get_available_hosts()
+    
+    def init_wireguard(self):
+        # Crear las claves pública y privada
+        private_key, public_key = wg.create_keys()
+        self.wg_public_key = public_key
+        self.wg_private_key = private_key
+        
 
 server = Servidor()
+server.init_wireguard()
 print("Listening on port 8000...")
 server.iniciar()
 
