@@ -58,6 +58,10 @@ class Servidor:
         private_network = self.get_private_network_by_id(private_network_id)
         return private_network.get_available_hosts()
     
+    def create_peer(self,public_key, allowed_ips, endpoint_ip_WG, listen_port):
+        print("Creating peer...")
+        pass
+    
     def init_wireguard(self):
         # Crear las claves pública y privada
         private_key, public_key = wg.create_keys()

@@ -2,76 +2,86 @@ import xmlrpc.client
 import sys
 from conn_scapy import verificar_conectividad
 
-import WG.configGenerator as wg
+import WG.configGeneratorCliente as wg
 
 # Servidor en la nube
 #with xmlrpc.client.ServerProxy("http://34.42.253.180:8000/") as proxy:
 # Servidor local
 dir_servidor = "http://0.0.0.0:8000/"
-with xmlrpc.client.ServerProxy(dir_servidor) as proxy:
-    # Manejo por linea de comandos
-    # python3 client.py crear_red_privada <nombre>
-    # python3 client.py ver_redes_privadas 
-    # python3 client.py crear_endpoint <id_red_privada> <nombre_endpoint>
-    # python3 client.py ver_endpoints <id_red_privada>
-    # python3 client.py conectar_endpoint <id_endpoint> <id_red_privada>
-    # python3 client.py conectar_endpoint_directo <ip_wg_endpoint> <puerto_wg_endpoint>
-    opcion = sys.argv[1] 
+
+class Cliente:
+    def __init__(self):
+        self.proxy = xmlrpc.client.ServerProxy(dir_servidor)
     
-    if opcion == "crear_red_privada":
+    def crear_red_privada(self, nombre):
         print("Creando red privada...")
-        input_name = sys.argv[2]
-        private_network_id = proxy.create_private_network(input_name)
+        private_network_id = self.proxy.create_private_network(nombre)
         print(f"ID de la red privada: {private_network_id}")
-
-    elif opcion == "ver_redes_privadas":
+    
+    def ver_redes_privadas(self):
         print("Obteniendo redes privadas...")
-        print(proxy.get_private_networks())
-
-    elif opcion == "crear_endpoint":
-        
+        print(self.proxy.get_private_networks())
+    
+    def crear_endpoint(self, id_red_privada, nombre_endpoint):
         print("Creando endpoint...")
-        private_network_id = sys.argv[2]
-        endpoint_name = sys.argv[3]
-        
-        endpoint_ip_WG = proxy.create_endpoint(private_network_id, endpoint_name)
+        endpoint_ip_WG = self.proxy.create_endpoint(id_red_privada, nombre_endpoint)
         # Registrar el host actual como endpoint en la red privada con el servidor.
         # Generar configuración de Wireguard.
         private_key, public_key = wg.create_keys()
         listen_port = 51820
         # Recuperar las allowed IPs de la red privada.
-        allowed_ips = proxy.get_allowed_ips(private_network_id)
-        
-        server_wg_public_key = proxy.get_public_key()
-        
-        # Crear peer en el servidor
-        proxy.create_peer(public_key, allowed_ips, endpoint_ip_WG, listen_port)
-        
+        allowed_ips = self.proxy.get_allowed_ips(id_red_privada)
         # Crear interfaz de Wireguard (En el cliente)
-        #wg.create_interface(ip_wg=endpoint_ip_WG, private_key=private_key, peer_public_key=public_key, peer_allowed_ips=allowed_ips, peer_endpoint_ip="34.42.253.180", peer_listen_port=listen_port)
-        
-        
+        wg.create_wg_interface(ip_wg=endpoint_ip_WG, private_key=private_key, peer_public_key=public_key, peer_allowed_ips=allowed_ips, peer_endpoint_ip=dir_servidor, peer_listen_port=listen_port)
         print("IP de Wireguard asignada: ", endpoint_ip_WG)
         
-    elif opcion == "ver_endpoints":
+    def ver_endpoints(self, id_red_privada):
         print("Obteniendo endpoints...")
-        private_network_id = sys.argv[2]
-        print(proxy.get_endpoints(private_network_id))
-
-    elif opcion == "conectar_endpoint":
+        print(self.proxy.get_endpoints(id_red_privada))
+        
+    def conectar_endpoint(self, id_endpoint, id_red_privada):
         print("Conectando endpoint...")
-        endpoint_id = sys.argv[2]
-        private_network_id = sys.argv[3]
-        endpoint = proxy.get_endpoint_by_id(endpoint_id)
-        private_network = proxy.get_private_network_by_id(private_network_id)
+        endpoint = self.proxy.get_endpoint_by_id(id_endpoint)
+        private_network = self.proxy.get_private_network_by_id(id_red_privada)
         if endpoint is None or private_network is None:
             print("Endpoint o red privada no encontrados!")
         print(f"Endpoint: {endpoint}")
         print(f"Red privada: {private_network}")
         verificar_conectividad(endpoint.ip_addr, private_network.last_host_assigned)
         
-    elif opcion == "conectar_endpoint_directo":
+    def conectar_endpoint_directo(self, ip_endpoint, puerto_endpoint):
         print("Conectando endpoint directo...")
-        ip_endpoint = sys.argv[2]
-        puerto_endpoint = sys.argv[3]
         verificar_conectividad(ip_endpoint)
+        
+    def obtener_clave_publica(self):
+        print("Obteniendo clave pública...")
+        print(self.proxy.get_public_key())
+        
+        
+# Manejo por linea de comandos
+# python3 client.py crear_red_privada <nombre>
+# python3 client.py ver_redes_privadas 
+# python3 client.py crear_endpoint <id_red_privada> <nombre_endpoint>
+# python3 client.py ver_endpoints <id_red_privada>
+# python3 client.py conectar_endpoint <id_endpoint> <id_red_privada>
+# python3 client.py conectar_endpoint_directo <ip_wg_endpoint> <puerto_wg_endpoint>
+if __name__ == "__main__":
+    client = Cliente()
+    if len(sys.argv) == 1:
+        print("No se ingresó ningún comando.")
+    elif sys.argv[1] == "crear_red_privada":
+        client.crear_red_privada(sys.argv[2])
+    elif sys.argv[1] == "ver_redes_privadas":
+        client.ver_redes_privadas()
+    elif sys.argv[1] == "crear_endpoint":
+        client.crear_endpoint(sys.argv[2], sys.argv[3])
+    elif sys.argv[1] == "ver_endpoints":
+        client.ver_endpoints(sys.argv[2])
+    elif sys.argv[1] == "conectar_endpoint":
+        client.conectar_endpoint(sys.argv[2], sys.argv[3])
+    elif sys.argv[1] == "conectar_endpoint_directo":
+        client.conectar_endpoint_directo(sys.argv[2], sys.argv[3])
+    elif sys.argv[1] == "obtener_clave_publica":
+        client.obtener_clave_publica()
+    else:
+        print("Comando no reconocido.")
