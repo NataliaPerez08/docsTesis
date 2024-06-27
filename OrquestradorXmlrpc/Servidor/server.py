@@ -1,8 +1,10 @@
 from xmlrpc.server import SimpleXMLRPCServer
+import os
+
 # Mis clases
 from usuario import Usuario
 import PrivateNetwork as rp
-import WG.configGenerator as wg
+import WG.configGeneratorServer as wg
 
 class Servidor:
     def __init__(self):
@@ -60,7 +62,16 @@ class Servidor:
     
     def create_peer(self,public_key, allowed_ips, endpoint_ip_WG, listen_port):
         print("Creating peer...")
-        pass
+        # LLamar al modulo de WG
+        
+        # Verificar si existe la interfaz wg10
+        if os.system("ip link show wg10") == 0:
+            print("La interfaz ya existe.")
+        else:
+            os.system("ip link add dev wg10 type wireguard")
+            os.system(f"ip address add {endpoint_ip_WG} dev wg10")
+            
+            wg.create_wg_interface(ip_wg='10.0.0.1', private_key=self.wg_private_key, peer_public_key=public_key, peer_allowed_ips=allowed_ips, peer_endpoint_ip=endpoint_ip_WG, peer_listen_port=listen_port)
     
     def init_wireguard(self):
         # Crear las claves pública y privada

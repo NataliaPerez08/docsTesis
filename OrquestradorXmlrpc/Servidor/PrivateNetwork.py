@@ -49,7 +49,7 @@ class PrivateNetwork:
 
     def calcule_network_range(self):
         hosts = list(self.ip_addr.hosts())
-        self.available_hosts = hosts
+        self.available_hosts = hosts.pop(0)
         return hosts
     
     def calculate_next_host(self):

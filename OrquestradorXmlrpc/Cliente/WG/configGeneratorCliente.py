@@ -40,6 +40,7 @@ def create_wg_interface(ip_wg, private_key, peer_public_key, peer_allowed_ips, p
         if os.system("ip link show wg0") == 0:
             print("La interfaz ya existe.")
         else:     
+            print("La interfaz no existe.")
             os.system(f"ip link add dev wg0 type wireguard")
             os.system(f"ip address add {ip_wg} dev wg0")
             
