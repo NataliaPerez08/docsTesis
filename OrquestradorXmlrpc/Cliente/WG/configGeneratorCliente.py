@@ -21,15 +21,6 @@ def create_keys():
     
     return private_key, public_key
 
-def create_peer(public_key, allowed_ips, endpoint_ip, listen_port):
-    """Crea un nuevo peer en el archivo de configuración de Wireguard.
-    """
-    print("Creando peer...")
-
-    # Añadir peer a la configuración actual de Wireguard
-    # Wireguard such as addconf or syncconf
-    
-
 def create_wg_interface(ip_wg, private_key, peer_public_key, peer_allowed_ips, peer_endpoint_ip, peer_listen_port):
     """Crea una interfaz de Wireguard.
     """
