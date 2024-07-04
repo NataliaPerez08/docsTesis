@@ -22,7 +22,7 @@ def create_keys():
     return private_key, public_key
         
 
-def create_wg_interface(ip_wg, private_key, peer_public_key, peer_allowed_ips, peer_endpoint_ip, peer_listen_port):
+def create_wg_interface(ip_wg, public_key, private_key, peer_public_key, peer_allowed_ips, peer_endpoint_ip, peer_listen_port):
     """Crea una interfaz de Wireguard.
     """
     print("Creando interfaz...")
@@ -35,9 +35,11 @@ def create_wg_interface(ip_wg, private_key, peer_public_key, peer_allowed_ips, p
             os.system(f"ip link add dev wg10 type wireguard")
             os.system(f"ip address add {ip_wg} dev wg10")
             
-        # Configurar la interfaz
-        print(f"Comando: wg set wg10 listen-port {peer_listen_port} private-key <(echo {private_key})")
-        os.system(f"wg set wg10 listen-port {peer_listen_port} private-key <(echo {private_key})")
+        # Configurar la interfaz con las llaves  pública y privada
+        os.system(f"wg set wg10 private-key <(echo {private_key})")
+        os.system(f"wg set wg10 listen-port 51820")
+        os.system(f"wg set wg10 peer {peer_public_key} allowed-ips {peer_allowed_ips} endpoint {peer_endpoint_ip}:{peer_listen_port}")
+        
         
         os.system("ip link set up dev wg10")
     else:

@@ -71,7 +71,9 @@ class Servidor:
             os.system("ip link add dev wg10 type wireguard")
             os.system(f"ip address add {endpoint_ip_WG} dev wg10")
             
-            wg.create_wg_interface(ip_wg='10.0.0.0', private_key=self.wg_private_key, peer_public_key=public_key, peer_allowed_ips=allowed_ips, peer_endpoint_ip=endpoint_ip_WG, peer_listen_port=listen_port)
+            wg.create_wg_interface(ip_wg='10.0.0.0', public_key=self.wg_public_key, private_key=self.wg_private_key, peer_public_key=public_key, peer_allowed_ips=allowed_ips, peer_endpoint_ip=endpoint_ip_WG, peer_listen_port=listen_port)
+            
+        return "Peer created successfully!"
     
     def init_wireguard(self):
         # Crear las claves pública y privada

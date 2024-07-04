@@ -5,9 +5,10 @@ from conn_scapy import verificar_conectividad
 import WG.configGeneratorCliente as wg
 
 # Servidor en la nube
-#with xmlrpc.client.ServerProxy("http://34.42.253.180:8000/") as proxy:
+#dir_servidor="http://34.42.253.180:8000/"
 # Servidor local
 dir_servidor = "http://0.0.0.0:8000/"
+
 
 class Cliente:
     def __init__(self):
