@@ -44,7 +44,7 @@ class Cliente:
         print("IP de Wireguard asignada: ", endpoint_ip_WG)
         
         # Crear peer en el servidor
-        self.proxy.create_peer(public_key, allowed_ips, endpoint_ip_WG, listen_port)
+        #self.proxy.create_peer(public_key, allowed_ips, endpoint_ip_WG, listen_port)
         
     def ver_endpoints(self, id_red_privada):
         print("Obteniendo endpoints...")

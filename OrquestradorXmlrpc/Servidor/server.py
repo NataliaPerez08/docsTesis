@@ -60,21 +60,6 @@ class Servidor:
         private_network = self.get_private_network_by_id(private_network_id)
         return private_network.get_available_hosts()
     
-    def create_peer(self,public_key, allowed_ips, endpoint_ip_WG, listen_port):
-        print("Creating peer...")
-        # LLamar al modulo de WG
-        
-        # Verificar si existe la interfaz wg10
-        if os.system("ip link show wg10") == 0:
-            print("La interfaz ya existe.")
-        else:
-            os.system("ip link add dev wg10 type wireguard")
-            os.system(f"ip address add {endpoint_ip_WG} dev wg10")
-            
-            wg.create_wg_interface(ip_wg='10.0.0.0', public_key=self.wg_public_key, private_key=self.wg_private_key, peer_public_key=public_key, peer_allowed_ips=allowed_ips, peer_endpoint_ip=endpoint_ip_WG, peer_listen_port=listen_port)
-            
-        return "Peer created successfully!"
-    
     def init_wireguard(self):
         # Crear las claves pública y privada
         private_key, public_key = wg.create_keys()
