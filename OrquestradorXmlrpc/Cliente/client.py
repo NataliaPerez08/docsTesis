@@ -5,16 +5,21 @@ from conn_scapy import verificar_conectividad
 import WG.configGeneratorCliente as wg
 
 # Servidor en la nube
-dir_servidor="http://34.42.253.180:8000/"
+#dir_servidor="http://34.42.253.180:8000/"
 # Servidor local
-#dir_servidor = "http://0.0.0.0:8000/"
-
+dir_servidor = "http://0.0.0.0:8000/"
+dir_servidor = "http://localhost:8000/"
 
 class Cliente:
     def __init__(self):
         self.proxy = xmlrpc.client.ServerProxy(dir_servidor)
         self.wg_private_key = None
         self.wg_public_key = None
+
+    def register_user(self, name, email, password):
+        print("Registrando usuario...")
+        self.proxy.set_user(name, email, password)
+        print("Usuario registrado!")
     
     def crear_red_privada(self, nombre):
         print("Creando red privada...")
@@ -40,7 +45,9 @@ class Cliente:
         allowed_ips = self.proxy.get_allowed_ips(id_red_privada)
   
         # Crear interfaz de Wireguard (En el cliente)
-        wg.create_wg_interface(ip_wg=endpoint_ip_WG, private_key=private_key, peer_public_key=public_key, peer_allowed_ips=allowed_ips, peer_endpoint_ip=dir_servidor, peer_listen_port=listen_port)
+        # Si el sistema no es Windows
+        if sys.platform != 'win32':           
+            wg.create_wg_interface(ip_wg=endpoint_ip_WG, private_key=private_key, peer_public_key=public_key, peer_allowed_ips=allowed_ips, peer_endpoint_ip=dir_servidor, peer_listen_port=listen_port)
         print("IP de Wireguard asignada: ", endpoint_ip_WG)
         
         # Crear peer en el servidor

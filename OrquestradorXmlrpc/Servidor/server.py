@@ -8,11 +8,18 @@ import WG.configGeneratorServer as wg
 
 class Servidor:
     def __init__(self):
-        self.servidor = SimpleXMLRPCServer(("0.0.0.0", 8000))
+        dir = "0.0.0.0"
+        dir = "localhost"
+        self.servidor = SimpleXMLRPCServer((dir, 8000))
         self.servidor.register_instance(self)
         # Diccionario de redes privadas {id: RedPrivada}
         self.private_networks = dict()
+
+        # Usuario actual
         self.usuario = None
+
+        # Lista de usuarios [id: Usuario]
+        self.usuarios = dict()
         
         # Contador de redes privadas
         self.private_network_counter = 0
@@ -24,10 +31,18 @@ class Servidor:
     def iniciar(self):
         self.servidor.serve_forever()
     
-    def set_user(self, name, email, password):
-        print("Setting user...")
+    def register_user(self, name, email, password):
         self.usuario = Usuario(name, email, password)
-        print("User set successfully!")
+        self.usuarios[email] = self.usuario
+        return True
+    
+    def indetify_user(self, email, password):
+        if email in self.usuarios:
+            user = self.usuarios[email]
+            if user.password == password:
+                self.usuario = user
+                return True
+        return False
 
     def create_private_network(self,net_name) -> int:
         # Crear la red privada
@@ -37,7 +52,7 @@ class Servidor:
         self.private_networks[str(red.id)] = red
         return red.id
     
-    def get_private_networks(self)->str:
+    def get_private_networks(self)->list[str]:
         return [str(red) for red in self.private_networks.values()]
     
 

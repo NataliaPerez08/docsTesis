@@ -54,11 +54,6 @@ class PrivateNetwork:
     
     def calculate_next_host(self):
         print("Calculando siguiente dirección IP disponible...")
-        """Calcula la siguiente dirección IP disponible en la red privada.
-            TODO: Validar que la dirección IP no esté en uso, y que no se haya llegado al límite de direcciones IP disponibles.
-
-            return: str
-        """
         if len(self.available_hosts) == 0:
             print("No hay direcciones IP disponibles!")
             return None
