@@ -36,13 +36,17 @@ class Servidor:
         self.usuarios[email] = self.usuario
         return True
     
-    def indetify_user(self, email, password):
+    def identify_user(self, email, password):
         if email in self.usuarios:
             user = self.usuarios[email]
             if user.password == password:
                 self.usuario = user
                 return True
         return False
+    
+    def close_session(self):
+        self.usuario = None
+        return True
 
     def create_private_network(self,net_name) -> int:
         # Crear la red privada
@@ -80,6 +84,9 @@ class Servidor:
         private_key, public_key = wg.create_keys()
         self.wg_public_key = public_key
         self.wg_private_key = private_key
+        
+        ip_wg = "10.0.0.1"
+        wg.create_wg_interface(ip_wg=ip_wg, public_key=public_key, private_key=private_key)
         
 
 server = Servidor()

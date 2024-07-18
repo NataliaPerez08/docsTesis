@@ -21,14 +21,17 @@ class Cliente:
         self.proxy.set_user(name, email, password)
         print("Usuario registrado!")
     
-    def crear_red_privada(self, nombre):
+    def create_private_network(self, nombre):
         print("Creando red privada...")
         private_network_id = self.proxy.create_private_network(nombre)
         print(f"ID de la red privada: {private_network_id}")
     
-    def ver_redes_privadas(self):
-        print("Obteniendo redes privadas...")
-        print(self.proxy.get_private_networks())
+    def get_private_networks(self):
+            priv_net = self.proxy.get_private_networks()
+            print("Redes privadas:")
+            for net in priv_net:
+                print(net)
+            return self.proxy.get_private_networks()
     
     def crear_endpoint(self, id_red_privada, nombre_endpoint):
         print("Creando endpoint...")
@@ -76,7 +79,14 @@ class Cliente:
         print(self.proxy.get_public_key())
         
         
+        
 # Manejo por linea de comandos
+# python3 client.py registrar_usuario <nombre> <email> <password>
+# python3 client.py identificar_usuario <email> <password>
+# python3 client.py obtener_clave_publica_servidor
+# python3 client.py cerrar_sesion
+
+
 # python3 client.py crear_red_privada <nombre>
 # python3 client.py ver_redes_privadas 
 # python3 client.py crear_endpoint <id_red_privada> <nombre_endpoint>
@@ -85,19 +95,49 @@ class Cliente:
 # python3 client.py conectar_endpoint_directo <ip_wg_endpoint> <puerto_wg_endpoint>
 if __name__ == "__main__":
     client = Cliente()
-    if len(sys.argv) == 1:
-        print("No se ingresó ningún comando.")
-    elif sys.argv[1] == "crear_red_privada":
-        client.crear_red_privada(sys.argv[2])
-    elif sys.argv[1] == "ver_redes_privadas":
-        client.ver_redes_privadas()
-    elif sys.argv[1] == "crear_endpoint":
+    if len(sys.argv) < 2:
+        print("Uso: python3 client.py <comando> <argumentos>")
+        sys.exit()
+    comando = sys.argv[1]
+    
+    if comando == "registrar_usuario":
+        if len(sys.argv) != 5:
+            print("Uso: python3 client.py registrar_usuario <nombre> <email> <password>")
+            sys.exit()
+        client.register_user(sys.argv[2], sys.argv[3], sys.argv[4])                     
+        
+    elif comando == "crear_red_privada":
+        if len(sys.argv) != 3:
+            print("Uso: python3 client.py crear_red_privada <nombre>")
+            sys.exit()
+        client.create_private_network(sys.argv[2])
+        
+    elif comando == "ver_redes_privadas":
+        client.get_private_networks()
+        
+    elif comando == "crear_endpoint":
+        if len(sys.argv) != 4:
+            print("Uso: python3 client.py crear_endpoint <id_red_privada> <nombre_endpoint>")
+            sys.exit()
         client.crear_endpoint(sys.argv[2], sys.argv[3])
-    elif sys.argv[1] == "ver_endpoints":
+        
+    elif comando == "ver_endpoints":
+        if len(sys.argv) != 3:
+            print("Uso: python3 client.py ver_endpoints <id_red_privada>")
+            sys.exit()
         client.ver_endpoints(sys.argv[2])
-    elif sys.argv[1] == "conectar_endpoint":
+        
+    elif comando == "conectar_endpoint":
+        if len(sys.argv) != 4:
+            print("Uso: python3 client.py conectar_endpoint <id_endpoint> <id_red_privada>")
+            sys.exit()
         client.conectar_endpoint(sys.argv[2], sys.argv[3])
-    elif sys.argv[1] == "conectar_endpoint_directo":
+        
+    elif comando == "conectar_endpoint_directo":
+        if len(sys.argv) != 4:
+            print("Uso: python3 client.py conectar_endpoint_directo <ip_wg_endpoint> <puerto_wg_endpoint>")
+            sys.exit()
         client.conectar_endpoint_directo(sys.argv[2], sys.argv[3])
-    else:
-        print("Comando no reconocido.")
+        
+    elif comando == "obtener_clave_publica_servidor":
+        client.obtener_clave_publica_servidor()
