@@ -10,10 +10,8 @@ class Servidor:
     def __init__(self):
         dir = "0.0.0.0"
         dir = "localhost"
-        self.servidor = SimpleXMLRPCServer((dir, 8000))
-        self.servidor.register_instance(self)
-        # Diccionario de redes privadas {id: RedPrivada}
-        self.private_networks = dict()
+        self.xmlrpc_server = SimpleXMLRPCServer((dir, 8000))
+        self.xmlrpc_server.register_instance(self)
 
         # Usuario actual
         self.usuario = None
@@ -21,22 +19,31 @@ class Servidor:
         # Lista de usuarios [id: Usuario]
         self.usuarios = dict()
 
-        # Contador de redes privadas
-        self.private_network_counter = 0
-
         # Llave pública de Wireguard del orquestrador
         self.wg_private_key = None
         self.wg_public_key = None
 
     def iniciar(self):
-        self.servidor.serve_forever()
+        """
+        Inicia el servidor
+        """
+        self.xmlrpc_server.serve_forever()
 
     def register_user(self, name, email, password):
+        """
+        Registra un usuario en el servidor
+        """
+        if email in self.usuarios:
+            return False
+    
         self.usuario = Usuario(name, email, password)
         self.usuarios[email] = self.usuario
         return True
 
     def identify_user(self, email, password):
+        """
+        Identifica a un usuario en el servidor
+        """
         if email in self.usuarios:
             user = self.usuarios[email]
             if user.password == password:
@@ -45,37 +52,75 @@ class Servidor:
         return False
 
     def close_session(self):
+        """
+        Cierra la sesión del usuario
+        """
         self.usuario = None
         return True
 
     def create_private_network(self,net_name) -> int:
-        # Crear la red privada
-        red = rp.PrivateNetwork(self.private_network_counter, net_name,'10.0.0.0', 28)
-        self.private_network_counter += 1
-        # Agregar la red a la lista de redes privadas
-        self.private_networks[str(red.id)] = red
-        return red.id
+        """
+        Crea una red privada
+        """
+        if self.usuario is None:
+            return -1
+        else:
+            # Crear la red privada
+            red = rp.PrivateNetwork(self.private_network_counter, net_name,'10.0.0.0', 28)
+            self.usuario.private_networks[str(red.id)] = red
+            self.private_network_counter += 1
+            return red.id
 
     def get_private_networks(self)->list[str]:
-        return [str(red) for red in self.private_networks.values()]
-
+        """
+        Recupera las redes privadas del usuario
+        """
+        if self.usuario is None:
+            return ["No hay usuario"]
+        else:
+            user_private_networks = self.usuario.get_private_networks()
+            return [str(red) for red in user_private_networks.values()]
 
     def get_private_network_by_id(self, net_id):
-        return self.private_networks[str(net_id)]
+        """
+        Recupera una red privada por su id
+        """
+        if self.usuario is None:
+            return
+        else:
+            return self.usuario.get_private_network_by_id(net_id)
 
     def create_endpoint(self, private_network_id, endpoint_name):
-        private_network = self.get_private_network_by_id(private_network_id)
-        endpoint = private_network.create_endpoint(endpoint_name)
-        return endpoint.get_wireguard_ip()
+        """
+        Crea un endpoint en una red privada
+        """
+        if self.usuario is None:
+            return
+        else:
+            private_network = self.get_private_network_by_id(private_network_id)
+            endpoint = private_network.create_endpoint(endpoint_name)
+            return endpoint.get_wireguard_ip()
 
     def get_endpoints(self, private_network_id):
-        private_network = self.get_private_network_by_id(private_network_id)
-        return private_network.endpoints
+        """
+        Recupera los endpoints de una red privada
+        """
+        if self.usuario is None:
+            return
+        else:
+            private_network = self.get_private_network_by_id(private_network_id)
+            return private_network.endpoints
 
     def get_public_key(self):
+        """
+        Recupera la llave pública de Wireguard del orquestrador
+        """
         return self.wg_public_key
 
     def get_allowed_ips(self, private_network_id):
+        """
+        Recupera las IPs permitidas de una red privada
+        """
         private_network = self.get_private_network_by_id(private_network_id)
         return private_network.get_available_hosts()
 

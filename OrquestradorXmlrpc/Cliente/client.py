@@ -17,26 +17,29 @@ class Cliente:
         self.wg_private_key = None
         self.wg_public_key = None
 
-    """
-    Registra un usuario en el servidor. Es volatil
-    """
     def register_user(self, name, email, password):
+        """
+        Registra un usuario en el servidor. Es volatil
+        """
         print("Registrando usuario...")
         self.proxy.set_user(name, email, password)
         print("Usuario registrado!")
 
-    """
-    Crea una red privada en el servidor
-    """
     def create_private_network(self, nombre):
+        """
+        Crea una red privada en el servidor
+        """
         print("Creando red privada...")
         private_network_id = self.proxy.create_private_network(nombre)
+        if private_network_id == -1:
+            print("Error al crear la red privada!")
+            return
         print(f"ID de la red privada: {private_network_id}")
 
-    """
-    Recupera las redes privadas del servidor
-    """
     def get_private_networks(self):
+        """
+        Recupera las redes privadas del servidor
+        """
         priv_net = self.proxy.get_private_networks()
         print("Redes privadas:")
         for net in priv_net:
@@ -102,6 +105,12 @@ class Cliente:
     def obtener_configuracion_wireguard_servidor(self):
         print("Preguntar al servidor")
         print(self.proxy.get_wireguard_config())
+
+    def cerrar_sesion(self):
+        print("Cerrando sesión...")
+        self.proxy.close_session()
+        print("Sesión cerrada!")
+
 
 # Manejo por linea de comandos
 # python3 client.py registrar_usuario <nombre> <email> <password>

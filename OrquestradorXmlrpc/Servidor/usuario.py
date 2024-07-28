@@ -3,7 +3,11 @@ class Usuario:
         self.name = name
         self.email = email
         self.password = password
-        self.private_networks = list()
+        # Diccionario de redes privadas {id: RedPrivada}
+        self.private_networks = dict()
+
+        # Contador de redes privadas
+        self.private_network_counter = 0
 
     def __str__(self):
         return "Name: " + self.name
@@ -22,6 +26,9 @@ class Usuario:
             if private_network.id == private_network_id:
                 return private_network
         return None
+    
+    def get_private_network_by_id(self, private_network_id):
+        return self.private_networks.get(private_network_id)
 
     def add_private_network(self, private_network):
         self.private_networks.append(private_network)
