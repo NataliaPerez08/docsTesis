@@ -70,6 +70,10 @@ def create_peer(public_key, allowed_ips, endpoint_ip, listen_port):
     # Añadir peer
     print("Añadiendo peer...")
     
+    print(f"wg set wg0 peer {public_key} allowed-ips {allowed_ips} endpoint {endpoint_ip}:{listen_port}")
+    os.system(f"wg set wg0 peer {public_key} allowed-ips {allowed_ips} endpoint {endpoint_ip}:{listen_port}")
+        
+    
 
 def get_wg_state():
     """O

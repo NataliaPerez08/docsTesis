@@ -66,10 +66,20 @@ class Servidor:
             return -1
         else:
             # Crear la red privada
-            red = rp.PrivateNetwork(self.private_network_counter, net_name,'10.0.0.0', 28)
+            counter = self.usuario.private_network_counter
+            red = rp.PrivateNetwork(counter, net_name,'10.0.0.0', 28)
             self.usuario.private_networks[str(red.id)] = red
-            self.private_network_counter += 1
+            self.usuario.private_network_counter += 1
             return red.id
+        
+    def whoami(self):
+        """
+        Recupera el usuario actual
+        """
+        if self.usuario is None:
+            return "No hay usuario"
+        else:
+            return self.usuario.name
 
     def get_private_networks(self)->list[str]:
         """

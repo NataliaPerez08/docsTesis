@@ -22,9 +22,23 @@ class Cliente:
         Registra un usuario en el servidor. Es volatil
         """
         print("Registrando usuario...")
-        self.proxy.set_user(name, email, password)
+        is_register = self.proxy.register_user(name, email, password)
+        if not is_register:
+            print("Error al registrar el usuario!")
+            return
         print("Usuario registrado!")
 
+    def identify_user(self, email, password):
+        """
+        Identifica un usuario en el servidor
+        """
+        print("Identificando usuario...")
+        is_identified = self.proxy.identify_user(email, password)
+        if not is_identified:
+            print("Error al identificar el usuario!")
+            return
+        print("Usuario identificado!")
+        
     def create_private_network(self, nombre):
         """
         Crea una red privada en el servidor
@@ -115,6 +129,7 @@ class Cliente:
 # Manejo por linea de comandos
 # python3 client.py registrar_usuario <nombre> <email> <password>
 # python3 client.py identificar_usuario <email> <password>
+# python3 cliente.py whoami
 # python3 client.py obtener_clave_publica_servidor
 # python3 client.py cerrar_sesion
 
@@ -140,6 +155,15 @@ if __name__ == "__main__":
             print("Uso: python3 client.py registrar_usuario <nombre> <email> <password>")
             sys.exit()
         client.register_user(sys.argv[2], sys.argv[3], sys.argv[4])
+        
+    if comando == "identificar_usuario":
+        if len(sys.argv) != 4:
+            print("Uso: python3 client.py identificar_usuario <email> <password>")
+            sys.exit()
+        client.identify_user(sys.argv[2], sys.argv[3])
+        
+    elif comando == "whoami":
+        print(client.whoami())
 
     elif comando == "crear_red_privada":
         if len(sys.argv) != 3:
