@@ -28,7 +28,7 @@ class Cliente:
             return
         print("Usuario registrado!")
 
-    def identify_user(self, email, password):
+    def identify_me(self, email, password):
         """
         Identifica un usuario en el servidor
         """
@@ -39,6 +39,12 @@ class Cliente:
             return
         print("Usuario identificado!")
         
+    def whoami(self):
+        """
+        Obtiene el nombre del usuario actual
+        """
+        return self.proxy.whoami()
+        
     def create_private_network(self, nombre):
         """
         Crea una red privada en el servidor
@@ -46,7 +52,7 @@ class Cliente:
         print("Creando red privada...")
         private_network_id = self.proxy.create_private_network(nombre)
         if private_network_id == -1:
-            print("Error al crear la red privada!")
+            print("Error al crear la red privada! Iniciaste sesión?")
             return
         print(f"ID de la red privada: {private_network_id}")
 
@@ -124,96 +130,3 @@ class Cliente:
         print("Cerrando sesión...")
         self.proxy.close_session()
         print("Sesión cerrada!")
-
-
-# Manejo por linea de comandos
-# python3 client.py registrar_usuario <nombre> <email> <password>
-# python3 client.py identificar_usuario <email> <password>
-# python3 cliente.py whoami
-# python3 client.py obtener_clave_publica_servidor
-# python3 client.py cerrar_sesion
-
-
-# python3 client.py crear_red_privada <nombre>
-# python3 client.py ver_redes_privadas
-# python3 client.py crear_endpoint <id_red_privada> <nombre_endpoint>
-# python3 client.py ver_endpoints <id_red_privada>
-# python3 client.py conectar_endpoint <id_endpoint> <id_red_privada>
-# python3 client.py conectar_endpoint_directo <ip_wg_endpoint> <puerto_wg_endpoint>
-
-# python3 cliente.py obtener_configuracion_wireguard_local
-# python3 cliente.py obtener_configurarion_wireguard_servidor
-if __name__ == "__main__":
-    client = Cliente()
-    if len(sys.argv) < 2:
-        print("Uso: python3 client.py <comando> <argumentos>")
-        sys.exit()
-    comando = sys.argv[1]
-
-    if comando == "registrar_usuario":
-        if len(sys.argv) != 5:
-            print("Uso: python3 client.py registrar_usuario <nombre> <email> <password>")
-            sys.exit()
-        client.register_user(sys.argv[2], sys.argv[3], sys.argv[4])
-        
-    if comando == "identificar_usuario":
-        if len(sys.argv) != 4:
-            print("Uso: python3 client.py identificar_usuario <email> <password>")
-            sys.exit()
-        client.identify_user(sys.argv[2], sys.argv[3])
-        
-    elif comando == "whoami":
-        print(client.whoami())
-
-    elif comando == "crear_red_privada":
-        if len(sys.argv) != 3:
-            print("Uso: python3 client.py crear_red_privada <nombre>")
-            sys.exit()
-        client.create_private_network(sys.argv[2])
-
-    elif comando == "ver_redes_privadas":
-        client.get_private_networks()
-
-    elif comando == "crear_endpoint":
-        if len(sys.argv) != 4:
-            print("Uso: python3 client.py crear_endpoint <id_red_privada> <nombre_endpoint>")
-            sys.exit()
-            
-        # Verificar si el comando se ejecuto como administrador en Linux  
-        if os.geteuid() != 0:
-            print("Se necesita permisos de administrador para ejecutar el comando")
-            sys.exit()
-        else:
-            client.crear_endpoint(sys.argv[2], sys.argv[3])
-
-    elif comando == "ver_endpoints":
-        if len(sys.argv) != 3:
-            print("Uso: python3 client.py ver_endpoints <id_red_privada>")
-            sys.exit()
-        client.ver_endpoints(sys.argv[2])
-
-    elif comando == "conectar_endpoint":
-        if len(sys.argv) != 4:
-            print("Uso: python3 client.py conectar_endpoint <id_endpoint> <id_red_privada>")
-            sys.exit()
-        client.conectar_endpoint(sys.argv[2], sys.argv[3])
-
-    elif comando == "conectar_endpoint_directo":
-        if len(sys.argv) != 4:
-            print("Uso: python3 client.py conectar_endpoint_directo <ip_wg_endpoint> <puerto_wg_endpoint>")
-            sys.exit()
-        client.conectar_endpoint_directo(sys.argv[2], sys.argv[3])
-
-    elif comando == "obtener_clave_publica_servidor":
-        client.obtener_clave_publica_servidor()
-
-    elif comando == "obtener_configuracion_wireguard_local":
-        # Verificar si el comando se ejecuto como administrador en Linux
-        if os.geteuid() != 0:
-            print("Se necesita permisos de administrador para ejecutar el comando")
-            sys.exit()
-        else:
-            client.obtener_configuracion_wireguard_local()
-
-    elif comando == "obtener_configuracion_wireguard_servidor":
-        client.obtener_configuracion_wireguard_servidor()

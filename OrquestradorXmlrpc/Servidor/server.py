@@ -33,23 +33,40 @@ class Servidor:
         """
         Registra un usuario en el servidor
         """
+        print("Registrando usuario...")
         if email in self.usuarios:
             return False
     
         self.usuario = Usuario(name, email, password)
         self.usuarios[email] = self.usuario
+        print("Usuario registrado",self.usuario.name,"!")
+        print(self.usuarios)
         return True
 
     def identify_user(self, email, password):
         """
         Identifica a un usuario en el servidor
         """
-        if email in self.usuarios:
-            user = self.usuarios[email]
-            if user.password == password:
-                self.usuario = user
+        print("Buscando usuario...")
+        
+        try:
+            usuario = self.usuarios[email]
+            if usuario is not None and usuario.password == password:
+                self.usuario = usuario
+                print("Usuario identificado!")
                 return True
-        return False
+        except:
+            return False
+        return  False 
+    
+    def whoami(self):
+        """
+        Recupera el usuario actual
+        """
+        if self.usuario is None:
+            return "No hay usuario"
+        else:
+            return self.usuario.name
 
     def close_session(self):
         """

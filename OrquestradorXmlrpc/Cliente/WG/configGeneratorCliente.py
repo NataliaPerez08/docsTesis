@@ -38,8 +38,8 @@ def create_wg_interface(ip_wg, private_key, listen_port):
             os.system(f"ip address add {ip_wg} dev wg0")
 
         # Configurar la interfaz
-        print(f"Comando: wg set wg0 listen-port {peer_listen_port} private-key <(echo {private_key})")
-        os.system(f"wg set wg0 listen-port {peer_listen_port} private-key <(echo {private_key})")
+        print(f"Comando: wg set wg0 listen-port {listen_port} private-key <(echo {private_key})")
+        os.system(f"wg set wg0 listen-port {listen_port} private-key <(echo {private_key})")
 
         os.system("ip link set up dev wg0")
     else:
@@ -76,8 +76,8 @@ def create_peer(public_key, allowed_ips, endpoint_ip, listen_port):
     
 
 def get_wg_state():
-    """O
-    btiene el estado de Wireguard.
+    """
+    Obtiene el estado de Wireguard.
     """
     print("Obteniendo estado de Wireguard...")
     # Guardar resultado en una variable
