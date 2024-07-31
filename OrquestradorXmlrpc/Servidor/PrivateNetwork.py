@@ -31,6 +31,8 @@ class PrivateNetwork:
         return self.mask_network
     
     def get_available_hosts(self):
+        if len(self.available_hosts) == 0:
+            return []
         return [str(host) for host in self.available_hosts]
     
     def add_endpoint(self, endpoint):

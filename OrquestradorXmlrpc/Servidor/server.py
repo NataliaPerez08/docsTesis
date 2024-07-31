@@ -122,9 +122,11 @@ class Servidor:
         Crea un endpoint en una red privada
         """
         if self.usuario is None:
-            return
+            return -1
         else:
             private_network = self.get_private_network_by_id(private_network_id)
+            if private_network is None:
+                return -1
             endpoint = private_network.create_endpoint(endpoint_name)
             return endpoint.get_wireguard_ip()
 
@@ -149,7 +151,10 @@ class Servidor:
         Recupera las IPs permitidas de una red privada
         """
         private_network = self.get_private_network_by_id(private_network_id)
-        return private_network.get_available_hosts()
+        if private_network is None:
+            return -1
+        return private_network.get_allowed_ips()
+        
 
     def get_wireguard_config(self):
         result = wg.get_wg_state()

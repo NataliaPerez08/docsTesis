@@ -9,7 +9,7 @@ class ConfiguradorWireguardCliente:
         
         self.listen_port = 51820
 
-    def create_keys():
+    def create_keys(self):
         """
         Genera las claves pública y privada de Wireguard.
         """
