@@ -89,15 +89,6 @@ class Servidor:
             self.usuario.private_network_counter += 1
             return red.id
         
-    def whoami(self):
-        """
-        Recupera el usuario actual
-        """
-        if self.usuario is None:
-            return "No hay usuario"
-        else:
-            return self.usuario.name
-
     def get_private_networks(self)->list[str]:
         """
         Recupera las redes privadas del usuario
@@ -113,9 +104,13 @@ class Servidor:
         Recupera una red privada por su id
         """
         if self.usuario is None:
-            return
+            return -1
         else:
-            return self.usuario.get_private_network_by_id(net_id)
+            private_network = self.usuario.get_private_network_by_id(net_id)
+            print("Private network:",private_network, type(private_network))
+            if private_network is None:
+                return -1
+            return private_network
 
     def create_endpoint(self, private_network_id, endpoint_name):
         """
@@ -125,8 +120,10 @@ class Servidor:
             return -1
         else:
             private_network = self.get_private_network_by_id(private_network_id)
-            if private_network is None:
+            if type(private_network) is not rp.PrivateNetwork:
                 return -1
+            
+            print(type(private_network))
             endpoint = private_network.create_endpoint(endpoint_name)
             return endpoint.get_wireguard_ip()
 
@@ -135,7 +132,7 @@ class Servidor:
         Recupera los endpoints de una red privada
         """
         if self.usuario is None:
-            return
+            return []
         else:
             private_network = self.get_private_network_by_id(private_network_id)
             return private_network.endpoints
@@ -151,9 +148,10 @@ class Servidor:
         Recupera las IPs permitidas de una red privada
         """
         private_network = self.get_private_network_by_id(private_network_id)
-        if private_network is None:
+        if type(private_network) is not rp.PrivateNetwork:
+            print("Error al obtener la red privada!")
             return -1
-        return private_network.get_allowed_ips()
+        return private_network.get_available_hosts()
         
 
     def get_wireguard_config(self):
@@ -169,6 +167,13 @@ class Servidor:
 
         ip_wg = "10.0.0.1"
         wg.create_wg_interface(ip_wg=ip_wg, public_key=public_key, private_key=private_key)
+        
+    def wg_test_config(self):
+        # wg set wg0 listen-port 51820 private-key privatekey peer pAY9t1yQPi4lVD84YULYhdiWGhECf2SRs7pll2Vnrgw= allowed-ips 192.168.2.0/24 endpoint 34.42.253.180:51820
+        
+        print("wg set wg0 listen-port 51820 private-key privatekey peer pAY9t1yQPi4lVD84YULYhdiWGhECf2SRs7pll2Vnrgw= allowed-ips 192.168.2.0/24 endpoint 34.42.253.180:51820")
+        # Ejecutar el comando
+        os.system("wg set wg0 listen-port 51820 private-key privatekey peer pAY9t1yQPi4lVD84YULYhdiWGhECf2SRs7pll2Vnrgw= allowed-ips 192.168.2.0/24 endpoint 34.42.253.180:51820")
 
 
 server = Servidor()

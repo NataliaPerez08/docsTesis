@@ -63,6 +63,7 @@ class PrivateNetwork:
         return str(next_host)
     
     def create_endpoint(self, name) -> Endpoint:
+        print("Creando endpoint... en la red privada: " + self.name)
         endpoint = Endpoint(id_endpoint=self.num_endpoints, name=name, private_network_id=self.id)
         
         endpoint.wireguard_ip = self.calculate_next_host()
@@ -72,6 +73,16 @@ class PrivateNetwork:
         
         self.num_endpoints += 1
         return endpoint 
+    
+    def get_endpoint_by_id(self, endpoint_id):
+        try:
+            # Diccionario de endpoints self.endpoints {id: Endpoint}
+            endpoint = self.endpoints[endpoint_id]
+            return endpoint
+        except:
+            return -1
+            
+        
 
     def __str__(self):
         return "ID: " + str(self.id) + " IP Address: " + str(self.ip_addr) + " Mask Network: " + str(self.mask_network) 

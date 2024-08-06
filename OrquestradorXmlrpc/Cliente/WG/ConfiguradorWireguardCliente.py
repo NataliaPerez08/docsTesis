@@ -13,7 +13,7 @@ class ConfiguradorWireguardCliente:
         """
         Genera las claves pública y privada de Wireguard.
         """
-        print("Generando claves...")
+        #print("Generando claves...")
         # Generar clave privada
         private_key = subprocess.run(["wg", "genkey"], stdout=subprocess.PIPE)
 
@@ -84,25 +84,23 @@ class ConfiguradorWireguardCliente:
         print(f"wg set wg0 listen-port {listen_port} private-key <(echo {self.pr}) peer {public_key} allowed-ips {allowed_ips} endpoint {endpoint_ip}:{listen_port}")
         
 
-    def get_wg_state():
+    def get_wg_state(self):
         """
         Obtiene el estado de Wireguard.
         """
         print("Obteniendo estado de Wireguard...")
         # Guardar resultado en una variable
         result = subprocess.run(["wg"], stdout=subprocess.PIPE).stdout.decode("utf-8")
-        print(result)
-        print(type(result))
         return result
         
-    def get_wg_interface():
+    def get_wg_interface(self):
         """
         Obtiene la interfaz de Wireguard.
         """
         print("Obteniendo interfaz de Wireguard...")
         os.system("ip a show wg0")
 
-    def get_wg_interface_config():
+    def get_wg_interface_config(self):
         """
         Obtiene la configuración de la interfaz de Wireguard.
         """

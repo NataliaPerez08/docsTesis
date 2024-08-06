@@ -28,6 +28,8 @@ class Usuario:
         return None
     
     def get_private_network_by_id(self, private_network_id):
+        print("Buscando red privada...")
+        print(self.private_networks[private_network_id])
         return self.private_networks.get(private_network_id)
 
     def add_private_network(self, private_network):

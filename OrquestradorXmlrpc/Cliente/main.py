@@ -4,7 +4,7 @@ import os
 # Manejo por linea de comandos
 # python3 main.py registrar_usuario <nombre> <email> <password>
 # python3 main.py identificar_usuario <email> <password>
-# python3 maine.py whoami
+# python3 main.py whoami
 # python3 main.py obtener_clave_publica_servidor
 # python3 main.py cerrar_sesion
 
@@ -16,8 +16,10 @@ import os
 # python3 main.py conectar_endpoint <id_endpoint> <id_red_privada>
 # python3 main.py conectar_endpoint_directo <ip_wg_endpoint> <puerto_wg_endpoint>
 
-# python3 maine.py obtener_configuracion_wireguard_local
-# python3 maine.py obtener_configurarion_wireguard_servidor
+# python3 main.py obtener_configuracion_wireguard_local
+# python3 main.py obtener_configurarion_wireguard_servidor
+
+# python3 main.py prueba_wg_conf
 if __name__ == "__main__":
     main = Cliente()
     if len(sys.argv) < 2:
@@ -95,6 +97,9 @@ if __name__ == "__main__":
         
     elif comando == "cerrar_sesion":
         main.cerrar_sesion()
+        
+    elif comando == "prueba_wg_conf":
+        main.test_wg_config()
     # Comando no reconocido
     else:
         print("Comando no reconocido")

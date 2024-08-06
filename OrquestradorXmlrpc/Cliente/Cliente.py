@@ -80,10 +80,12 @@ class Cliente:
         self.wg_public_key = public_key
 
         listen_port = 51820
+        
+        
         # Recuperar las allowed IPs de la red privada.
         allowed_ips = self.proxy.get_allowed_ips(id_red_privada)
         
-        if allowed_ips is None or type(allowed_ips) is not list:
+        if type(allowed_ips) is not list:
             print("Error al obtener las IPs permitidas! No se pudo crear el endpoint.")
             return
 
@@ -109,10 +111,20 @@ class Cliente:
 
     def conectar_endpoint(self, id_endpoint, id_red_privada):
         print("Conectando endpoint...")
-        endpoint = self.proxy.get_endpoint_by_id(id_endpoint)
+        # Encontrar la red privada
         private_network = self.proxy.get_private_network_by_id(id_red_privada)
-        if endpoint is None or private_network is None:
-            print("Endpoint o red privada no encontrados!")
+        
+        if private_network == -1:
+            print("No se encontro la red")
+            return
+
+        # Encontrar dispositivo en la red
+        endpoint = private_network.get_endpoint_by_id(id_endpoint)
+        
+        if endpoint == -1:
+            print("No se encontro el Endpoint")
+            return
+
         print(f"Endpoint: {endpoint}")
         print(f"Red privada: {private_network}")
         verificar_conectividad(endpoint.ip_addr, private_network.last_host_assigned)
@@ -127,7 +139,7 @@ class Cliente:
 
     def obtener_configuracion_wireguard_local(self):
         print("Obteniendo configuracion..")
-        wg.get_wg_state()
+        self.wg.get_wg_state()
 
     def obtener_configuracion_wireguard_servidor(self):
         print("Preguntar al servidor")
@@ -137,3 +149,9 @@ class Cliente:
         print("Cerrando sesión...")
         self.proxy.close_session()
         print("Sesión cerrada!")
+        
+        
+    def test_wg_config(self):
+        print("Test de configuracion de wireguard")
+        self.proxy.wg_test_config()
+        
