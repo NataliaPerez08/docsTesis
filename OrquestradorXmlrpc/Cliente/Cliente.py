@@ -10,6 +10,7 @@ from WG import ConfiguradorWireguardCliente as wg
 # Servidor local
 dir_servidor = "http://0.0.0.0:8000/"
 dir_servidor = "http://localhost:8000/"
+ip_servidor = "0.0.0.0"
 
 class Cliente:
     def __init__(self):
@@ -73,6 +74,11 @@ class Cliente:
         print("Creando endpoint...")
 
         endpoint_ip_WG = self.proxy.create_endpoint(id_red_privada, nombre_endpoint)
+        
+        if endpoint_ip_WG == -1:
+            print("Error al crear el endpoint!")
+            return
+        
         # Registrar el host actual como endpoint en la red privada con el servidor.
         # Generar configuración de Wireguard.
         private_key, public_key = self.wg.create_keys()
@@ -97,8 +103,9 @@ class Cliente:
                 print("La interfaz no existe.")
                 self.wg.create_wg_interface(ip_wg=endpoint_ip_WG)
                 
-            self.wg.create_wg_interface(ip_wg=endpoint_ip_WG, private_key=private_key ,listen_port=listen_port)
-            self.wg.create_peer(public_key, allowed_ips, endpoint_ip_WG, listen_port)
+            self.wg.create_wg_interface(ip_wg=endpoint_ip_WG)
+            # sudo wg set wg10  peer pAY9t1yQPi4lVD84YULYhdiWGhECf2SRs7pll2Vnrgw= allowed-ips 192.168.2.0/24 endpoint 34.42.253.180:51820
+            self.wg.create_peer(public_key, allowed_ips, ip_servidor, listen_port)
         print("IP de Wireguard asignada: ", endpoint_ip_WG)
         
 

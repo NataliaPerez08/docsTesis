@@ -1,5 +1,6 @@
 from xmlrpc.server import SimpleXMLRPCServer
 import os
+import subprocess
 
 # Mis clases
 from usuario import Usuario
@@ -119,6 +120,7 @@ class Servidor:
         if self.usuario is None:
             return -1
         else:
+            print("Creando endpoint...")
             private_network = self.get_private_network_by_id(private_network_id)
             if type(private_network) is not rp.PrivateNetwork:
                 return -1
@@ -168,12 +170,7 @@ class Servidor:
         ip_wg = "10.0.0.1"
         wg.create_wg_interface(ip_wg=ip_wg, public_key=public_key, private_key=private_key)
         
-    def wg_test_config(self):
-        # wg set wg0 listen-port 51820 private-key privatekey peer pAY9t1yQPi4lVD84YULYhdiWGhECf2SRs7pll2Vnrgw= allowed-ips 192.168.2.0/24 endpoint 34.42.253.180:51820
         
-        print("wg set wg0 listen-port 51820 private-key privatekey peer pAY9t1yQPi4lVD84YULYhdiWGhECf2SRs7pll2Vnrgw= allowed-ips 192.168.2.0/24 endpoint 34.42.253.180:51820")
-        # Ejecutar el comando
-        os.system("wg set wg0 listen-port 51820 private-key privatekey peer pAY9t1yQPi4lVD84YULYhdiWGhECf2SRs7pll2Vnrgw= allowed-ips 192.168.2.0/24 endpoint 34.42.253.180:51820")
 
 
 server = Servidor()

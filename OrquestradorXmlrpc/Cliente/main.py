@@ -98,8 +98,6 @@ if __name__ == "__main__":
     elif comando == "cerrar_sesion":
         main.cerrar_sesion()
         
-    elif comando == "prueba_wg_conf":
-        main.test_wg_config()
     # Comando no reconocido
     else:
         print("Comando no reconocido")
