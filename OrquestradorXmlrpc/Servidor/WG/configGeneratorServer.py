@@ -69,3 +69,13 @@ def get_wg_interface_config():
     """
     print("Obteniendo configuración de la interfaz de Wireguard...")
     os.system("wg showconf wg10")
+
+def create_peer(public_key, allowed_ips, endpoint_ip, listen_port):
+        # Añadir peer
+        print("Añadiendo peer...")
+        
+        #wg set wg0 listen-port 51820 private-key /path/to/private-key peer ABCDEF... allowed-ips 192.168.88.0/24 endpoint 209.202.254.14:8172
+        allowed_ips = "10.0.0.0/24"
+        # sudo wg set wg10  peer pAY9t1yQPi4lVD84YULYhdiWGhECf2SRs7pll2Vnrgw= allowed-ips 192.168.2.0/24 endpoint 34.42.253.180:51820
+        print(f"wg set wg0 peer {public_key} allowed-ips {allowed_ips} endpoint {endpoint_ip}:{listen_port}")
+        os.system(f"wg set wg0 peer {public_key} allowed-ips {allowed_ips} endpoint {endpoint_ip}:{listen_port}")

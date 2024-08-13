@@ -160,6 +160,15 @@ class Servidor:
         result = wg.get_wg_state()
         print(type(result))
         return wg.get_wg_state()
+    
+    def create_peer(self, public_key, allowed_ips, endpoint_ip_WG, listen_port, ip_cliente):
+        print("Crear peer")
+        # Ya existe la interfaz en el servidr. Es necesario configurar
+        # Si el sistema no es Windows
+        wg.create_peer(public_key, allowed_ips, ip_cliente, listen_port)
+        print("IP de Wireguard asignada: ", endpoint_ip_WG)
+        return endpoint_ip_WG
+        
 
     def init_wireguard(self):
         # Crear las claves pública y privada

@@ -12,6 +12,8 @@ dir_servidor = "http://0.0.0.0:8000/"
 dir_servidor = "http://localhost:8000/"
 ip_servidor = "0.0.0.0"
 
+ip_cliente = ""
+
 class Cliente:
     def __init__(self):
         self.proxy = xmlrpc.client.ServerProxy(dir_servidor)
@@ -20,7 +22,7 @@ class Cliente:
         
         # Configurador de Wireguard
         self.wg = wg.ConfiguradorWireguardCliente()
-
+        
     def register_user(self, name, email, password):
         """
         Registra un usuario en el servidor. Es volatil
@@ -102,15 +104,14 @@ class Cliente:
             if os.system("ip link show wg0") != 0:
                 print("La interfaz no existe.")
                 self.wg.create_wg_interface(ip_wg=endpoint_ip_WG)
-                
-            self.wg.create_wg_interface(ip_wg=endpoint_ip_WG)
+            
             # sudo wg set wg10  peer pAY9t1yQPi4lVD84YULYhdiWGhECf2SRs7pll2Vnrgw= allowed-ips 192.168.2.0/24 endpoint 34.42.253.180:51820
             self.wg.create_peer(public_key, allowed_ips, ip_servidor, listen_port)
         print("IP de Wireguard asignada: ", endpoint_ip_WG)
         
 
         # Crear peer en el servidor
-        #self.proxy.create_peer(public_key, allowed_ips, endpoint_ip_WG, listen_port)
+        self.proxy.create_peer(public_key, allowed_ips, endpoint_ip_WG, listen_port, ip_cliente)
 
     def ver_endpoints(self, id_red_privada):
         print("Obteniendo endpoints...")
@@ -157,8 +158,15 @@ class Cliente:
         self.proxy.close_session()
         print("Sesión cerrada!")
         
+    def get_public_ip(self):
+        print("Obteniendo IP pública...",self.ip_cliente)
+        return ip_cliente
+         
+    def add_public_ip(self, ip):
+        print("Añadiendo IP pública...",ip, "ip")
+        ip_cliente = ip
+        print("IP ",self.ip_cliente," añadida!")
         
-    def test_wg_config(self):
-        print("Test de configuracion de wireguard")
-        self.proxy.wg_test_config()
-        
+    def configure_as_peer():
+        print("Configurando como peer...")
+        pass

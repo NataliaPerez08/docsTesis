@@ -97,7 +97,23 @@ if __name__ == "__main__":
         
     elif comando == "cerrar_sesion":
         main.cerrar_sesion()
+    
+    # Si el cliente tiene ip publica debe ser incluida en la configuracion
+    elif comando == "añadir_ip_publica":
+        if len(sys.argv) != 3:
+            print("Uso: python3 main.py Añadir ip publica <ip>")
+            sys.exit()
+        main.add_public_ip(sys.argv[2])
         
+    # Consultar el ip registrada del cliente
+    elif comando == "consultar_ip_publica":
+        ip = main.get_public_ip()
+        print(f"La ip publica del cliente es: {ip}")
+        
+    # Configurar el cliente como peer. Dado que tiene una ip publica
+    elif comando == "configurar_como_peer":
+        main.configurar_como_peer()
+    
     # Comando no reconocido
     else:
         print("Comando no reconocido")
