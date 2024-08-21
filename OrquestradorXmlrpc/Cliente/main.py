@@ -11,7 +11,6 @@ import os
 
 # python3 main.py crear_red_privada <nombre>
 # python3 main.py ver_redes_privadas
-# python3 main.py crear_endpoint <id_red_privada> <nombre_endpoint>
 # python3 main.py ver_endpoints <id_red_privada>
 # python3 main.py conectar_endpoint <id_endpoint> <id_red_privada>
 # python3 main.py conectar_endpoint_directo <ip_wg_endpoint> <puerto_wg_endpoint>
@@ -19,7 +18,9 @@ import os
 # python3 main.py obtener_configuracion_wireguard_local
 # python3 main.py obtener_configurarion_wireguard_servidor
 
-# python3 main.py prueba_wg_conf
+# python3 main.py registrar_como_peer <nombre> <id_red_privada> <ip_cliente> <puerto_cliente> <ip_servidor>
+# python3 main.py  crear_peer <public_key> <allowed_ips> <ip_cliente> <listen_port> <ip_servidor>
+
 if __name__ == "__main__":
     main = Cliente()
     if len(sys.argv) < 2:
@@ -111,8 +112,20 @@ if __name__ == "__main__":
         print(f"La ip publica del cliente es: {ip}")
         
     # Configurar el cliente como peer. Dado que tiene una ip publica
-    elif comando == "configurar_como_peer":
-        main.configurar_como_peer()
+    # python3 main.py registrar_como_peer <nombre> <id_red_privada> <ip_cliente> <puerto_cliente> <ip_servidor>
+    elif comando == "registrar_como_peer":
+        if len(sys.argv) != 6:
+            print("Uso: python3 main.py registrar_como_peer <nombre> <id_red_privada> <ip_cliente> <puerto_cliente> <ip_servidor>")
+            sys.exit()
+        main.configure_as_peer(sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5])
+        
+    # Registrar un peer para el cliente y el servidor
+    # Recibe la clave publica, ips permitidas, ip del cliente, puerto de escucha y la ip del servidor
+    elif comando == "registrar_peer":
+        if len(sys.argv) != 7:
+            print("Uso: python3 main.py registrar_peer <public_key> <allowed_ips> <ip_cliente> <listen_port> <ip_servidor>")
+            sys.exit()
+        main.register_peer(sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6])
     
     # Comando no reconocido
     else:

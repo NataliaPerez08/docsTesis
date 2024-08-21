@@ -163,6 +163,9 @@ class Servidor:
     
     def create_peer(self, public_key, allowed_ips, endpoint_ip_WG, listen_port, ip_cliente):
         print("Crear peer")
+        
+        # Es necesario verificar si la IP ya fue registrada
+        
         # Ya existe la interfaz en el servidr. Es necesario configurar
         # Si el sistema no es Windows
         wg.create_peer(public_key, allowed_ips, ip_cliente, listen_port)
