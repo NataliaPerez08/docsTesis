@@ -132,46 +132,24 @@ class Cliente:
         print("Añadiendo IP pública...",ip, "ip")
         ip_cliente = ip
         print("IP ",self.ip_cliente," añadida!")
-        
-    def configure_as_peer(self, id_red_privada, nombre_endpoint):
+    
+    # registrar_como_peer <nombre> <id_red_privada> <ip_cliente> <puerto_cliente> <ip_servidor>
+    def configure_as_peer(self, nombre_endpoint, id_red_privada, ip_cliente, listen_port, ip_servidor):
         print("Configurando como peer...")
         endpoint_ip_WG = self.proxy.create_endpoint(id_red_privada, nombre_endpoint)
-        
         if endpoint_ip_WG == -1:
-            print("Error al crear el endpoint!")
+            print("Error al configurar el peer!")
             return
-        
-        # Registrar el host actual como endpoint en la red privada con el servidor.
-        # Generar configuración de Wireguard.
-        private_key, public_key = self.wg.create_keys()
-        self.wg_private_key = private_key
-        self.wg_public_key = public_key
-
-        listen_port = 51820
-        
-        
-        # Recuperar las allowed IPs de la red privada.
+        # Crear interfaz Wireguard en el cliente
+        self.wg.create_wg_interface(endpoint_ip_WG)
+        # Configurar peer
         allowed_ips = self.proxy.get_allowed_ips(id_red_privada)
+        self.wg.create_peer(self.wg_public_key, allowed_ips, ip_cliente, listen_port, ip_servidor)
         
-        if type(allowed_ips) is not list:
-            print("Error al obtener las IPs permitidas! No se pudo crear el endpoint.")
-            return
-
-        # Crear interfaz de Wireguard (En el cliente)
-        # Si el sistema no es Windows
-        if sys.platform != 'win32':
-            ## Verificar si la interfaz ya existe
-            if os.system("ip link show wg0") != 0:
-                print("La interfaz no existe.")
-                self.wg.create_wg_interface(ip_wg=endpoint_ip_WG)
-            
-            # sudo wg set wg10  peer pAY9t1yQPi4lVD84YULYhdiWGhECf2SRs7pll2Vnrgw= allowed-ips 192.168.2.0/24 endpoint 34.42.253.180:51820
-            self.wg.create_peer(public_key, allowed_ips, ip_servidor, listen_port)
         print("IP de Wireguard asignada: ", endpoint_ip_WG)
-
-        # Crear peer en el servidor
-        self.proxy.create_peer(public_key, allowed_ips, endpoint_ip_WG, listen_port, ip_cliente)
         
+        # Registrar peer en el servidor
+        self.proxy.create_peer(self.wg_public_key, allowed_ips, endpoint_ip_WG, listen_port, ip_cliente)
         
     def register_peer(self, public_key, allowed_ips, ip_cliente, listen_port, ip_servidor):
         print("Registrando peer...")

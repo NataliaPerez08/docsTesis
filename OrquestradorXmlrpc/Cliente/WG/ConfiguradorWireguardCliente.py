@@ -53,7 +53,7 @@ class ConfiguradorWireguardCliente:
         else:
             print("Sistema operativo no soportado.")
 
-    def create_peer(self, public_key, allowed_ips, endpoint_ip, listen_port):
+    def create_peer(self, public_key, allowed_ips, endpoint_ip, listen_port, ip_servidor):
         
     # Actualizar la configuración de la interfaz. Añadir peer.
     # Man de Wireguard

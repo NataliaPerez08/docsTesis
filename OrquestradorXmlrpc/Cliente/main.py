@@ -102,7 +102,7 @@ if __name__ == "__main__":
     # Si el cliente tiene ip publica debe ser incluida en la configuracion
     elif comando == "añadir_ip_publica":
         if len(sys.argv) != 3:
-            print("Uso: python3 main.py Añadir ip publica <ip>")
+            print("Uso: python3 main.py añadir_ip_publica <ip>")
             sys.exit()
         main.add_public_ip(sys.argv[2])
         
@@ -114,10 +114,15 @@ if __name__ == "__main__":
     # Configurar el cliente como peer. Dado que tiene una ip publica
     # python3 main.py registrar_como_peer <nombre> <id_red_privada> <ip_cliente> <puerto_cliente> <ip_servidor>
     elif comando == "registrar_como_peer":
-        if len(sys.argv) != 6:
+        # Verificar si el comando se ejecuto como administrador en Linux
+        if os.geteuid() != 0:
+            print("Se necesita permisos de administrador para ejecutar el comando")
+            sys.exit()
+            
+        if len(sys.argv) != 7:
             print("Uso: python3 main.py registrar_como_peer <nombre> <id_red_privada> <ip_cliente> <puerto_cliente> <ip_servidor>")
             sys.exit()
-        main.configure_as_peer(sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5])
+        main.configure_as_peer(sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6])
         
     # Registrar un peer para el cliente y el servidor
     # Recibe la clave publica, ips permitidas, ip del cliente, puerto de escucha y la ip del servidor
