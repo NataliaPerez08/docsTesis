@@ -15,14 +15,22 @@ import os
 # python3 main.py conectar_endpoint <id_endpoint> <id_red_privada>
 # python3 main.py conectar_endpoint_directo <ip_wg_endpoint> <puerto_wg_endpoint>
 
+# python3 main.py obtener_clave_publica_cliente
+
 # python3 main.py obtener_configuracion_wireguard_local
 # python3 main.py obtener_configurarion_wireguard_servidor
 
-# python3 main.py registrar_como_peer <nombre> <id_red_privada> <ip_cliente> <puerto_cliente> <ip_servidor>
+# python3 main.py añadir_ip_publica <ip>
+# python3 main.py consultar_ip_publica
+# python3 main.py init_wireguard_interface
+# python3 main.py registrar_como_peer <nombre> <id_red_privada> <ip_cliente> <puerto_cliente> 
 # python3 main.py  crear_peer <public_key> <allowed_ips> <ip_cliente> <listen_port> <ip_servidor>
+
+
 
 if __name__ == "__main__":
     main = Cliente()
+    
     if len(sys.argv) < 2:
         print("Uso: python3 main.py <comando> <argumentos>")
         sys.exit()
@@ -112,7 +120,7 @@ if __name__ == "__main__":
         print(f"La ip publica del cliente es: {ip}")
         
     # Configurar el cliente como peer. Dado que tiene una ip publica
-    # python3 main.py registrar_como_peer <nombre> <id_red_privada> <ip_cliente> <puerto_cliente> <ip_servidor>
+    # python3 main.py registrar_como_peer <nombre> <id_red_privada> <ip_cliente> <puerto_cliente>
     elif comando == "registrar_como_peer":
         # Verificar si el comando se ejecuto como administrador en Linux
         if os.geteuid() != 0:
@@ -120,18 +128,29 @@ if __name__ == "__main__":
             sys.exit()
             
         if len(sys.argv) != 7:
-            print("Uso: python3 main.py registrar_como_peer <nombre> <id_red_privada> <ip_cliente> <puerto_cliente> <ip_servidor>")
+            print("Uso: python3 main.py registrar_como_peer <nombre> <id_red_privada> <ip_cliente> <puerto_cliente>")
             sys.exit()
-        main.configure_as_peer(sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6])
+        main.configure_as_peer(sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5])
         
-    # Registrar un peer para el cliente y el servidor
-    # Recibe la clave publica, ips permitidas, ip del cliente, puerto de escucha y la ip del servidor
-    elif comando == "registrar_peer":
-        if len(sys.argv) != 7:
-            print("Uso: python3 main.py registrar_peer <public_key> <allowed_ips> <ip_cliente> <listen_port> <ip_servidor>")
+        
+    elif comando == "obtener_clave_publica_cliente":
+        my_public_key = main.get_client_public_key()
+        print(f"La clave publica del cliente es: {my_public_key}")
+        
+    # Crear un peer en el servidor
+    # python3 main.py iniciar_interfaz_wireguard <ip_cliente>
+    elif comando == "iniciar_interfaz_wireguard":
+        # Verificar si el comando se ejecuto como administrador en Linux
+        if os.geteuid() != 0:
+            print("Se necesita permisos de administrador para ejecutar el comando")
             sys.exit()
-        main.register_peer(sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6])
-    
+        else:
+            if len(sys.argv) != 3:
+                print("Uso: python3 main.py iniciar_interfaz_wireguard <ip_cliente>")
+                sys.exit()
+                
+            main.init_wireguard_interface(sys.argv[2])
+        
     # Comando no reconocido
     else:
         print("Comando no reconocido")

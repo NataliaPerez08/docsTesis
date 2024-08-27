@@ -37,7 +37,7 @@ class Servidor:
         print("Registrando usuario...")
         if email in self.usuarios:
             return False
-    
+
         self.usuario = Usuario(name, email, password)
         self.usuarios[email] = self.usuario
         print("Usuario registrado",self.usuario.name,"!")
@@ -49,7 +49,7 @@ class Servidor:
         Identifica a un usuario en el servidor
         """
         print("Buscando usuario...")
-        
+
         try:
             usuario = self.usuarios[email]
             if usuario is not None and usuario.password == password:
@@ -58,8 +58,8 @@ class Servidor:
                 return True
         except:
             return False
-        return  False 
-    
+        return  False
+
     def whoami(self):
         """
         Recupera el usuario actual
@@ -89,7 +89,7 @@ class Servidor:
             self.usuario.private_networks[str(red.id)] = red
             self.usuario.private_network_counter += 1
             return red.id
-        
+
     def get_private_networks(self)->list[str]:
         """
         Recupera las redes privadas del usuario
@@ -124,7 +124,7 @@ class Servidor:
             private_network = self.get_private_network_by_id(private_network_id)
             if type(private_network) is not rp.PrivateNetwork:
                 return -1
-            
+
             print(type(private_network))
             endpoint = private_network.create_endpoint(endpoint_name)
             return endpoint.get_wireguard_ip()
@@ -154,24 +154,24 @@ class Servidor:
             print("Error al obtener la red privada!")
             return -1
         return private_network.get_available_hosts()
-        
+
 
     def get_wireguard_config(self):
         result = wg.get_wg_state()
         print(type(result))
         return wg.get_wg_state()
-    
+
     def create_peer(self, public_key, allowed_ips, endpoint_ip_WG, listen_port, ip_cliente):
         print("Crear peer")
-        
+
         # Es necesario verificar si la IP ya fue registrada
-        
+
         # Ya existe la interfaz en el servidr. Es necesario configurar
         # Si el sistema no es Windows
         wg.create_peer(public_key, allowed_ips, ip_cliente, listen_port)
         print("IP de Wireguard asignada: ", endpoint_ip_WG)
         return endpoint_ip_WG
-        
+
 
     def init_wireguard(self):
         # Crear las claves pública y privada
@@ -181,8 +181,8 @@ class Servidor:
 
         ip_wg = "10.0.0.1"
         wg.create_wg_interface(ip_wg=ip_wg, public_key=public_key, private_key=private_key)
-        
-        
+
+
 
 
 server = Servidor()
