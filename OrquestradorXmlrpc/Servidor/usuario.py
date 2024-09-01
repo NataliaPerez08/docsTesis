@@ -32,7 +32,7 @@ class Usuario:
         try:
             print(self.private_networks[private_network_id])
             return self.private_networks[private_network_id]
-        except:
+        except KeyError:
             return None
 
     def add_private_network(self, private_network):
