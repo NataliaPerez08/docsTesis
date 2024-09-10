@@ -6,10 +6,10 @@ from conn_scapy import verificar_conectividad
 from WG import ConfiguradorWireguardCliente as wg
 
 # Servidor en la nube
-#dir_servidor="http://34.42.253.180:8000/"
+dir_servidor="http://101.44.184.77:8000/"
 # Servidor local
 dir_servidor = "http://0.0.0.0:8000/"
-dir_servidor = "http://localhost:8000/"
+#dir_servidor = "http://localhost:8000/"
 ip_servidor = "0.0.0.0"
 
 class Cliente:
@@ -66,12 +66,6 @@ class Cliente:
         print("Redes privadas:")
         print(priv_net)
 
-    def crear_endpoint(self, id_red_privada, nombre_endpoint, ip_endpoint, puerto_endpoint):
-        print("Creando endpoint...")
-        # Crear registro de endpoint en el servidor
-        # y registrarlo en el cliente
-
-
     def ver_endpoints(self, id_red_privada):
         print("Obteniendo endpoints...")
         print(self.proxy.get_endpoints(id_red_privada))
@@ -118,15 +112,7 @@ class Cliente:
         self.proxy.close_session()
         print("Sesión cerrada!")
 
-    def get_public_ip(self):
-        print("Obteniendo IP pública...",self.ip_cliente)
-        return ip_cliente
 
-    def add_public_ip(self, ip):
-        print("Añadiendo IP pública...",ip, "ip")
-        ip_cliente = ip
-        print("IP ",self.ip_cliente," añadida!")
-        
     # Inicializar Wireguard en el cliente
     def init_wireguard_interface(self, ip_cliente):
         print("Inicializando Wireguard...")
@@ -135,27 +121,21 @@ class Cliente:
         print("Clave pública: ", wg_public_key)
 
         self.wg.create_wg_interface(ip_cliente)
-        
-        # Guardar la clave pública y privada en el cliente
-        # Definirlas como de entorno
-        os.putenv("WG_PRIVATE_KEY", wg_private_key)
-        os.putenv("WG_PUBLIC_KEY", wg_public_key)
-        
-        print("Wireguard inicializado!") 
-    
-    
-    
-    # registrar_como_peer <nombre> <id_red_privada> <ip_cliente> <puerto_cliente> 
+
+        print("Wireguard inicializado!")
+
+
+    # Viene del comando: python3 main.py registrar_como_peer <nombre> <id_red_privada> <ip_cliente> <puerto_cliente>
     def configure_as_peer(self, nombre_endpoint, id_red_privada, ip_cliente, listen_port):
         print("Configurando como peer...")
-        
+
         endpoint_ip_WG = self.proxy.create_endpoint(id_red_privada, nombre_endpoint)
         if endpoint_ip_WG == -1:
             print("Error al configurar el peer!")
             return
         print("IP de Wireguard asignada: ", endpoint_ip_WG)
-       
-        # Configurar peer 
+
+        # Configurar peer
         allowed_ips = self.proxy.get_allowed_ips(id_red_privada)
         self.wg.create_peer(wg_public_key, allowed_ips, ip_cliente, listen_port, ip_servidor)
 
@@ -172,11 +152,5 @@ class Cliente:
             return
         print("Peer registrado!")
         print("IP de Wireguard asignada: ", endpoint_ip_WG)
-        
-        
-    def get_client_public_key(self):
-        print("Obteniendo clave pública...")
-        # Obtener la clave pública del cliente definida con os.putenv
-        print(os.getenv("WG_PUBLIC_KEY"))
-        return os.getenv("WG_PUBLIC_KEY")
+
 

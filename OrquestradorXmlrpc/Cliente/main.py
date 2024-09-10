@@ -128,13 +128,13 @@ if __name__ == "__main__":
             print("Se necesita permisos de administrador para ejecutar el comando")
             sys.exit()
             
-        if len(sys.argv) != 7:
+        if len(sys.argv) != 6:
             print("Uso: python3 main.py registrar_como_peer <nombre> <id_red_privada> <ip_cliente> <puerto_cliente>")
             sys.exit()
         main.configure_as_peer(sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5])
         
     # python3 main.py obtener_clave_publica_cliente
-    elif comando == "obtener_clave_publica_cliente":
+    elif comando == "obtener_clave_public_cliente":
         my_public_key = main.get_client_public_key()
         print(f"La clave publica del cliente es: {my_public_key}")
         
@@ -157,7 +157,7 @@ if __name__ == "__main__":
         if len(sys.argv) != 6:
             print("Uso: python3 main.py  crear_peer <public_key> <allowed_ips> <ip_cliente> <listen_port>")
             sys.exit()
-        main.crear_peer(sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5])
+        main.register_peer(sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5])
     
     # python3 cerrar_sesion
     elif comando == "cerrar_sesion":
