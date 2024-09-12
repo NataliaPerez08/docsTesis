@@ -166,7 +166,7 @@ class Servidor:
 
         # Es necesario verificar si la IP ya fue registrada
 
-        # Ya existe la interfaz en el servidr. Es necesario configurar
+        # Ya existe la interfaz en el servidor. Es necesario configurar
         # Si el sistema no es Windows
         wg.create_peer(public_key, allowed_ips, ip_cliente, listen_port)
         print("IP de Wireguard asignada: ", endpoint_ip_WG)

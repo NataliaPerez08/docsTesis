@@ -144,13 +144,15 @@ class Cliente:
 
 
 
-    def register_peer(self, public_key, allowed_ips, ip_cliente, listen_port, ip_servidor):
-        print("Registrando peer...")
-        endpoint_ip_WG = self.proxy.create_peer(public_key, allowed_ips, ip_cliente, listen_port, ip_servidor)
+    def register_peer(self, public_key, allowed_ips, ip_cliente, listen_port):
+        print("Registrando peer en el servidor...")
+        endpoint_ip_WG = self.proxy.create_peer(public_key, allowed_ips, ip_cliente, listen_port)
         if endpoint_ip_WG == -1:
             print("Error al registrar el peer!")
             return
-        print("Peer registrado!")
+        print("Peer registrado en el servidor!")
         print("IP de Wireguard asignada: ", endpoint_ip_WG)
+        
+        print("Registrando peer en el cliente...")
 
 
