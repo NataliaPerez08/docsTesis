@@ -6,9 +6,9 @@ from conn_scapy import verificar_conectividad
 from WG import ConfiguradorWireguardCliente as wg
 
 # Servidor en la nube
-dir_servidor="http://101.44.184.77:8000/"
+dir_servidor="http://natalia-testing.online:80/"
 # Servidor local
-dir_servidor = "http://0.0.0.0:8000/"
+#dir_servidor = "http://0.0.0.0:8000/"
 #dir_servidor = "http://localhost:8000/"
 ip_servidor = "0.0.0.0"
 
