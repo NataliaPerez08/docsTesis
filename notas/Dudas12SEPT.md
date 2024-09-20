@@ -4,6 +4,8 @@ Dado que se ha vuelto costoso hacer pruebas en la nube
 ¿Qué posibilidad hay de usar sofware como Vagrant? U
 otro virtualizador e ¿incluir esto en la tesis?
 
+> No. Tal vez Docker o Linux container
+
 # Bibliografica básica
 Además de lo considerado:
 
@@ -23,6 +25,8 @@ Media, 3rd edition.
 tldp.org/HOWTO/IP-Masquerade-HOWTO/index.html, 2021
 
 
+> TailScale
+
 # Cliente state-less? o crear un Deamon?
 Información que el cliente deberia poder consultar:
 1. Su ip publica si es que aplica
@@ -33,6 +37,8 @@ Información que el cliente deberia poder consultar:
 ¿Como es posible guardar el estado del cliente?
 - No guardarlo en el cliente y todo consultarlo del servidor
 - Usar los registros al ejecutar wg show, pero tendriamos que serealizar.
+
+> Guardar archivos de configuración 
 
 # Duda en el diseño
 Cuando un cliente quiere añadir un endpoint $e_n$. 
@@ -67,4 +73,36 @@ era
 
 }
 
+# Indice tentativo
 
+\section{Índice Tentativo}
+
+1. Introduccion:
+    1.1 VPN
+    1.2 Wireguard
+    1.3 TailScale
+    1.3 NATs
+    1.4 firewalls
+
+2. Desarrollo
+    2.0 Objetivos del programa
+    2.1 Funcionalidad del orquestrador
+    2.2 Descripcion del orquestrador
+    2.2.1 Componentes del orquestrador
+    2.2.2 Flujo del programa en general
+3. Pruebas y Evaluación de resultados 
+
+    3.
+
+
+> Proponer metodología de evaluación.
+> Proponer escenarios de prueba.
+e1- 3 equipos  ruteables
+e2 uno detras de Nat
+e3 dos tras Nat
+
+e4 cambio de red
+
+4. Conclusiones y trabajo futuro 
+
+5. Bibliografía 
