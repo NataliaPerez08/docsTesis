@@ -19,21 +19,18 @@
 
 En la actualidad, y desde hace tiempo, las empresas al tener un presencia global con multiples sucursales y empleados remotos requieren establecer conexiones seguras entre sus dispositivos. Para esto hay dos opciones: una línea de alquiler privada y dedicada o compartir una parte del ancho de banda con una línea existente, como Internet. La segunda opción es más económica y flexible, pero menos segura. De ahí surgen las redes privadas virtuales (VPN) que permiten establecer un túnel seguro dentro de un red publica tal como si estuvieran conectados en una red local. Adicionalmente, usuarios finales han encontrado en las VPN una forma de proteger su información y privacidad, ademas de acceder a contenido restringido geograficamente.
 
-
 Diferentes protocolos de VPN han sido desarrollados para responder estos requerimientos, cada uno con sus propias características y funcionalidades, entre ellos OpenVPN y IPsec. Sin embargo, estos protocolos presentan problemas de seguridad, complejidad y rendimiento. Por ejemplo, OpenVPN es un protocolo de VPN de código abierto que utiliza el protocolo SSL/TLS para cifrar el tráfico de red, pero es lento y complejo de configurar. Por otro lado, IPsec es un protocolo de VPN que utiliza el protocolo IKEv2 para establecer un túnel seguro, pero es difícil de configurar y no es compatible con todos los dispositivos.
 
-En respuesta a estos problemas, se ha desarrollado un nuevo protocolo de VPN llamado Wireguard que es más simple, más rápido y más seguro que otros protocolos de VPN. Wireguard es un protocolo de VPN de código abierto que utiliza el protocolo UDP para establecer un túnel seguro entre dos dispositivos. Wireguard es más simple que otros protocolos de VPN porque utiliza un enfoque basado en claves públicas para establecer un túnel seguro, en lugar de utilizar certificados SSL/TLS como OpenVPN. Wireguard es más rápido que otros protocolos de VPN porque utiliza un enfoque basado en el kernel para cifrar y descifrar el tráfico de red, en lugar de utilizar un enfoque basado en el usuario como OpenVPN. Wireguard es más seguro que otros protocolos de VPN porque utiliza un enfoque basado en claves públicas para establecer un túnel seguro, en lugar de utilizar un enfoque basado en contraseñas como IPsec.
+En respuesta a estos problemas, se ha desarrollado un protocolo de VPN llamado Wireguard que es más simple, más rápido y más seguro que otros protocolos de VPN. Wireguard es más simple que otros protocolos de VPN porque utiliza un enfoque basado en claves públicas para establecer un túnel seguro, en lugar de utilizar certificados SSL/TLS como OpenVPN. Wireguard es más rápido que otros protocolos de VPN porque utiliza un enfoque basado en el kernel para cifrar y descifrar el tráfico de red, en lugar de utilizar un enfoque basado en el usuario como OpenVPN. Wireguard es más seguro que otros protocolos de VPN porque utiliza un enfoque basado en claves públicas para establecer un túnel seguro, en lugar de utilizar un enfoque basado en contraseñas como IPsec.
 
-Sin embargo surge un problema al configurar una red privada virtual utilizando el protocolo Wireguard, la configuración de los pares dentro de la red. Por ejemplo, si se desea configurar una red privada virtual con 10 pares, se debe configurar manualmente cada par con la dirección IP y la clave pública de cada par. Esto puede ser un proceso tedioso y propenso a errores, especialmente si se desea configurar una red privada virtual con un gran número de pares.
+Si bien Wireguard es un protocolo de VPN simple la mayor de sus desventajas es la configuración de los pares dentro de la red. Por ejemplo, si se desea configurar una red privada virtual con 10 pares, se debe configurar manualmente cada par con la dirección IP y la clave pública de cada par. Esto puede ser un proceso tedioso y propenso a errores, especialmente si se desea configurar una red privada virtual con un gran número de pares.
 
 % Surge tailScale como sistema de orquestración de pares en Wireguard
-En respuesta a 
+Una solución para esta dificultad es propuesa por Tailscale, el cual es un servicio VPN que hace que sus dispositivos y aplicaciones sean accesibles en cualquier parte del mundo, de forma segura y sin esfuerzo. Este software actúa en combinación con el kernel para establecer una comunicación VPN peer-to-peer o retransmitida con otros clientes utilizando el protocolo WireGuard. Tailscale puede abrir una conexión directa con el peer utilizando técnicas de NAT traversal como STUN o solicitar el reenvío de puertos a través de UPnP IGD, NAT-PMP o PCP. [7] Si el software no consigue establecer una comunicación directa, recurre al protocolo DERP (Designated Encrypted Relay for Packets) proporcionados por la empresa. [6] Las direcciones IPv4 asignadas a los clientes se encuentran en el espacio reservado NAT de nivel operador. Esto se eligió para evitar interferencias con las redes existentes[9]. La configuración también permite el enrutamiento de tráfico a redes detrás del cliente en algunos clientes.
 
-Por lo que se propone el desarrollo de un sistema de control de configuración de pares en Wireguard.
+Tailscale es una gran solución para la configuración de pares en Wireguard, pero no es una solución de código abierto. Al ofrecer mas funcionalidades que las necesarias para la configuración de pares en Wireguard, Tailscale puede ser una solución costosa para empresas pequeñas o individuos que solo requieren configurar pares en Wireguard. Además, Tailscale no permite a los usuarios tener control total sobre la configuración de pares en Wireguard, ya que la configuración de pares en Wireguard se realiza a través de la interfaz de usuario de Tailscale y no a través de la línea de comandos. Y finalmente, Tailscale aumenta la superficie de ataque de la red privada virtual, ya que no solicita la autenticación al usar un servicio crítico como SSH entre los pares.
 
-La mayor dificultad al configurar un VPN utilizando el protocolo Wireguard es la configuración de los pares dentro de la red. Por ejemplo 
-
-Por lo que se propone el desarrollo de un sistema de control de configuración de pares en Wireguard.
+Por lo que en este trabajo de tesis se propone el desarrollo de un sistema de control de configuración de pares minimalista que se basará en el protocolo Wireguard y permitirá a los usuarios tener control total sobre la configuración de pares en Wireguard, ya que la configuración de pares en Wireguard se realizará a través de la línea de comandos y no a través de una interfaz de usuario. Además se espera que este sistema de control de configuración de pares en Wireguard minimalista reducirá la superficie de ataque de la red privada virtual, ya que solicitará la autenticación al usar un servicio crítico como SSH entre los pares.
 
 \section{Justificación}
     
@@ -89,13 +86,21 @@ Pearson, 7th edition.
 
 [5] What is Tailscale?, https://tailscale.com/kb/1151/what-is-tailscale/, 2024.
 
-[6] Linux Documentation Project, Linux Advanced Routing & Traffic Control HOW-
-TO, https://tldp.org/HOWTO/Adv-Routing-HOWTO/index.html, 2021.
+[6] Terminology and concepts, https://tailscale.com/kb/1155/terminology-and-concepts#relay, 2024
 
-[7] Bautts, M., & Dawson, M. (2000). Linux Network Administrator’s Guide, O’Reilly
+[7] Troubleshooting device connectivity, https://tailscale.com/kb/1411/device-connectivity#nat-types, 2024
+
+[8] How NAT traversal works, https://tailscale.com/blog/how-nat-traversal-works, 2024
+
+[9] IP pool, https://tailscale.com/kb/1304/ip-pool, 2024
+
+[10] Linux Documentation Project, Linux Advanced Routing & Traffic Control HOW-
+TO, https://tldp.org/HOWTO/Adv-Routing-HOWTO/index.html, 2021.  
+
+[11] Bautts, M., & Dawson, M. (2000). Linux Network Administrator’s Guide, O’Reilly
 Media, 3rd edition.
 
-[8] Bautts, M., & Dawson, M. (2000). Linux IP Masquerade HOWTO, https://
+[12] Bautts, M., & Dawson, M. (2000). Linux IP Masquerade HOWTO, https://
 tldp.org/HOWTO/IP-Masquerade-HOWTO/index.html, 2021
 
 
