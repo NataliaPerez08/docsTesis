@@ -10,8 +10,9 @@ import WG.configGeneratorServer as wg
 class Servidor:
     def __init__(self):
         dir = "0.0.0.0"
-        dir = "localhost"
-        self.xmlrpc_server = SimpleXMLRPCServer((dir, 8000))
+        self.dir = "localhost"
+        self.port = 8000
+        self.xmlrpc_server = SimpleXMLRPCServer((self.dir, self.port))
         self.xmlrpc_server.register_instance(self)
 
         # Usuario actual
@@ -187,6 +188,6 @@ class Servidor:
 
 server = Servidor()
 server.init_wireguard()
-print("Listening on port 8000...")
+print("Listening on port ",server.port)
 server.iniciar()
 

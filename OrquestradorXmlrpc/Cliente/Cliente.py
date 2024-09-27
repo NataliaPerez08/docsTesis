@@ -1,6 +1,4 @@
 import xmlrpc.client
-import sys
-import os
 from conn_scapy import verificar_conectividad
 
 from WG import ConfiguradorWireguardCliente as wg

@@ -42,9 +42,9 @@ Información que el cliente deberia poder consultar:
 
 # Duda en el diseño
 Cuando un cliente quiere añadir un endpoint $e_n$. 
-Debe intentar conectar directamente con $e_n$ y guardar en el orquestrador  $O$
+Debe intentar conectar directamente con $e_i$ y guardar en el orquestrador  $O$
 la configuración de este, pero ¿Debera el servidor intentar establecer conexión?
-Y registrar en $e_{n+1}$ la conexión a $x_n$ y $O$? 
+Y registrar en $e_{j}$ la conexión a $x_n$ y $O$? 
 
 Luego forzosamente ¿Debemos tener una conexion $e_n$ a $O$?
 

@@ -4,10 +4,10 @@
 
 \usepackage[o]{babel}
 
-%\title{Propuesta de Tesis: LinkGuard, MeshGuard, WireFleet}
+%\title{Propuesta de Tesis: LinkGuard, MeshGuard, WireFleet} 2962.95
 
 % Título tentativo
-\title{Orquestrador para Wireguard minimalista: LinkGuard, MeshGuard, WireFleet}
+\title{Orquestrador para Wireguard minimalista: LinkGuard}
 
 \begin{document}
 
@@ -17,12 +17,19 @@
 
 \section{Introducción}
 
-En la actualidad tanto el usuario común como las empresas requieren un método de comunicación que permita mantener confidencialidad y privacidad entre sus dispositivos. 
+En la actualidad, y desde hace tiempo, las empresas al tener un presencia global con multiples sucursales y empleados remotos requieren establecer conexiones seguras entre sus dispositivos. Para esto hay dos opciones: una línea de alquiler privada y dedicada o compartir una parte del ancho de banda con una línea existente, como Internet. La segunda opción es más económica y flexible, pero menos segura. De ahí surgen las redes privadas virtuales (VPN) que permiten establecer un túnel seguro dentro de un red publica tal como si estuvieran conectados en una red local. Adicionalmente, usuarios finales han encontrado en las VPN una forma de proteger su información y privacidad, ademas de acceder a contenido restringido geograficamente.
 
 
+Diferentes protocolos de VPN han sido desarrollados para responder estos requerimientos, cada uno con sus propias características y funcionalidades, entre ellos OpenVPN y IPsec. Sin embargo, estos protocolos presentan problemas de seguridad, complejidad y rendimiento. Por ejemplo, OpenVPN es un protocolo de VPN de código abierto que utiliza el protocolo SSL/TLS para cifrar el tráfico de red, pero es lento y complejo de configurar. Por otro lado, IPsec es un protocolo de VPN que utiliza el protocolo IKEv2 para establecer un túnel seguro, pero es difícil de configurar y no es compatible con todos los dispositivos.
 
-Por tanto diferentes protocolos de VPN han sido desarrollados para satisfacer las necesidades de los usuarios entre ellos destaca Wireguard por ser un protocolo de VPN de código abierto, de alto rendimiento, más simple y más rápido que otros protocolos de VPN, como OpenVPN y IPsec.
+En respuesta a estos problemas, se ha desarrollado un nuevo protocolo de VPN llamado Wireguard que es más simple, más rápido y más seguro que otros protocolos de VPN. Wireguard es un protocolo de VPN de código abierto que utiliza el protocolo UDP para establecer un túnel seguro entre dos dispositivos. Wireguard es más simple que otros protocolos de VPN porque utiliza un enfoque basado en claves públicas para establecer un túnel seguro, en lugar de utilizar certificados SSL/TLS como OpenVPN. Wireguard es más rápido que otros protocolos de VPN porque utiliza un enfoque basado en el kernel para cifrar y descifrar el tráfico de red, en lugar de utilizar un enfoque basado en el usuario como OpenVPN. Wireguard es más seguro que otros protocolos de VPN porque utiliza un enfoque basado en claves públicas para establecer un túnel seguro, en lugar de utilizar un enfoque basado en contraseñas como IPsec.
 
+Sin embargo surge un problema al configurar una red privada virtual utilizando el protocolo Wireguard, la configuración de los pares dentro de la red. Por ejemplo, si se desea configurar una red privada virtual con 10 pares, se debe configurar manualmente cada par con la dirección IP y la clave pública de cada par. Esto puede ser un proceso tedioso y propenso a errores, especialmente si se desea configurar una red privada virtual con un gran número de pares.
+
+% Surge tailScale como sistema de orquestración de pares en Wireguard
+En respuesta a 
+
+Por lo que se propone el desarrollo de un sistema de control de configuración de pares en Wireguard.
 
 La mayor dificultad al configurar un VPN utilizando el protocolo Wireguard es la configuración de los pares dentro de la red. Por ejemplo 
 
@@ -34,9 +41,14 @@ La necesidad de proteger la información y la privacidad de los usuarios no debe
 
 
 
-El desarrollo de un sistema de control de configuración de pares en una red privada virtual que utiliza el protocolo Wireguard permitirá a los usuarios configurar de forma sencilla y segura los pares de la red privada virtual.
+El desarrollo de un sistema de control de configuración de pares en una red privada virtual que utiliza el protocolo Wireguard permitirá a los usuarios configurar de forma sen
+
+
+cilla y segura los pares de la red privada virtual.
 
 Ademas de permitir la comunicacion segura entre los pares de la red privada virtual que pueden estar detras de firewalls y NATs.
+
+Tailscale
 
 \section{Objetivos}
 
@@ -69,17 +81,21 @@ Cooparativa con TailScale
 [1] Kurose, J. F., & Ross, K. W. (2017). Computer networking: a top-down approach,
 Pearson, 7th edition.
 
-[2] WireGuard, WireGuard: fast, modern, secure VPN tunnel, https://www.wireguard.com/, 2024.
+[2] Narayan, S., Williams, C. J., Hart, D. K., & Qualtrough, M. W. (2015). Network performance comparison of VPN protocols on wired and wireless networks. 2015 International Conference on Computer Communication and Informatics (ICCCI). doi:10.1109/iccci.2015.7218077
 
-[3] What is Tailscale?, https://tailscale.com/kb/1151/what-is-tailscale/, 2024.
+[3]  Abdulazeez, A., Salim, B., Zeebaree, D. & Doghramachi, D. (2020). Comparison of VPN Protocols at Network Layer Focusing on Wire Guard Protocol. International Association of Online Engineering. Retrieved September 26, 2024 from https://www.learntechlib.org/p/218341/. 
 
-[4] Linux Documentation Project, Linux Advanced Routing & Traffic Control HOW-
+[4] WireGuard, WireGuard: fast, modern, secure VPN tunnel, https://www.wireguard.com/, 2024.
+
+[5] What is Tailscale?, https://tailscale.com/kb/1151/what-is-tailscale/, 2024.
+
+[6] Linux Documentation Project, Linux Advanced Routing & Traffic Control HOW-
 TO, https://tldp.org/HOWTO/Adv-Routing-HOWTO/index.html, 2021.
 
-[3] Bautts, M., & Dawson, M. (2000). Linux Network Administrator’s Guide, O’Reilly
+[7] Bautts, M., & Dawson, M. (2000). Linux Network Administrator’s Guide, O’Reilly
 Media, 3rd edition.
 
-[4] Bautts, M., & Dawson, M. (2000). Linux IP Masquerade HOWTO, https://
+[8] Bautts, M., & Dawson, M. (2000). Linux IP Masquerade HOWTO, https://
 tldp.org/HOWTO/IP-Masquerade-HOWTO/index.html, 2021
 
 
