@@ -4,7 +4,7 @@ from xmlrpc.server import SimpleXMLRPCRequestHandler
 
 # Servidor en la nube
 dir_servidor="http://natalia-testing.online:80/"
-dir_servidor=
+dir_servidor="0.0.0.0"
 
 # Servidor local
 dir_local = "0.0.0.0"
