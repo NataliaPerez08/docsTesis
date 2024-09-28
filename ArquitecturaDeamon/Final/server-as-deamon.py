@@ -1,10 +1,14 @@
 from xmlrpc.server import SimpleXMLRPCServer
 from xmlrpc.server import SimpleXMLRPCRequestHandler
 
+# Es al mismo tiempo cliente
+import xmlrpc.client
 
 # Servidor en la nube
-dir_servidor="http://natalia-testing.online:80/"
-dir_servidor="0.0.0.0"
+dir_servidor="http://natalia-testing.online:8000/"
+dir_servidor="http://0.0.0.0:8000/"
+
+orquestrador = xmlrpc.client.ServerProxy(dir_servidor)
 
 # Servidor local
 dir_local = "0.0.0.0"
@@ -14,6 +18,8 @@ wg_private_key = -1
 wg_ip = -1
 wg_port = -1
 
+actual_user = None
+
 # Create server
 xmlrpc_server = SimpleXMLRPCServer((dir_local,port_local),  logRequests=True)
 
@@ -22,6 +28,8 @@ def say_hello():
 
 def register_user(name, email, password):
     print(f"Registrando usuario: {name} {email} {password}")
+    print("Envia datos al orquestrador")
+    orquestrador.register_user(name,email,password)
     return True
 
 def identify_user(email, password):
@@ -29,7 +37,7 @@ def identify_user(email, password):
     return True
 
 def whoami():
-    return "Juan"
+    return actual_user
 
 def create_private_network(name):
     print(f"Creando red privada: {name}")
@@ -48,3 +56,6 @@ xmlrpc_server.register_function(identify_user)
 xmlrpc_server.register_function(whoami)
 xmlrpc_server.register_function(create_private_network)
 xmlrpc_server.register_function(get_private_networks)
+
+# Serve forever
+xmlrpc_server.serve_forever()
