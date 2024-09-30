@@ -26,20 +26,24 @@ En respuesta a estos problemas, se ha desarrollado un protocolo de VPN llamado W
 Si bien Wireguard es un protocolo de VPN simple la mayor de sus desventajas es la configuración de los pares dentro de la red. Por ejemplo, si se desea configurar una red privada virtual con 10 pares, se debe configurar manualmente cada par con la dirección IP y la clave pública de cada par. Esto puede ser un proceso tedioso y propenso a errores, especialmente si se desea configurar una red privada virtual con un gran número de pares.
 
 % Surge tailScale como sistema de orquestración de pares en Wireguard
-Una solución para esta dificultad es propuesa por Tailscale, el cual es un servicio VPN que hace que sus dispositivos y aplicaciones sean accesibles en cualquier parte del mundo, de forma segura y sin esfuerzo. Este software actúa en combinación con el kernel para establecer una comunicación VPN peer-to-peer o retransmitida con otros clientes utilizando el protocolo WireGuard. Tailscale puede abrir una conexión directa con el peer utilizando técnicas de NAT traversal como STUN o solicitar el reenvío de puertos a través de UPnP IGD, NAT-PMP o PCP. [7] Si el software no consigue establecer una comunicación directa, recurre al protocolo DERP (Designated Encrypted Relay for Packets) proporcionados por la empresa. [6] Las direcciones IPv4 asignadas a los clientes se encuentran en el espacio reservado NAT de nivel operador. Esto se eligió para evitar interferencias con las redes existentes[9]. La configuración también permite el enrutamiento de tráfico a redes detrás del cliente en algunos clientes.
+Una solución para esta dificultad es propuesa por Tailscale, el cual es un servicio VPN que hace que sus dispositivos y aplicaciones sean accesibles en cualquier parte del mundo, de forma segura y sin esfuerzo. Este software actúa en combinación con el kernel para establecer una comunicación VPN peer-to-peer o retransmitida con otros clientes utilizando el protocolo WireGuard. Tailscale puede abrir una conexión directa con el peer utilizando técnicas de NAT traversal como STUN o solicitar el reenvío de puertos a través de UPnP IGD, NAT-PMP o PCP. [7] Si el software no consigue establecer una comunicación directa, recurre al protocolo DERP (Designated Encrypted Relay for Packets) proporcionados por la empresa. [6] Las direcciones IPv4 asignadas a los clientes se encuentran en el espacio reservado NAT de nivel operador. Esto se eligió para evitar interferencias con las redes existentes[9]. %%%La configuración también permite el enrutamiento de tráfico a redes detrás del cliente en algunos clientes.
 
 Tailscale es una gran solución para la configuración de pares en Wireguard, pero no es una solución de código abierto. Al ofrecer mas funcionalidades que las necesarias para la configuración de pares en Wireguard, Tailscale puede ser una solución costosa para empresas pequeñas o individuos que solo requieren configurar pares en Wireguard. Además, Tailscale no permite a los usuarios tener control total sobre la configuración de pares en Wireguard, ya que la configuración de pares en Wireguard se realiza a través de la interfaz de usuario de Tailscale y no a través de la línea de comandos. Y finalmente, Tailscale aumenta la superficie de ataque de la red privada virtual, ya que no solicita la autenticación al usar un servicio crítico como SSH entre los pares.
 
-Por lo que en este trabajo de tesis se propone el desarrollo de un sistema de control de configuración de pares minimalista que se basará en el protocolo Wireguard y permitirá a los usuarios tener control total sobre la configuración de pares en Wireguard, ya que la configuración de pares en Wireguard se realizará a través de la línea de comandos y no a través de una interfaz de usuario. Además se espera que este sistema de control de configuración de pares en Wireguard minimalista reducirá la superficie de ataque de la red privada virtual, ya que solicitará la autenticación al usar un servicio crítico como SSH entre los pares.
+% Headscale
+
+Por lo que en este trabajo de tesis se propone el desarrollo de un prototipo open-source de un sistema de control de configuración de pares minimalista (adherido al principio de UNIX de que un componenete solo hace una y solo una cosa muy bien) que se basará en el protocolo Wireguard (inspirado en Tailscale) %CORREGIR y permitirá a los usuarios automatizar la configuración de pares. 
+%ya que la configuración de pares en Wireguard se realizará a través de la línea de comandos y no a través de una interfaz de usuario. 
+% Una herramienta por funcion
+
+% Alcance limitado, *prototipo*
+Además se espera que este prototipo de sistema de control de configuración de pares en Wireguard minimalista reducirá la superficie de ataque de la red privada virtual, ya que solicitará la autenticación al usar un servicio crítico como SSH entre los pares.
 
 \section{Justificación}
     
 La necesidad de proteger la información y la privacidad de los usuarios no deberia estar limitada por el tiempo y la complejidad de configuración de los protocolos de VPN. 
 
-
-
 El desarrollo de un sistema de control de configuración de pares en una red privada virtual que utiliza el protocolo Wireguard permitirá a los usuarios configurar de forma sen
-
 
 cilla y segura los pares de la red privada virtual.
 
@@ -58,9 +62,8 @@ Cooparativa con TailScale
     1.1 VPN
     1.2 Wireguard
     1.3 TailScale
-    1.3 NATs
-    1.4 firewalls
-
+    1.3 NAT
+    1.4 Firewall
 2. Desarrollo
     2.0 Objetivos del programa
     2.1 Funcionalidad del orquestrador

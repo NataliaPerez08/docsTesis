@@ -1,3 +1,4 @@
+# Configurador CLI
 import xmlrpc.client
 
 # My serverd
@@ -14,6 +15,3 @@ print(proxy.say_hello())
 print("Registrando usuario...")
 print(proxy.register_user("Juan", "juan@example", "1234"))
 
-
-# Petition to the server using the proxy path
-proxy.

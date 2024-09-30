@@ -1,3 +1,4 @@
+# Client as deamon
 from xmlrpc.server import SimpleXMLRPCServer
 from xmlrpc.server import SimpleXMLRPCRequestHandler
 
@@ -48,3 +49,5 @@ xmlrpc_server.register_function(identify_user)
 xmlrpc_server.register_function(whoami)
 xmlrpc_server.register_function(create_private_network)
 xmlrpc_server.register_function(get_private_networks)
+
+xmlrpc_server.serve_forever()
