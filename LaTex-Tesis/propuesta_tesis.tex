@@ -31,6 +31,11 @@ Una solución para esta dificultad es propuesa por Tailscale, el cual es un serv
 Tailscale es una gran solución para la configuración de pares en Wireguard, pero no es una solución de código abierto. Al ofrecer mas funcionalidades que las necesarias para la configuración de pares en Wireguard, Tailscale puede ser una solución costosa para empresas pequeñas o individuos que solo requieren configurar pares en Wireguard. Además, Tailscale no permite a los usuarios tener control total sobre la configuración de pares en Wireguard, ya que la configuración de pares en Wireguard se realiza a través de la interfaz de usuario de Tailscale y no a través de la línea de comandos. Y finalmente, Tailscale aumenta la superficie de ataque de la red privada virtual, ya que no solicita la autenticación al usar un servicio crítico como SSH entre los pares.
 
 % Headscale
+% Headscale aims to implement a self-hosted, open source alternative to the Tailscale control server. Headscale's goal is to provide self-hosters and hobbyists with an open-source server they can use for their projects and labs. It implements a narrow scope, a single Tailnet, suitable for a personal use, or a small open-source organisation.
+
+Existe una alternativa de código abierto del servidor de control de Tailscale llamado Headscale. El objetivo de Headscale es proporcionar a un servidor de código abierto que puedan utilizar para proyectos y laboratorios. Implementa un alcance estrecho, una sola Tailnet, adecuada para un uso personal o una pequeña organización de código abierto. [10]
+
+
 
 Por lo que en este trabajo de tesis se propone el desarrollo de un prototipo open-source de un sistema de control de configuración de pares minimalista (adherido al principio de UNIX de que un componenete solo hace una y solo una cosa muy bien) que se basará en el protocolo Wireguard (inspirado en Tailscale) %CORREGIR y permitirá a los usuarios automatizar la configuración de pares. 
 %ya que la configuración de pares en Wireguard se realizará a través de la línea de comandos y no a través de una interfaz de usuario. 
@@ -57,6 +62,19 @@ El desarrollo de la tesis tiene como objetivo principal el desarrollo de un sist
 Cooparativa con TailScale
 
 \section{Índice Tentativo}
+\begin{flushleft}
+    \begin{tabbing}
+    \hspace{4cm} \= \kill
+    1. Introducción \> \dotfill 1 \\
+    2. Fundamentos \> \dotfill 3 \\
+    3. Metodología \> \dotfill 7 \\
+    \hspace{0.5cm}3.1 Diseño \> \dotfill 8 \\
+    \hspace{0.5cm}3.2 Implementación \> \dotfill 12 \\
+    4. Resultados \> \dotfill 18 \\
+    5. Conclusiones \> \dotfill 22 \\
+    \end{tabbing}
+    \end{flushleft}
+    
 
 1. Introduccion:
     1.1 VPN
@@ -78,32 +96,34 @@ Cooparativa con TailScale
 5. Bibliografía 
 
 \section{Bibliografía Básica}
-[1] Kurose, J. F., & Ross, K. W. (2017). Computer networking: a top-down approach,
+[1] Kurose, J. F., y Ross, K. W. (2017). Computer networking: a top-down approach,
 Pearson, 7th edition.
 
-[2] Narayan, S., Williams, C. J., Hart, D. K., & Qualtrough, M. W. (2015). Network performance comparison of VPN protocols on wired and wireless networks. 2015 International Conference on Computer Communication and Informatics (ICCCI). doi:10.1109/iccci.2015.7218077
+[2] Narayan, S., Williams, C. J., Hart, D. K., y Qualtrough, M. W. (2015). Network performance comparison of VPN protocols on wired and wireless networks. 2015 International Conference on Computer Communication and Informatics (ICCCI). doi:10.1109/iccci.2015.7218077
 
-[3]  Abdulazeez, A., Salim, B., Zeebaree, D. & Doghramachi, D. (2020). Comparison of VPN Protocols at Network Layer Focusing on Wire Guard Protocol. International Association of Online Engineering. Retrieved September 26, 2024 from https://www.learntechlib.org/p/218341/. 
+[3]  Abdulazeez, A., Salim, B., Zeebaree, D. y Doghramachi, D. (2020). Comparison of VPN Protocols at Network Layer Focusing on Wire Guard Protocol. International Association of Online Engineering. Retrieved September 26, 2024 from https://www.learntechlib.org/p/218341/. 
 
 [4] WireGuard, WireGuard: fast, modern, secure VPN tunnel, https://www.wireguard.com/, 2024.
 
 [5] What is Tailscale?, https://tailscale.com/kb/1151/what-is-tailscale/, 2024.
 
-[6] Terminology and concepts, https://tailscale.com/kb/1155/terminology-and-concepts#relay, 2024
+[6] Terminology and concepts, https://tailscale.com/kb/1155/terminology-and-concepts\#relay, 2024
 
-[7] Troubleshooting device connectivity, https://tailscale.com/kb/1411/device-connectivity#nat-types, 2024
+[7] Troubleshooting device connectivity, https://tailscale.com/kb/1411/device-connectivity\#nat-types, 2024
 
 [8] How NAT traversal works, https://tailscale.com/blog/how-nat-traversal-works, 2024
 
 [9] IP pool, https://tailscale.com/kb/1304/ip-pool, 2024
 
-[10] Linux Documentation Project, Linux Advanced Routing & Traffic Control HOW-
+[10] Headscale, 
+
+[11] Linux Documentation Project, Linux Advanced Routing y Traffic Control HOW-
 TO, https://tldp.org/HOWTO/Adv-Routing-HOWTO/index.html, 2021.  
 
-[11] Bautts, M., & Dawson, M. (2000). Linux Network Administrator’s Guide, O’Reilly
+[12] Bautts, M., y Dawson, M. (2000). Linux Network Administrator’s Guide, O’Reilly
 Media, 3rd edition.
 
-[12] Bautts, M., & Dawson, M. (2000). Linux IP Masquerade HOWTO, https://
+[13] Bautts, M., y Dawson, M. (2000). Linux IP Masquerade HOWTO, https://
 tldp.org/HOWTO/IP-Masquerade-HOWTO/index.html, 2021
 
 
