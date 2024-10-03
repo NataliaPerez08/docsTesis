@@ -5,6 +5,10 @@ from xmlrpc.server import SimpleXMLRPCServer
 # Es al mismo tiempo cliente
 import xmlrpc.client
 
+# Manejadores de red
+from conn_scapy import verificar_conectividad
+from WG import ConfiguradorWireguardCliente as wg
+
 # Servidor en la nube
 dir_servidor="http://natalia-testing.online:8000/"
 dir_servidor="http://0.0.0.0:8000/"
@@ -148,11 +152,10 @@ def configure_as_peer(self, nombre_endpoint, id_red_privada, ip_cliente, listen_
 
     # Configurar peer
     allowed_ips = self.proxy.get_allowed_ips(id_red_privada)
-    self.wg.create_peer(wg_public_key, allowed_ips, ip_cliente, listen_port, ip_servidor)
+    self.wg.create_peer(wg_public_key, allowed_ips, ip_cliente, listen_port, dir_servidor)
 
     # Registrar peer en el servidor
     self.proxy.create_peer(wg_public_key, allowed_ips, endpoint_ip_WG, listen_port, ip_cliente)
-
 
 
 def register_peer(self, public_key, allowed_ips, ip_cliente, listen_port):
