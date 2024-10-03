@@ -1,8 +1,9 @@
-\documentclass{article}
+\documentclass[letterpaper,12pt,oneside]{book}
+\usepackage[top=1in, left=1.25in, right=1.25in, bottom=1in]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 
-\usepackage[o]{babel}
+\usepackage[spanish]{babel}
 
 %\title{Propuesta de Tesis: LinkGuard, MeshGuard, WireFleet} 2962.95
 
@@ -25,13 +26,9 @@ En respuesta a estos problemas, se ha desarrollado un protocolo de VPN llamado W
 
 Si bien Wireguard es un protocolo de VPN simple la mayor de sus desventajas es la configuración de los pares dentro de la red. Por ejemplo, si se desea configurar una red privada virtual con 10 pares, se debe configurar manualmente cada par con la dirección IP y la clave pública de cada par. Esto puede ser un proceso tedioso y propenso a errores, especialmente si se desea configurar una red privada virtual con un gran número de pares.
 
-% Surge tailScale como sistema de orquestración de pares en Wireguard
-Una solución para esta dificultad es propuesa por Tailscale, el cual es un servicio VPN que hace que sus dispositivos y aplicaciones sean accesibles en cualquier parte del mundo, de forma segura y sin esfuerzo. Este software actúa en combinación con el kernel para establecer una comunicación VPN peer-to-peer o retransmitida con otros clientes utilizando el protocolo WireGuard. Tailscale puede abrir una conexión directa con el peer utilizando técnicas de NAT traversal como STUN o solicitar el reenvío de puertos a través de UPnP IGD, NAT-PMP o PCP. [7] Si el software no consigue establecer una comunicación directa, recurre al protocolo DERP (Designated Encrypted Relay for Packets) proporcionados por la empresa. [6] Las direcciones IPv4 asignadas a los clientes se encuentran en el espacio reservado NAT de nivel operador. Esto se eligió para evitar interferencias con las redes existentes[9]. %%%La configuración también permite el enrutamiento de tráfico a redes detrás del cliente en algunos clientes.
+Una solución para esta dificultad es propuesa por Tailscale, el cual es un servicio VPN que hace que sus dispositivos y aplicaciones sean accesibles en cualquier parte del mundo, de forma segura y sin esfuerzo. Este software actúa en combinación con el kernel para establecer una comunicación VPN peer-to-peer o retransmitida con otros clientes utilizando el protocolo WireGuard. Tailscale puede abrir una conexión directa con el peer utilizando técnicas de NAT traversal como STUN o solicitar el reenvío de puertos a través de UPnP IGD, NAT-PMP o PCP. [7] Si el software no consigue establecer una comunicación directa, recurre al protocolo DERP (Designated Encrypted Relay for Packets) proporcionados por la empresa. [6] Las direcciones IPv4 asignadas a los clientes se encuentran en el espacio reservado NAT de nivel operador. Esto se eligió para evitar interferencias con las redes existentes[9] ya que el enrutamiento de tráfico a redes detrás del cliente es posible.
 
 Tailscale es una gran solución para la configuración de pares en Wireguard, pero no es una solución de código abierto. Al ofrecer mas funcionalidades que las necesarias para la configuración de pares en Wireguard, Tailscale puede ser una solución costosa para empresas pequeñas o individuos que solo requieren configurar pares en Wireguard. Además, Tailscale no permite a los usuarios tener control total sobre la configuración de pares en Wireguard, ya que la configuración de pares en Wireguard se realiza a través de la interfaz de usuario de Tailscale y no a través de la línea de comandos. Y finalmente, Tailscale aumenta la superficie de ataque de la red privada virtual, ya que no solicita la autenticación al usar un servicio crítico como SSH entre los pares.
-
-% Headscale
-% Headscale aims to implement a self-hosted, open source alternative to the Tailscale control server. Headscale's goal is to provide self-hosters and hobbyists with an open-source server they can use for their projects and labs. It implements a narrow scope, a single Tailnet, suitable for a personal use, or a small open-source organisation.
 
 Existe una alternativa de código abierto del servidor de control de Tailscale llamado Headscale. El objetivo de Headscale es proporcionar a un servidor de código abierto que puedan utilizar para proyectos y laboratorios. Implementa un alcance estrecho, una sola Tailnet, adecuada para un uso personal o una pequeña organización de código abierto. [10]
 
@@ -46,15 +43,19 @@ Además se espera que este prototipo de sistema de control de configuración de 
 
 \section{Justificación}
     
-La necesidad de proteger la información y la privacidad de los usuarios no deberia estar limitada por el tiempo y la complejidad de configuración de los protocolos de VPN. 
+Ante los requerimientos de usuarios finales y empresas de establecer conexiones seguras entre sus dispositivos surgen las VPN. Surgen diferentes protocolos entre Wireguard, el cual destaca por simple, rápido y seguro. Sin embargo la configuración de pares puede ser un proceso tedioso y propenso a errores.
 
-El desarrollo de un sistema de control de configuración de pares en una red privada virtual que utiliza el protocolo Wireguard permitirá a los usuarios configurar de forma sen
+La necesidad de proteger la información y la privacidad de los usuarios no deberia estar limitada por el tiempo y la complejidad de configuración de los protocolos de VPN.
 
-cilla y segura los pares de la red privada virtual.
+Por l que 
+
+El desarrollo de un sistema de control de configuración de pares en una red privada virtual que utiliza el protocolo Wireguard permitirá a los usuarios configurar de forma sencilla y segura los pares de la red privada virtual.
 
 Ademas de permitir la comunicacion segura entre los pares de la red privada virtual que pueden estar detras de firewalls y NATs.
 
-Tailscale
+Tailscale.
+
+
 
 \section{Objetivos}
 
@@ -65,35 +66,29 @@ Cooparativa con TailScale
 \begin{flushleft}
     \begin{tabbing}
     \hspace{4cm} \= \kill
-    1. Introducción \> \dotfill 1 \\
-    2. Fundamentos \> \dotfill 3 \\
-    3. Metodología \> \dotfill 7 \\
-    \hspace{0.5cm}3.1 Diseño \> \dotfill 8 \\
-    \hspace{0.5cm}3.2 Implementación \> \dotfill 12 \\
-    4. Resultados \> \dotfill 18 \\
-    5. Conclusiones \> \dotfill 22 \\
+    1. Introducción \> \dotfill  \\
+    \hspace{0.5cm}1.1 VPN \> \dotfill  \\
+    \hspace{0.5cm}1.2 Wireguard \> \dotfill  \\
+    \hspace{0.5cm}1.3 Tailscale \> \dotfill  \\
+    \hspace{0.5cm}1.4 NAT \> \dotfill  \\
+    \hspace{0.5cm}1.1 Firewall \> \dotfill  \\
+
+    2. Desarrollo \> \dotfill  \\
+
+    \hspace{0.5cm}2.0 Objetivos del programa \> \dotfill  \\
+    \hspace{0.5cm}2.1 Funcionalidad del orquestrador \> \dotfill  \\
+    \hspace{0.5cm}2.2 Descripcion del orquestrador \> \dotfill  \\
+    \hspace{0.5cm}2.3 Componentes del orquestrador \> \dotfill  \\
+    \hspace{0.5cm}2.4 Flujo del programa \> \dotfill  \\
+    \hspace{0.5cm}2.5 Casos de uso \> \dotfill  \\
+    
+    3. Pruebas y evaluación de resultados \> \dotfill \\
+    \hspace{0.5cm}3.1 Metodología de evaluación \> \dotfill 8 \\
+    \hspace{0.5cm}3.2 Resultados de la evaluación \> \dotfill 12 \\
+    4. Conclusiones y trabajo a futuro \> \dotfill  \\
+    5. Bibliografía \> \dotfill 22 \\
     \end{tabbing}
     \end{flushleft}
-    
-
-1. Introduccion:
-    1.1 VPN
-    1.2 Wireguard
-    1.3 TailScale
-    1.3 NAT
-    1.4 Firewall
-2. Desarrollo
-    2.0 Objetivos del programa
-    2.1 Funcionalidad del orquestrador
-    2.2 Descripcion del orquestrador
-    2.2.1 Componentes del orquestrador
-    2.2.2 Flujo del programa
-    2.3 Casos de uso
-3. Pruebas y Evaluación de resultados 
-    3.0 Metodología de evaluación
-    3.1 Resultados de la evaluación
-4. Conclusiones y trabajo futuro 
-5. Bibliografía 
 
 \section{Bibliografía Básica}
 [1] Kurose, J. F., y Ross, K. W. (2017). Computer networking: a top-down approach,
