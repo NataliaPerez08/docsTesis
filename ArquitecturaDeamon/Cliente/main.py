@@ -19,14 +19,18 @@ if __name__ == "__main__":
         if len(sys.argv) != 5:
             print("Uso: python3 main.py registrar_usuario <nombre> <email> <password>")
             sys.exit()
-        deamon.register_user(sys.argv[2], sys.argv[3], sys.argv[4])
+        result = deamon.register_user(sys.argv[2], sys.argv[3], sys.argv[4])
+        if result:
+            print("Usuario registrado!")
 
     # python3 main.py identificar_usuario <email> <password>    
     elif comando == "identificar_usuario":
         if len(sys.argv) != 4:
             print("Uso: python3 main.py identificar_usuario <email> <password>")
             sys.exit()
-        deamon.identify_me(sys.argv[2], sys.argv[3])
+        result = deamon.identify_me(sys.argv[2], sys.argv[3])
+        if result:
+            print("Usuario identificado!")
     
     # python3 main.py whoami
     elif comando == "whoami":
@@ -41,7 +45,8 @@ if __name__ == "__main__":
 
     # python3 main.py ver_redes_privadas
     elif comando == "ver_redes_privadas":
-        deamon.get_private_networks()
+        result = deamon.get_private_networks()
+        print(result)
 
     # python3 main.py ver_endpoints <id_red_privada>
     elif comando == "ver_endpoints":

@@ -13,7 +13,7 @@ from WG import ConfiguradorWireguardCliente as wg
 dir_servidor="http://natalia-testing.online:8000/"
 dir_servidor="http://0.0.0.0:8000/"
 
-orquestrador = xmlrpc.client.ServerProxy(dir_servidor, allow_none=True)
+orquestador = xmlrpc.client.ServerProxy(dir_servidor, allow_none=True)
 
 # Servidor local
 dir_local = "0.0.0.0"
@@ -38,57 +38,55 @@ def register_user(name, email, password):
     print(f"Registrando usuario: {name} {email} {password}")
     # Envia lo anterior a logger 
     xmlrpc_logger.info(f"Registrando usuario: {name} {email} {password}")
-    is_register = orquestrador.register_user(name, email, password)
+    is_register = orquestador.register_user(name, email, password)
     if not is_register:
         print("Error al registrar el usuario!")
         return
     print("Usuario registrado!")
     return True
 
-def identify_me(self, email, password):
+def identify_me( email, password):
     """
     Identifica un usuario en el servidor
     """
-    print("Identificando usuario...")
-    is_identified = orquestrador.identify_user(email, password)
+    is_identified = orquestador.identify_user(email, password)
     if not is_identified:
-        print("Error al identificar el usuario!")
-        return
-    print("Usuario identificado!")
+        return False
+    return True
 
-def whoami(self):
+def whoami():
     """
     Obtiene el nombre del usuario actual
     """
-    return orquestrador.whoami()
+    return orquestador.whoami()
 
-def create_private_network(self, nombre):
+def create_private_network( nombre):
     """
     Crea una red privada en el servidor
     """
-    print("Creando red privada...")
-    private_network_id = self.proxy.create_private_network(nombre)
+    private_network_id = orquestador.create_private_network(nombre)
     if private_network_id == -1:
-        print("Error al crear la red privada! Iniciaste sesión?")
-        return
-    print(f"ID de la red privada: {private_network_id}")
+        return -1
+    return private_network_id
 
-def get_private_networks(self):
+def get_private_networks():
     """
     Recupera las redes privadas del servidor
     """
-    priv_net = self.proxy.get_private_networks()
-    print("Redes privadas:")
-    print(priv_net)
+    priv_net = orquestador.get_private_networks()
+    return priv_net
 
-def ver_endpoints(self, id_red_privada):
-    print("Obteniendo endpoints...")
-    print(self.proxy.get_endpoints(id_red_privada))
+def ver_endpoints(id_red_privada):
+    """
+    Obtiene los endpoints de una red privada
+    """
+    endpoints = orquestador.get_endpoints(id_red_privada)
+    return endpoints
 
-def conectar_endpoint(self, id_endpoint, id_red_privada):
+def conectar_endpoint( id_endpoint, id_red_privada):
     print("Conectando endpoint...")
     # Encontrar la red privada
-    private_network = self.proxy.get_private_network_by_id(id_red_privada)
+    private_network = orquestador.get_private_network_by_id(id_red_privada)
 
     if private_network == -1:
         print("No se encontro la red")
@@ -105,62 +103,61 @@ def conectar_endpoint(self, id_endpoint, id_red_privada):
     print(f"Red privada: {private_network}")
     verificar_conectividad(endpoint.ip_addr, private_network.last_host_assigned)
 
-def conectar_endpoint_directo(self, ip_endpoint, puerto_endpoint):
+def conectar_endpoint_directo( ip_endpoint, puerto_endpoint):
     print("Conectando endpoint directo...")
     verificar_conectividad(ip_endpoint)
 
-def obtener_clave_publica_servidor(self):
+def obtener_clave_publica_servidor():
     print("Obteniendo clave pública...")
-    print(self.proxy.get_public_key())
+    print(orquestador.get_public_key())
 
-def obtener_configuracion_wireguard_local(self):
+def obtener_configuracion_wireguard_local():
     print("Obteniendo configuracion..")
-    conf = self.wg.get_wg_state()
+    conf = wg.get_wg_state()
     print(conf)
 
-def obtener_configuracion_wireguard_servidor(self):
+def obtener_configuracion_wireguard_servidor():
     print("Preguntar al servidor")
-    print(self.proxy.get_wireguard_config())
+    print(orquestador.get_wireguard_config())
 
-def cerrar_sesion(self):
+def cerrar_sesion():
     print("Cerrando sesión...")
-    self.proxy.close_session()
+    orquestador.close_session()
     print("Sesión cerrada!")
 
 
 # Inicializar Wireguard en el cliente
-def init_wireguard_interface(self, ip_cliente):
+def init_wireguard_interface( ip_cliente):
     print("Inicializando Wireguard...")
-    wg_private_key, wg_public_key = self.wg.create_keys()
+    wg_private_key, wg_public_key = wg.create_keys()
     print("Clave privada: ", wg_private_key)
     print("Clave pública: ", wg_public_key)
 
-    self.wg.create_wg_interface(ip_cliente)
+    wg.create_wg_interface(ip_cliente)
 
     print("Wireguard inicializado!")
 
 
 # Viene del comando: python3 main.py registrar_como_peer <nombre> <id_red_privada> <ip_cliente> <puerto_cliente>
-def configure_as_peer(self, nombre_endpoint, id_red_privada, ip_cliente, listen_port):
+def configure_as_peer( nombre_endpoint, id_red_privada, ip_cliente, listen_port):
     print("Configurando como peer...")
-
-    endpoint_ip_WG = self.proxy.create_endpoint(id_red_privada, nombre_endpoint)
+    endpoint_ip_WG = orquestador.create_endpoint(id_red_privada, nombre_endpoint)
     if endpoint_ip_WG == -1:
         print("Error al configurar el peer!")
         return
     print("IP de Wireguard asignada: ", endpoint_ip_WG)
 
     # Configurar peer
-    allowed_ips = self.proxy.get_allowed_ips(id_red_privada)
-    self.wg.create_peer(wg_public_key, allowed_ips, ip_cliente, listen_port, dir_servidor)
+    allowed_ips = orquestador.get_allowed_ips(id_red_privada)
+    wg.create_peer(wg_public_key, allowed_ips, ip_cliente, listen_port, dir_servidor)
 
     # Registrar peer en el servidor
-    self.proxy.create_peer(wg_public_key, allowed_ips, endpoint_ip_WG, listen_port, ip_cliente)
+    ip_wg_peer = orquestador.create_peer(wg_public_key, allowed_ips, endpoint_ip_WG, listen_port, ip_cliente)
 
 
-def register_peer(self, public_key, allowed_ips, ip_cliente, listen_port):
+def register_peer( public_key, allowed_ips, ip_cliente, listen_port):
     print("Registrando peer en el servidor...")
-    endpoint_ip_WG = self.proxy.create_peer(public_key, allowed_ips, ip_cliente, listen_port)
+    endpoint_ip_WG = orquestador.create_peer(public_key, allowed_ips, ip_cliente, listen_port)
     if endpoint_ip_WG == -1:
         print("Error al registrar el peer!")
         return
@@ -169,6 +166,22 @@ def register_peer(self, public_key, allowed_ips, ip_cliente, listen_port):
     
     print("Registrando peer en el cliente...")
 
+# Guardar las funciones
+xmlrpc_server.register_function(register_user)
+xmlrpc_server.register_function(identify_me)
+xmlrpc_server.register_function(whoami)
+xmlrpc_server.register_function(create_private_network)
+xmlrpc_server.register_function(get_private_networks)
+xmlrpc_server.register_function(ver_endpoints)
+xmlrpc_server.register_function(conectar_endpoint)
+xmlrpc_server.register_function(conectar_endpoint_directo)
+xmlrpc_server.register_function(obtener_clave_publica_servidor)
+xmlrpc_server.register_function(obtener_configuracion_wireguard_local)
+xmlrpc_server.register_function(obtener_configuracion_wireguard_servidor)
+xmlrpc_server.register_function(cerrar_sesion)
+xmlrpc_server.register_function(init_wireguard_interface)
+xmlrpc_server.register_function(configure_as_peer)
+xmlrpc_server.register_function(register_peer)
 
 # Serve forever
 xmlrpc_server.serve_forever()
