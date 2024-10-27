@@ -22,6 +22,8 @@ if __name__ == "__main__":
         result = deamon.register_user(sys.argv[2], sys.argv[3], sys.argv[4])
         if result:
             print("Usuario registrado!")
+        else:
+            print("Error al registrar el usuario! El correo ya esta registrado")
 
     # python3 main.py identificar_usuario <email> <password>    
     elif comando == "identificar_usuario":
@@ -144,7 +146,8 @@ if __name__ == "__main__":
     
     # python3 cerrar_sesion
     elif comando == "cerrar_sesion":
-        deamon.cerrar_sesion()
+        if deamon.cerrar_sesion():
+            print("Se cerro la sesion")
 
     # Comando no reconocido
     else:

@@ -20,7 +20,7 @@ class Servidor:
         # Lista de usuarios [id: Usuario]
         self.usuarios = dict()
 
-        # Llave pública de Wireguard del orquestrador
+        # Llave pública de Wireguard del orquestador
         self.wg_private_key = None
         self.wg_public_key = None
 

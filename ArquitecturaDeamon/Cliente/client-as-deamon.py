@@ -40,9 +40,9 @@ def register_user(name, email, password):
     xmlrpc_logger.info(f"Registrando usuario: {name} {email} {password}")
     is_register = orquestador.register_user(name, email, password)
     if not is_register:
-        print("Error al registrar el usuario!")
-        return
-    print("Usuario registrado!")
+        #print("Error al registrar el usuario! El correo ya esta registrado")
+        return False
+    #print("Usuario registrado!")
     return True
 
 def identify_me( email, password):
@@ -121,9 +121,9 @@ def obtener_configuracion_wireguard_servidor():
     print(orquestador.get_wireguard_config())
 
 def cerrar_sesion():
-    print("Cerrando sesión...")
-    orquestador.close_session()
-    print("Sesión cerrada!")
+    result = orquestador.close_session()
+    return result
+    
 
 
 # Inicializar Wireguard en el cliente
