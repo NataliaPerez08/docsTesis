@@ -7,7 +7,12 @@ import xmlrpc.client
 
 # Manejadores de red
 from conn_scapy import verificar_conectividad
-from WG import ConfiguradorWireguardCliente as wg
+# Importar configurador de Wireguard
+import WG.ConfiguradorWireguardCliente as wg
+
+# Importar os
+from os import geteuid
+from sys import exit
 
 # Servidor en la nube
 dir_servidor="http://natalia-testing.online:8000/"
@@ -26,6 +31,9 @@ actual_user = None
 
 # Create server
 xmlrpc_server = SimpleXMLRPCServer((dir_local,port_local),  logRequests=True)
+
+# Iniciar configurador de Wireguard
+wg = wg.ConfiguradorWireguardCliente()
 
 # Iniciar logger
 xmlrpc_logger = logging.getLogger('xmlrpc.server')
@@ -141,19 +149,31 @@ def init_wireguard_interface( ip_cliente):
 # Viene del comando: python3 main.py registrar_como_peer <nombre> <id_red_privada> <ip_cliente> <puerto_cliente>
 def configure_as_peer( nombre_endpoint, id_red_privada, ip_cliente, listen_port):
     print("Configurando como peer...")
-    endpoint_ip_WG = orquestador.create_endpoint(id_red_privada, nombre_endpoint)
+    endpoint_ip_WG,id_endpoint = orquestador.create_endpoint(id_red_privada, nombre_endpoint)
     if endpoint_ip_WG == -1:
         print("Error al configurar el peer!")
-        return
+        return -1
     print("IP de Wireguard asignada: ", endpoint_ip_WG)
 
-    # Configurar peer
+    # Verificar si la interfaz existe
+    if wg.check_interface():
+        print("Ya existe la interfaz.")
+        return -1
+    else:
+        print("La interfaz no existe.")
+        wg_private_key, wg_public_key = wg.create_wg_interface(ip_cliente)
+
+    # Configurar peer en local
     allowed_ips = orquestador.get_allowed_ips(id_red_privada)
     wg.create_peer(wg_public_key, allowed_ips, ip_cliente, listen_port, dir_servidor)
 
     # Registrar peer en el servidor
+    print("Registrando peer en el servidor...,con la llave publica: ", wg_public_key)
     ip_wg_peer = orquestador.create_peer(wg_public_key, allowed_ips, endpoint_ip_WG, listen_port, ip_cliente)
-
+    # Completar endpoint para incluir wg_public_key, allowed_ips, ip_cliente, listen_port
+    orquestador.complete_endpoint(id_red_privada, id_endpoint, wg_public_key, allowed_ips, ip_cliente, listen_port)
+    
+    return ip_wg_peer
 
 def register_peer( public_key, allowed_ips, ip_cliente, listen_port):
     print("Registrando peer en el servidor...")
@@ -165,23 +185,35 @@ def register_peer( public_key, allowed_ips, ip_cliente, listen_port):
     print("IP de Wireguard asignada: ", endpoint_ip_WG)
     
     print("Registrando peer en el cliente...")
+    result = wg.create_peer(public_key, allowed_ips, ip_cliente, listen_port)
+    print("Peer registrado en el cliente!")
+    return result
 
-# Guardar las funciones
-xmlrpc_server.register_function(register_user)
-xmlrpc_server.register_function(identify_me)
-xmlrpc_server.register_function(whoami)
-xmlrpc_server.register_function(create_private_network)
-xmlrpc_server.register_function(get_private_networks)
-xmlrpc_server.register_function(ver_endpoints)
-xmlrpc_server.register_function(conectar_endpoint)
-xmlrpc_server.register_function(conectar_endpoint_directo)
-xmlrpc_server.register_function(obtener_clave_publica_servidor)
-xmlrpc_server.register_function(obtener_configuracion_wireguard_local)
-xmlrpc_server.register_function(obtener_configuracion_wireguard_servidor)
-xmlrpc_server.register_function(cerrar_sesion)
-xmlrpc_server.register_function(init_wireguard_interface)
-xmlrpc_server.register_function(configure_as_peer)
-xmlrpc_server.register_function(register_peer)
 
-# Serve forever
-xmlrpc_server.serve_forever()
+# Iniciar el servidor si se ejecuta como superusuario
+if __name__ == "__main__":
+    print("Iniciando servidor...")
+    if geteuid() != 0:
+        print("Se necesita permisos de administrador para ejecutar el servidor")
+        exit()
+
+    # Guardar las funciones
+    xmlrpc_server.register_function(register_user)
+    xmlrpc_server.register_function(identify_me)
+    xmlrpc_server.register_function(whoami)
+    xmlrpc_server.register_function(create_private_network)
+    xmlrpc_server.register_function(get_private_networks)
+    xmlrpc_server.register_function(ver_endpoints)
+    xmlrpc_server.register_function(conectar_endpoint)
+    xmlrpc_server.register_function(conectar_endpoint_directo)
+    xmlrpc_server.register_function(obtener_clave_publica_servidor)
+    xmlrpc_server.register_function(obtener_configuracion_wireguard_local)
+    xmlrpc_server.register_function(obtener_configuracion_wireguard_servidor)
+    xmlrpc_server.register_function(cerrar_sesion)
+    xmlrpc_server.register_function(init_wireguard_interface)
+    xmlrpc_server.register_function(configure_as_peer)
+    xmlrpc_server.register_function(register_peer)
+
+    print("Servidor iniciado!")
+    xmlrpc_server.serve_forever()
+

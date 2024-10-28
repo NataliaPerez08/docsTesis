@@ -19,7 +19,6 @@ class Servidor:
 
         # Lista de usuarios [id: Usuario]
         self.usuarios = dict()
-
         # Llave pública de Wireguard del orquestador
         self.wg_private_key = None
         self.wg_public_key = None
@@ -125,9 +124,27 @@ class Servidor:
             if type(private_network) is not rp.PrivateNetwork:
                 return -1
 
-            print(type(private_network))
             endpoint = private_network.create_endpoint(endpoint_name)
-            return endpoint.get_wireguard_ip()
+            return endpoint.get_wireguard_ip(), endpoint.get_id()
+        
+    def complete_endpoint(self,id_red_privada, id_endpoint, wg_public_key, allowed_ips, ip_cliente, listen_port):
+        """
+        Completa la configuración del endpoint
+        """
+        print("Completando endpoint...")
+        private_network = self.get_private_network_by_id(id_red_privada)
+        if type(private_network) is not rp.PrivateNetwork:
+            return -1
+
+        endpoint = private_network.get_endpoint_by_id(id_endpoint)
+        if type(endpoint) is not rp.Endpoint:
+            return -1
+
+        endpoint.set_wireguard_public_key(wg_public_key)
+        endpoint.set_allowed_ips(allowed_ips)
+        endpoint.set_listen_port(listen_port)
+        endpoint.set_wireguard_ip(ip_cliente)
+        return True
 
     def get_endpoints(self, private_network_id):
         """
@@ -162,12 +179,9 @@ class Servidor:
         return wg.get_wg_state()
 
     def create_peer(self, public_key, allowed_ips, endpoint_ip_WG, listen_port, ip_cliente):
-        print("Crear peer")
+        print("Crear peer en el servidor")
+        print(public_key, allowed_ips, endpoint_ip_WG, listen_port, ip_cliente)
 
-        # Es necesario verificar si la IP ya fue registrada
-
-        # Ya existe la interfaz en el servidor. Es necesario configurar
-        # Si el sistema no es Windows
         wg.create_peer(public_key, allowed_ips, ip_cliente, listen_port)
         print("IP de Wireguard asignada: ", endpoint_ip_WG)
         return endpoint_ip_WG

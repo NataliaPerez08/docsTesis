@@ -33,6 +33,8 @@ if __name__ == "__main__":
         result = deamon.identify_me(sys.argv[2], sys.argv[3])
         if result:
             print("Usuario identificado!")
+        else:
+            print("Error al identificar el usuario! El correo o la contraseña son incorrectos")
     
     # python3 main.py whoami
     elif comando == "whoami":
@@ -55,7 +57,8 @@ if __name__ == "__main__":
         if len(sys.argv) != 3:
             print("Uso: python3 main.py ver_endpoints <id_red_privada>")
             sys.exit()
-        deamon.ver_endpoints(sys.argv[2])
+        result = deamon.ver_endpoints(sys.argv[2])
+        print(result)
 
     # python3 main.py conectar_endpoint <id_endpoint> <id_red_privada>
     elif comando == "conectar_endpoint":
@@ -80,11 +83,7 @@ if __name__ == "__main__":
     # python3 main.py obtener_configuracion_wireguard_local
     elif comando == "obtener_configuracion_wireguard_local":
         # Verificar si el comando se ejecuto como administrador en Linux
-        if os.geteuid() != 0:
-            print("Se necesita permisos de administrador para ejecutar el comando")
-            sys.exit()
-        else:
-            deamon.obtener_configuracion_wireguard_local()
+        deamon.obtener_configuracion_wireguard_local()
 
     # python3 main.py obtener_configuracion_wireguard_servidor
     elif comando == "obtener_configuracion_wireguard_servidor":
@@ -109,14 +108,18 @@ if __name__ == "__main__":
     # python3 main.py registrar_como_peer <nombre> <id_red_privada> <ip_cliente> <puerto_cliente>
     elif comando == "registrar_como_peer":
         # Verificar si el comando se ejecuto como administrador en Linux
-        if os.geteuid() != 0:
-            print("Se necesita permisos de administrador para ejecutar el comando")
-            sys.exit()
+        #if os.geteuid() != 0:
+        #    print("Se necesita permisos de administrador para ejecutar el comando")
+        #    sys.exit()
             
         if len(sys.argv) != 6:
             print("Uso: python3 main.py registrar_como_peer <nombre> <id_red_privada> <ip_cliente> <puerto_cliente>")
             sys.exit()
-        deamon.configure_as_peer(sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5])
+        result = deamon.configure_as_peer(sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5])
+        if result == -1:
+            print("Error al configurar el peer! Verifique que la interfaz no exista")
+        else:
+            print("Peer configurado!")
         
     # python3 main.py obtener_clave_publica_cliente
     elif comando == "obtener_clave_public_cliente":
@@ -127,14 +130,14 @@ if __name__ == "__main__":
     # python3 main.py iniciar_interfaz_wireguard <ip_cliente>
     elif comando == "iniciar_interfaz_wireguard":
         # Verificar si el comando se ejecuto como administrador en Linux
-        if os.geteuid() != 0:
-            print("Se necesita permisos de administrador para ejecutar el comando")
+        #if os.geteuid() != 0:
+        #    print("Se necesita permisos de administrador para ejecutar el comando")
+        #    sys.exit()
+        #else:
+        if len(sys.argv) != 3:
+            print("Uso: python3 main.py iniciar_interfaz_wireguard <ip_cliente>")
             sys.exit()
-        else:
-            if len(sys.argv) != 3:
-                print("Uso: python3 main.py iniciar_interfaz_wireguard <ip_cliente>")
-                sys.exit()
-                
+            
             deamon.init_wireguard_interface(sys.argv[2])
 
     # python3 main.py  crear_peer <public_key> <allowed_ips> <ip_cliente> <listen_port>

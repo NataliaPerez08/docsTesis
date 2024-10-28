@@ -4,20 +4,27 @@ FROM debian:latest
 # Instalar git
 RUN apt-get update && apt-get install -y git
 
+# Instalar python3
+RUN apt-get install -y python3
+
+# Instalar scapy
+# Instalar librerias de python
+RUN apt-get install -y python3-aioxmlrpc 
+
+# Instalar scapy
+RUN apt-get install -y python3-scapy
+
 # Instalar wireguard
 RUN apt-get install -y wireguard
 
 # Clonar el repositorio
 RUN git clone https://github.com/NataliaPerez08/docsTesis.git
 
-# Copiar el archivo de configuración
-COPY /docsTesis/ArquitecturaDeamon/wg0.conf /etc/wireguard/wg0.conf
+# Entrar al directorio ArquitecturaDeamon/Cliente
+WORKDIR /docsTesis/ArquitecturaDeamon/Cliente   
 
-# Iniciar el servicio
-CMD ["wg-quick", "up", "wg0"]
+# Iniciar el servidor en ArquitecturaDeamon/Cliente/client-as-deamon.py
+CMD ["python3", "client-as-deamon.py"]
 
 # Exponer el puerto
 EXPOSE 51820/udp
-
-# Comando para ejecutar el contenedor
-# docker build -t wireguard .

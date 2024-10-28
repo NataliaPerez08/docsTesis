@@ -37,38 +37,33 @@ class ConfiguradorWireguardCliente:
         print("Creando interfaz...")
         # Si es Linux
         if os.name == "posix":
-            # Verificar si existe la interfaz
-            if os.system("ip link show wg0") == 0:
-                print("La interfaz ya existe.")
-            else:
-                print("La interfaz no existe.")
-                os.system(f"ip link add dev wg0 type wireguard")
-                os.system(f"ip address add {ip_wg} dev wg0")
+            print("La interfaz no existe.")
+            os.system(f"ip link add dev wg0 type wireguard")
+            os.system(f"ip address add {ip_wg} dev wg0")
 
             # Configurar la interfaz
-            print(f"Comando: wg set wg0 listen-port {self.listen_port} private-key <(echo {self.private_key})")
-            os.system(f"wg set wg0 listen-port {self.listen_port} private-key <(echo {self.private_key})")
+            print(f"Comando: wg set wg0 listen-port {self.listen_port} private-key <(echo {self.private_key}) public-key <(echo {self.public_key})")
+            os.system(f"wg set wg0 listen-port {self.listen_port} private-key <(echo {self.private_key}) public-key <(echo {self.public_key})")
+
+            print("Interfaz creada!")
+            print("Llave publica: ", self.public_key)
 
             os.system("ip link set up dev wg0")
+            return self.private_key, self.public_key
         else:
             print("Sistema operativo no soportado.")
 
+    def check_interface(self):
+        """
+        Verifica si la interfaz de Wireguard existe.
+        """
+        print("Verificando interfaz...")
+        if os.system("ip link show wg0") == 0:
+            return True
+        else:
+            return False
+
     def create_peer(self, public_key, allowed_ips, endpoint_ip, listen_port, ip_servidor):
-        
-    # Actualizar la configuración de la interfaz. Añadir peer.
-    # Man de Wireguard
-    #        addconf <interface> <configuration-filename>
-    #               Appends the contents of <configuration-filename>, which
-    #               must be in the format described by CONFIGURATION FILE
-    #               FORMAT below, to the current configuration of <interface>.
-    #     syncconf <interface> <configuration-filename>
-    #               Like setconf, but reads back the existing configuration
-    #               first and only makes changes that are explicitly different
-    #               between the configuration file and the interface. This is
-    #               much less efficient than setconf, but has the benefit of
-    #               not disrupting current peer sessions. The contents of
-    #               <configuration-filename> must be in the format described
-    #               by CONFIGURATION FILE FORMAT below.
         # Añadir peer
         print("Añadiendo peer...")
         
