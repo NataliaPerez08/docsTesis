@@ -125,6 +125,7 @@ class Servidor:
                 return -1
 
             endpoint = private_network.create_endpoint(endpoint_name)
+            print("Endpoint creado! ",endpoint.get_id())
             return endpoint.get_wireguard_ip(), endpoint.get_id()
         
     def complete_endpoint(self,id_red_privada, id_endpoint, wg_public_key, allowed_ips, ip_cliente, listen_port):

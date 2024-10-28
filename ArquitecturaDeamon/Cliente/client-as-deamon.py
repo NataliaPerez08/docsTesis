@@ -17,6 +17,7 @@ from sys import exit
 # Servidor en la nube
 dir_servidor="http://natalia-testing.online:8000/"
 dir_servidor="http://0.0.0.0:8000/"
+dir_servidor="https://fictional-space-happiness-9w69pjgw4xg3xjx9-8000.app.github.dev"
 
 orquestador = xmlrpc.client.ServerProxy(dir_servidor, allow_none=True)
 
@@ -171,8 +172,9 @@ def configure_as_peer( nombre_endpoint, id_red_privada, ip_cliente, listen_port)
     print("Registrando peer en el servidor...,con la llave publica: ", wg_public_key)
     ip_wg_peer = orquestador.create_peer(wg_public_key, allowed_ips, endpoint_ip_WG, listen_port, ip_cliente)
     # Completar endpoint para incluir wg_public_key, allowed_ips, ip_cliente, listen_port
-    orquestador.complete_endpoint(id_red_privada, id_endpoint, wg_public_key, allowed_ips, ip_cliente, listen_port)
-    
+    result = orquestador.complete_endpoint(id_red_privada, id_endpoint, wg_public_key, allowed_ips, ip_cliente, listen_port)
+    print(result)
+
     return ip_wg_peer
 
 def register_peer( public_key, allowed_ips, ip_cliente, listen_port):

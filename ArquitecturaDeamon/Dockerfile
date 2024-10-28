@@ -20,11 +20,12 @@ RUN apt-get install -y wireguard
 # Clonar el repositorio
 RUN git clone https://github.com/NataliaPerez08/docsTesis.git
 
+# Iniciar el servidor en ArquitecturaDeamon/Cliente/client-as-deamon.py
+CMD ["python3", "client-as-deamon.py"]
+
 # Entrar al directorio ArquitecturaDeamon/Cliente
 WORKDIR /docsTesis/ArquitecturaDeamon/Cliente   
 
-# Iniciar el servidor en ArquitecturaDeamon/Cliente/client-as-deamon.py
-CMD ["python3", "client-as-deamon.py"]
 
 # Exponer el puerto
 EXPOSE 51820/udp
