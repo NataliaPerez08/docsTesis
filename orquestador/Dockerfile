@@ -1,17 +1,19 @@
-# Crear una imagen de debian 
-FROM debian:latest
+# Usa una imagen base de Python
+FROM python:3.10-slim
 
-# Instalar git
-RUN apt-get update && apt-get install -y git
+# Establece el directorio de trabajo en /app
+WORKDIR /app
 
-# Instalar python3
-RUN apt-get install -y python3
+# Copia el archivo de servidor y los certificados
+COPY server.py .
+COPY certs/server.crt certs/server.key certs/
 
-# Instalar flask
-RUN apt-get install -y python3-flask
+# Instala Flask y Flask-JWT-Extended sin pip
+RUN pip install Flask
+RUN pip install Flask-JWT-Extended
 
-# Instalar wireguard
-RUN apt-get install -y wireguard
+# Expone el puerto 5000 para el servidor Flask
+EXPOSE 5000
 
-# Exponer el puerto 80 
-EXPOSE 80
+# Comando para ejecutar el servidor
+CMD ["python", "server.py"]
