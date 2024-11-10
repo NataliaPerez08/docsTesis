@@ -1,33 +1,37 @@
-from flask import Flask, jsonify, request
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required
-import datetime
+import grpc
+from concurrent import futures
+import jwt  # PyJWT
+import auth_pb2
+import auth_pb2_grpc
+import ssl
 
-app = Flask(__name__)
+SECRET_KEY = "your_secret_key"
 
-# Configuración de la clave secreta para JWT
-app.config['JWT_SECRET_KEY'] = 'your_jwt_secret_key'
-jwt = JWTManager(app)
+class AuthService(auth_pb2_grpc.AuthServiceServicer):
+    def Authenticate(self, request, context):
+        if request.username == "user" and request.password == "pass":
+            #token = jwt.encode({"user": request.username}, SECRET_KEY, algorithm="HS256")
+            return 1#auth_pb2.AuthResponse(token=token)
+        #context.abort(grpc.StatusCode.UNAUTHENTICATED, "Invalid credentials")
 
-# Ruta para autenticar y obtener el token JWT
-@app.route('/api/login', methods=['POST'])
-def login():
-    if request.json.get("username") == "user" and request.json.get("password") == "pass":
-        expires = datetime.timedelta(hours=1)
-        access_token = create_access_token(identity={"username": "user"}, expires_delta=expires)
-        return jsonify(access_token=access_token), 200
-    return jsonify({"msg": "Invalid credentials"}), 401
+def serve():
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    auth_pb2_grpc.add_AuthServiceServicer_to_server(AuthService(), server)
 
-# Ruta protegida por JWT
-@app.route('/api/data', methods=['GET'])
-@jwt_required()
-def get_data():
-    data = {"message": "Hello from the server!"}
-    return jsonify(data)
+    # Cargar los certificados autofirmados
+    with open('./certs/localhost.key', 'rb') as f:
+        private_key = f.read()
+    with open('./certs/localhost.crt', 'rb') as f:
+        certificate_chain = f.read()
 
-# / 
-@app.route('/')
-def index():
-    return 'Hello, World!'
+    # Crear las credenciales SSL para el servidor
+    server_credentials = grpc.ssl_server_credentials(((private_key, certificate_chain),))
+
+    # Escuchar en un puerto seguro
+    server.add_secure_port('[::]:50051', server_credentials)
+    server.start()
+    print("Server running with SSL on port 50051")
+    server.wait_for_termination()
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, ssl_context=('certs/server.crt', 'certs/server.key'))
+    serve()

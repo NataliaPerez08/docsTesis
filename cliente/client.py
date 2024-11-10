@@ -1,17 +1,26 @@
-import requests
+import grpc
+import auth_pb2
+import auth_pb2_grpc
 
-# URL del servidor
-url = 'http://localhost:5000/api/data'
+def run():
+    # Leer el certificado del servidor (el certificado autofirmado)
+    with open('./certs/localhost.crt', 'rb') as f:
+        trusted_cert = f.read()
 
-# Realizar una solicitud GET al servidor
-response = requests.get(url)
-if response.status_code == 200:
-    print("GET Response:", response.json())
+    # Crear las credenciales SSL usando el certificado del servidor
+    credentials = grpc.ssl_channel_credentials(root_certificates=trusted_cert)
 
-# Datos de ejemplo para enviar al servidor con POST
-data_to_send = {"client_message": "Hello from the client!"}
+    # Crear un canal seguro para la comunicación con el servidor
+    with grpc.secure_channel('localhost:50051', credentials) as channel:
+        # Crear el stub para hacer la llamada RPC
+        stub = auth_pb2_grpc.AuthServiceStub(channel)
+        
+        try:
+            # Realizar la solicitud
+            response = stub.Authenticate(auth_pb2.AuthRequest(username='user', password='pass'))
+            print("Token recibido:", response.token)
+        except grpc.RpcError as e:
+            print(f"gRPC error: {e.code()} - {e.details()}")
 
-# Realizar una solicitud POST al servidor
-response = requests.post(url, json=data_to_send)
-if response.status_code == 200:
-    print("POST Response:", response.json())
+if __name__ == '__main__':
+    run()

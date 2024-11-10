@@ -13,3 +13,7 @@ LaTex-Tesis/*.fdb_latexmk
 LaTex-Tesis/*.synctex.gz
 LaTex-Tesis/*.fls
 LaTex-Tesis/*.pdf
+
+# Python  cache and environment files
+__pycache__/
+myenv/
