@@ -1,8 +1,17 @@
 \subsection*{Comandos de la aplicación}
+Describo a continuación los comandos y sus parámetros: 
 \begin{verbatim}
-    python3 main.py registrar_usuario <nombre> <email> <password>
+    python3 main.py register_user <name> <email> <password>
+\end{verbatim}
 
-    python3 main.py identificar_usuario <email> <password>
+Por medio de este comando se realizara el registro de un usuario que se identificará por un nombre, email y una contraseña que el orquestador se encargará de guardar y validar para permitir al usuario gestionar sus redes.
+
+
+\begin{verbatim}
+    python3 main.py o <email> <password>
+\end{verbatim}
+
+\begin{vertim}
     python3 main.py whoami
     python3 main.py crear_red_privada <nombre>
     python3 main.py crear_red_privada <nombre> <segmento> <mascara_de_red>
