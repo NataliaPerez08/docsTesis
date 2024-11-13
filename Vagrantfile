@@ -1,0 +1,38 @@
+Vagrant.configure("2") do |config|
+  # Configuración para VM1
+  config.vm.define "vm1" do |vm1|
+    vm1.vm.box = "ubuntu/focal64"
+    vm1.vm.network "private_network", ip: "192.168.50.2"
+    vm1.vm.provision "shell", inline: <<-SHELL
+      sudo apt update
+      sudo apt install -y wireguard
+      sudo mkdir -p /etc/wireguard
+      sudo chmod 600 /etc/wireguard
+    SHELL
+  end
+
+  # Configuración para VM2
+  config.vm.define "vm2" do |vm2|
+    vm2.vm.box = "ubuntu/focal64"
+    vm2.vm.network "private_network", ip: "192.168.50.3"
+    vm2.vm.provision "shell", inline: <<-SHELL
+      sudo apt update
+      sudo apt install -y wireguard
+      sudo mkdir -p /etc/wireguard
+      sudo chmod 600 /etc/wireguard
+    SHELL
+  end
+
+  # Configuración para VM3
+  config.vm.define "vm3" do |vm3|
+    vm3.vm.box = "ubuntu/focal64"
+    vm3.vm.network "private_network", ip: "192.168.50.4"
+    vm3.vm.provision "shell", inline: <<-SHELL
+      sudo apt update
+      sudo apt install -y wireguard
+      sudo mkdir -p /etc/wireguard
+      sudo chmod 600 /etc/wireguard
+    SHELL
+  end
+end
+

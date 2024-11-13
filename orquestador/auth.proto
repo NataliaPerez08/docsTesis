@@ -4,6 +4,10 @@ service AuthService {
   rpc Authenticate (AuthRequest) returns (AuthResponse);
 }
 
+service VPNService {
+  rpc createVPN(CreationRequest)
+}
+
 message AuthRequest {
   string username = 1;
   string password = 2;
@@ -11,4 +15,11 @@ message AuthRequest {
 
 message AuthResponse {
   string token = 1;
+}
+
+message CreationRequest {
+  string name = 1;
+}
+message CreationResponse {
+  bool;
 }
