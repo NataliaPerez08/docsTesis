@@ -4,15 +4,22 @@ Describo a continuación los comandos y sus parámetros:
     python3 main.py register_user <name> <email> <password>
 \end{verbatim}
 
-Por medio de este comando se realizara el registro de un usuario que se identificará por un nombre, email y una contraseña que el orquestador se encargará de guardar y validar para permitir al usuario gestionar sus redes.
+Registro de un usuario que se identificará por un nombre, email y una contraseña que el orquestador se encargará de guardar y validar para permitir al usuario gestionar sus redes.
 
 
 \begin{verbatim}
-    python3 main.py o <email> <password>
+    python3 main.py login_user <email> <password>
 \end{verbatim}
 
-\begin{vertim}
+Identificación y autorización del usuario que gestionara sus redes.
+
+\begin{verbatim}
     python3 main.py whoami
+\end{verbatim}
+
+Regresa al usuario actual.
+
+\begin{verbatim}
     python3 main.py crear_red_privada <nombre>
     python3 main.py crear_red_privada <nombre> <segmento> <mascara_de_red>
     python3 main.py ver_redes_privadas
