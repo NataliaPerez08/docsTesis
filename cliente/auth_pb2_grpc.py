@@ -45,8 +45,7 @@ class GreeterServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def SayHello(self, request, context):
-        """Sends a greeting
-        """
+        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')

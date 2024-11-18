@@ -1,16 +1,18 @@
 from concurrent import futures
 import grpc
-import helloworld_pb2
 
-class Greeter(helloworld_pb2_grpc.GreeterServicer):
-    def say_hello(self, request, context):
-        return helloworld_pb2.HelloResponse(message=f"Hello, {request.name}!")
+protos, services = grpc.protos_and_services("auth.proto")
+
+
+class Greeter(services.GreeterServicer):
+    def SayHello(self, request, context):
+        return  protos.HelloReply(message="Hello, %s!" % request.name)
     
 def serve():
     # Crear un servidor gRPC con 10 hilos. Con un canal inseguro para recibir las solicitudes del wrapper
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     # Agregar el servicio al servidor
-    helloworld_pb2_grpc.add_GreeterServicer_to_server(Greeter(), server)
+    services.add_GreeterServicer_to_server(Greeter(), server)
     server.add_insecure_port('[::]:3041')
     server.start()
     print("Server running on port 3041")
