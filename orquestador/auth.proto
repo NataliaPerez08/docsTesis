@@ -1,7 +1,23 @@
 syntax = "proto3";
 
+service Greeter {
+  // Sends a greeting
+  rpc SayHello (HelloRequest) returns (HelloReply) {}
+}
+
+// The request message containing the user's name.
+message HelloRequest {
+  string name = 1;
+}
+
+// The response message containing the greetings
+message HelloReply {
+  string message = 1;
+}
+
 service AuthService {
   rpc Authenticate (AuthRequest) returns (AuthResponse);
+  rpc Register (RegisterRequest) returns (RegisterResponse)
 }
 
 service VPNService {
@@ -17,9 +33,10 @@ message AuthResponse {
   string token = 1;
 }
 
-message CreationRequest {
+message CreationVPNRequest {
   string name = 1;
 }
-message CreationResponse {
+message CreationVPNResponse {
   bool;
 }
+

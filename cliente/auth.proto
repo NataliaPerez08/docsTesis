@@ -1,1 +1,49 @@
-D:\Documentos\docsTesis\orquestador\auth.proto
+syntax = "proto3";
+
+service Greeter {
+  // Sends a greeting
+  rpc SayHello (HelloRequest) returns (HelloReply) {}
+}
+// The request message containing the user's name.
+message HelloRequest {
+  string name = 1;
+}
+// The response message containing the greetings
+message HelloReply {
+  string message = 1;
+}
+
+
+service AuthService {
+  rpc Authenticate (AuthRequest) returns (AuthResponse);
+  rpc Register (RegisterRequest) returns (RegisterResponse);
+}
+message AuthRequest {
+  string username = 1;
+  string password = 2;
+}
+message AuthResponse {
+  string token = 1;
+}
+message RegisterRequest {
+    string username = 1;
+    string email = 2;
+    string pass = 3;
+}
+message RegisterResponse {
+    bool result = 1;
+}
+
+
+
+service VPNService {
+  rpc createVPN(CreationVPNRequest) returns (CreationVPNResponse);
+}
+
+message CreationVPNRequest {
+  string name = 1;
+}
+
+message CreationVPNResponse {
+  bool result = 1;
+}

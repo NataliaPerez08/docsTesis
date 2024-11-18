@@ -25,6 +25,79 @@ if _version_not_supported:
     )
 
 
+class GreeterStub(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def __init__(self, channel):
+        """Constructor.
+
+        Args:
+            channel: A grpc.Channel.
+        """
+        self.SayHello = channel.unary_unary(
+                '/Greeter/SayHello',
+                request_serializer=auth__pb2.HelloRequest.SerializeToString,
+                response_deserializer=auth__pb2.HelloReply.FromString,
+                _registered_method=True)
+
+
+class GreeterServicer(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def SayHello(self, request, context):
+        """Sends a greeting
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+
+def add_GreeterServicer_to_server(servicer, server):
+    rpc_method_handlers = {
+            'SayHello': grpc.unary_unary_rpc_method_handler(
+                    servicer.SayHello,
+                    request_deserializer=auth__pb2.HelloRequest.FromString,
+                    response_serializer=auth__pb2.HelloReply.SerializeToString,
+            ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+            'Greeter', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler,))
+    server.add_registered_method_handlers('Greeter', rpc_method_handlers)
+
+
+ # This class is part of an EXPERIMENTAL API.
+class Greeter(object):
+    """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def SayHello(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/Greeter/SayHello',
+            auth__pb2.HelloRequest.SerializeToString,
+            auth__pb2.HelloReply.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+
 class AuthServiceStub(object):
     """Missing associated documentation comment in .proto file."""
 
@@ -39,12 +112,23 @@ class AuthServiceStub(object):
                 request_serializer=auth__pb2.AuthRequest.SerializeToString,
                 response_deserializer=auth__pb2.AuthResponse.FromString,
                 _registered_method=True)
+        self.Register = channel.unary_unary(
+                '/AuthService/Register',
+                request_serializer=auth__pb2.RegisterRequest.SerializeToString,
+                response_deserializer=auth__pb2.RegisterResponse.FromString,
+                _registered_method=True)
 
 
 class AuthServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def Authenticate(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def Register(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -57,6 +141,11 @@ def add_AuthServiceServicer_to_server(servicer, server):
                     servicer.Authenticate,
                     request_deserializer=auth__pb2.AuthRequest.FromString,
                     response_serializer=auth__pb2.AuthResponse.SerializeToString,
+            ),
+            'Register': grpc.unary_unary_rpc_method_handler(
+                    servicer.Register,
+                    request_deserializer=auth__pb2.RegisterRequest.FromString,
+                    response_serializer=auth__pb2.RegisterResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -86,6 +175,105 @@ class AuthService(object):
             '/AuthService/Authenticate',
             auth__pb2.AuthRequest.SerializeToString,
             auth__pb2.AuthResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def Register(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/AuthService/Register',
+            auth__pb2.RegisterRequest.SerializeToString,
+            auth__pb2.RegisterResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+
+class VPNServiceStub(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def __init__(self, channel):
+        """Constructor.
+
+        Args:
+            channel: A grpc.Channel.
+        """
+        self.createVPN = channel.unary_unary(
+                '/VPNService/createVPN',
+                request_serializer=auth__pb2.CreationVPNRequest.SerializeToString,
+                response_deserializer=auth__pb2.CreationVPNResponse.FromString,
+                _registered_method=True)
+
+
+class VPNServiceServicer(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def createVPN(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+
+def add_VPNServiceServicer_to_server(servicer, server):
+    rpc_method_handlers = {
+            'createVPN': grpc.unary_unary_rpc_method_handler(
+                    servicer.createVPN,
+                    request_deserializer=auth__pb2.CreationVPNRequest.FromString,
+                    response_serializer=auth__pb2.CreationVPNResponse.SerializeToString,
+            ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+            'VPNService', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler,))
+    server.add_registered_method_handlers('VPNService', rpc_method_handlers)
+
+
+ # This class is part of an EXPERIMENTAL API.
+class VPNService(object):
+    """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def createVPN(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/VPNService/createVPN',
+            auth__pb2.CreationVPNRequest.SerializeToString,
+            auth__pb2.CreationVPNResponse.FromString,
             options,
             channel_credentials,
             insecure,
