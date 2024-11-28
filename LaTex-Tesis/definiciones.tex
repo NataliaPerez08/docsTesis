@@ -1,14 +1,81 @@
 
 \section{VPN} %
-Las VPN (Virtual Private Netwo  k) son redes privadas virtuales que permiten a los usuarios conectarse a una red privada a través de una red pública, como Internet. Las VPN se utilizan para proteger la privacidad y la seguridad de la información transmitida a través de la red.
+Las VPN (Virtual Private Network) son redes privadas virtuales que permiten a los usuarios conectarse a una red privada a través de una red pública, como Internet. Las VPN se utilizan para proteger la privacidad y la seguridad de la información transmitida a través de la red.
 
 
 
 \section{WireGuard}
 
+WireGuard es un protocolo de comunicación y una herramienta de software diseñada para implementar redes privadas virtuales (VPN, por sus siglas en inglés). Es conocido por su simplicidad, eficiencia y enfoque en la seguridad. Fue creado por Jason A. Donenfeld y está distribuido bajo la licencia GPLv2.
+
+Características principales de WireGuard:
+
+    Seguridad moderna:
+        Utiliza algoritmos criptográficos avanzados y seguros como ChaCha20 para cifrado, Curve25519 para intercambio de claves, BLAKE2 para hash y autenticación, y Poly1305 para autenticación de mensajes.
+        Se enfoca en minimizar la superficie de ataque al mantener un código base pequeño y auditable.
+
+    Simplicidad y facilidad de uso:
+        Comparado con otras soluciones VPN como OpenVPN o IPsec, WireGuard tiene una configuración más sencilla.
+        Su diseño minimalista facilita la administración y la integración con otros sistemas.
+
+    Rendimiento eficiente:
+        Está optimizado para velocidad y utiliza menos recursos del sistema, lo que lo hace adecuado para dispositivos de baja potencia o redes con alta latencia.
+        Aprovecha capacidades del kernel de Linux para reducir la sobrecarga.
+
+    Multiplataforma:
+        Está disponible para múltiples sistemas operativos, incluidos Linux, Windows, macOS, Android y iOS.
+
+    Modelo de red:
+        Funciona a nivel de capa de red (capa 3 del modelo OSI) y utiliza un enfoque punto a punto para establecer túneles entre pares.
+
+    Código minimalista:
+        Su código es compacto, con aproximadamente 4,000 líneas, lo que facilita las auditorías y mejora la confiabilidad.
+
+Casos de uso:
+
+    Conexiones seguras entre servidores y clientes en entornos empresariales.
+    Acceso remoto seguro para usuarios en redes públicas.
+    Conexiones en entornos IoT o dispositivos con recursos limitados.
+    Implementaciones como túneles VPN en servicios en la nube.
 
 \section{Tailscale}
+Tailscale es una solución de red privada virtual (VPN) que utiliza el protocolo WireGuard como base para construir una red privada de tipo "malla" (mesh) que conecta de forma segura dispositivos distribuidos. Está diseñada para ser fácil de usar, altamente segura y accesible sin necesidad de configurar infraestructura compleja.
+Características principales de Tailscale:
 
+    VPN basada en WireGuard:
+        Tailscale usa WireGuard para cifrar y transmitir datos entre dispositivos. Esto garantiza alta velocidad y seguridad con un cifrado moderno.
+
+    Red privada tipo malla:
+        En lugar de un servidor centralizado, Tailscale permite que los dispositivos se conecten directamente entre sí (peer-to-peer) siempre que sea posible. Si no es posible (por ejemplo, debido a firewalls restrictivos), enruta el tráfico a través de un relay (conocido como derp en Tailscale).
+
+    Configuración simple:
+        No requiere configuraciones complicadas de red o hardware dedicado.
+        Los usuarios instalan la aplicación Tailscale, inician sesión con una cuenta (por ejemplo, Google, GitHub o Microsoft) y los dispositivos automáticamente se registran en la red privada.
+
+    Gestión centralizada:
+        Incluye una consola de administración basada en la nube donde los usuarios pueden gestionar dispositivos, permisos y accesos en su red privada.
+
+    Autenticación basada en identidad:
+        Tailscale integra autenticación segura basada en OAuth o SSO (inicio de sesión único), eliminando la necesidad de gestionar claves manualmente.
+
+    Acceso seguro y granular:
+        Los administradores pueden definir políticas de acceso detalladas, como permitir que ciertos dispositivos o usuarios accedan únicamente a servicios específicos.
+
+    Multiplataforma:
+        Funciona en una amplia variedad de dispositivos y sistemas operativos, incluyendo Linux, macOS, Windows, iOS, Android y dispositivos como Raspberry Pi.
+
+    Rendimiento eficiente:
+        Aprovecha la eficiencia de WireGuard y su diseño peer-to-peer para minimizar la latencia y la sobrecarga.
+
+    Requiere poco mantenimiento:
+        Los cambios en la configuración se propagan automáticamente a todos los dispositivos conectados sin necesidad de reiniciar o reconfigurar manualmente.
+
+Casos de uso de Tailscale:
+
+    Conexiones seguras entre servidores: Ideal para equipos distribuidos que necesitan conectarse a recursos como bases de datos o servicios en la nube.
+    Acceso remoto a redes privadas: Alternativa simple a una VPN tradicional para acceder a redes internas desde cualquier lugar.
+    Redes privadas para desarrolladores: Permite a los equipos de desarrollo colaborar de forma segura sin exponer recursos en internet.
+    Hogar inteligente: Conecta dispositivos IoT o servidores domésticos de manera segura.
 
 
 \section{NAT}
