@@ -27,7 +27,7 @@ message AuthResponse {
 message RegisterRequest {
     string username = 1;
     string email = 2;
-    string pass = 3;
+    string password = 3;
 }
 message RegisterResponse {
     bool result = 1;

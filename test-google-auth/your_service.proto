@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package authgrpc;
+
+// Servicio gRPC para el ejemplo
+service YourService {
+  // Método de ejemplo que requiere autenticación
+  rpc YourMethod (YourRequest) returns (YourResponse);
+}
+
+// Mensaje de solicitud
+message YourRequest {
+  string param = 1; // Parámetro de entrada de ejemplo
+}
+
+// Mensaje de respuesta
+message YourResponse {
+  string message = 1; // Mensaje de respuesta
+}

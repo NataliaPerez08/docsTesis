@@ -23,5 +23,10 @@ def run():
         response = stub.SayHello(auth_pb2.HelloRequest(name="you"))
     print("Greeter client received: " + response.message)
 
+    with grpc.insecure_channel("localhost:3041") as channel:
+        stub = auth_pb2_grpc.AuthServiceStub(channel)
+        response = stub.Register(auth_pb2.RegisterRequest(username="test",email="e1@test.com", password="n1"))
+
+
 if __name__ == "__main__":
     run()
