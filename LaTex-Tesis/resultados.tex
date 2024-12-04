@@ -1,0 +1,11 @@
+Se espera que este prototipo reduzca la superficie de ataque de la red privada virtual al no realizar más funcionalidad que la orquestación de los pares en WireGuard. 
+
+
+Para evaluar el prototipo se propondrán tres escenarios con dos dispositivos finales:
+\begin{itemize}
+    \item \textbf{Todos los dispositivos finales son alcanzables}: Es decir, tanto el orquestador como los dispositivos finales pueden comunicarse entre sí porque están en la misma red o cuentan con IPs públicas. No existen restricciones como firewalls o NATs.
+    
+    \item \textbf{Uno de los dispositivos es alcanzable}: En este escenario, el orquestador y los dispositivos final pueden comunicarse entre sí, pero uno dispositivo final no tiene una IP pública o está detrás de un NAT. De forma que el orquestador actuará como intermediario en la comunicación.
+    
+    \item \textbf{Solo el Orquestador es alcanzable}: Los dispositivos finales no pueden comunicarse entre sí directamente, pero pueden comunicarse con el orquestador, que actuará como intermediario en la comunicación.
+\end{itemize}
