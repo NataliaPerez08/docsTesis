@@ -1,42 +1,114 @@
-
 \section{VPN} %
-Las VPN (Virtual Private Network) son redes privadas virtuales que permiten a los usuarios conectarse a una red privada a través de una red pública, como Internet. Las VPN se utilizan para proteger la privacidad y la seguridad de la información transmitida a través de la red.
+Las VPN (Virtual Private Network) son una tecnología de red que permite la transmisión de datos a través de una red pública, como Internet, con seguridad y privacidad mediante la creación de un túnel cifrado entre el dispositivo del usuario y el servidor de la VPN. 
 
+Por túnel cifrado se define una conexión virtual creada entre el dispositivo del usuario y el servidor VPN. El cifrado se lleva a cabo mediante algoritmos de cifrado como \textbf{AES (Advanced Encryption Standard)}, y la integridad de los datos se mantiene mediante \textbf{HMAC (Hashed Message Authentication Code)}. La autenticación asegura que las partes en la comunicación (cliente y servidor) sean quienes dicen ser. Esto se puede hacer mediante certificados digitales, contraseñas o claves compartidas.
 
+\subsection{Protocolos de túneles}
 
-\section{WireGuard}
+Los \textbf{protocolos de VPN} definen cómo se establece y mantiene este túnel seguro. Algunos de los protocolos más comunes incluyen:
+\begin{enumerate}
+   \item \textbf{IPSec (Internet Protocol Security)}: Se utiliza para cifrar y autenticar el tráfico a nivel de red (capa 3). Se combina a menudo con otros protocolos como L2TP (Layer 2 Tunneling Protocol) o IKEv2 (Internet Key Exchange version 2).
+   \item \textbf{OpenVPN}: Un protocolo de código abierto basado en SSL/TLS que proporciona alta seguridad, flexibilidad y portabilidad. Puede usar cifrado simétrico y autenticación mediante certificados.
+   
+   \item \textbf{WireGuard}: Un protocolo más reciente y moderno que utiliza criptografía avanzada y tiene un diseño minimalista. Está optimizado para ser más rápido y eficiente que los anteriores.
 
-WireGuard es un protocolo de comunicación y una herramienta de software diseñada para implementar redes privadas virtuales (VPN, por sus siglas en inglés). Es conocido por su simplicidad, eficiencia y enfoque en la seguridad. Fue creado por Jason A. Donenfeld y está distribuido bajo la licencia GPLv2.
+\subsection{Flujo de operación de una VPN}
+\begin{enumerate}
+    \item Conexión inicial:
+    \begin{itemize}
+        \item El cliente (dispositivo del usuario) establece una conexión con el servidor VPN.
+        \item Se negocian los parámetros de cifrado, incluyendo el protocolo y las claves de sesión.
+        \item El cliente y el servidor se autentican mutuamente utilizando certificados digitales o claves compartidas.
+    \end{itemize}
 
-Características principales de WireGuard:
+   \item Transmisión de datos
+        \begin{enumerate}
+            \item Una vez establecida la conexión segura, el tráfico del usuario se encapsula y cifra antes de enviarlo al servidor VPN.
+            \item El servidor VPN descifra los datos y los transmite al destino final en Internet. Al regresar, el proceso se invierte.
+        \end{enumerate}
+    \item Desconexión:
+   - Cuando el usuario finaliza la sesión, la conexión entre el cliente y el servidor se cierra, y el túnel seguro se destruye.
 
-    Seguridad moderna:
-        Utiliza algoritmos criptográficos avanzados y seguros como ChaCha20 para cifrado, Curve25519 para intercambio de claves, BLAKE2 para hash y autenticación, y Poly1305 para autenticación de mensajes.
-        Se enfoca en minimizar la superficie de ataque al mantener un código base pequeño y auditable.
+   \section{WireGuard}
+   
+   WireGuard es un protocolo de comunicación y una herramienta de software diseñada para implementar VPN. Es conocido por su simplicidad, eficiencia y enfoque en la seguridad. Fue creado por Jason A. Donenfeld y está distribuido bajo la licencia GPLv2.
+   
+   Es utilizado para mantener conexiones seguras entre servidores y clientes en entornos empresariales, conexiones en entornos IoT o dispositivos con recursos limitados, el acceso remoto seguro para usuarios en redes públicas, e implementaciones como túneles VPN en servicios en la nube.
+   
+   Comparado con otras soluciones VPN como OpenVPN o IPsec, WireGuard tiene una configuración más sencilla. Se enfoca en minimizar la superficie de ataque al mantener un código base pequeño y auditable: su código es compacto, con aproximadamente 4,000 líneas, lo que facilita las auditorías y mejora la confiabilidad.
+   Está optimizado para velocidad y utiliza menos recursos del sistema, lo que lo hace adecuado para dispositivos de baja potencia o redes con alta latencia. Aprovecha capacidades del kernel de Linux para reducir la sobrecarga. Está disponible para múltiples sistemas operativos, incluidos Linux, Windows, macOS, Android y iOS.
+   
+   Utiliza algoritmos criptográficos avanzados y seguros como ChaCha20 para cifrado, Curve25519 para intercambio de claves, BLAKE2 para hash y autenticación, y Poly1305 para autenticación de mensajes.
+   
+   Funciona a nivel de capa de red (capa 3 del modelo OSI) y utiliza un enfoque punto a punto para establecer túneles entre pares.
 
-    Simplicidad y facilidad de uso:
-        Comparado con otras soluciones VPN como OpenVPN o IPsec, WireGuard tiene una configuración más sencilla.
-        Su diseño minimalista facilita la administración y la integración con otros sistemas.
-
-    Rendimiento eficiente:
-        Está optimizado para velocidad y utiliza menos recursos del sistema, lo que lo hace adecuado para dispositivos de baja potencia o redes con alta latencia.
-        Aprovecha capacidades del kernel de Linux para reducir la sobrecarga.
-
-    Multiplataforma:
-        Está disponible para múltiples sistemas operativos, incluidos Linux, Windows, macOS, Android y iOS.
-
-    Modelo de red:
-        Funciona a nivel de capa de red (capa 3 del modelo OSI) y utiliza un enfoque punto a punto para establecer túneles entre pares.
-
-    Código minimalista:
-        Su código es compacto, con aproximadamente 4,000 líneas, lo que facilita las auditorías y mejora la confiabilidad.
-
-Casos de uso:
-
-    Conexiones seguras entre servidores y clientes en entornos empresariales.
-    Acceso remoto seguro para usuarios en redes públicas.
-    Conexiones en entornos IoT o dispositivos con recursos limitados.
-    Implementaciones como túneles VPN en servicios en la nube.
+   \section*{Modelo Conceptual}
+   \begin{itemize}
+       \item \textbf{Interfaces virtuales:} WireGuard crea una interfaz de red virtual (como \texttt{wg0}) en cada dispositivo. Esta interfaz actúa como un adaptador de red encriptado, a través del cual todo el tráfico pasa antes de ser enviado a través de la red física.
+       \item \textbf{Modelo basado en claves públicas:} Los pares (\textit{peers}) en una red WireGuard se identifican exclusivamente mediante claves públicas, en lugar de direcciones IP o nombres de usuario. La autenticación se realiza mediante un esquema de \textit{cryptokey routing}, que asocia cada clave pública a un conjunto de reglas de enrutamiento.
+   \end{itemize}
+   
+   \section*{Elementos Fundamentales}
+   
+   \subsection*{Criptografía Moderna}
+   WireGuard utiliza algoritmos rápidos y seguros diseñados para un rendimiento óptimo y facilidad de auditoría:
+   \begin{itemize}
+       \item \textbf{Cifrado:} Utiliza \texttt{ChaCha20} para cifrar datos, siendo más eficiente en hardware sin aceleración AES.
+       \item \textbf{Autenticación de mensajes:} Implementa \texttt{Poly1305} para garantizar la integridad de los paquetes.
+       \item \textbf{Intercambio de claves:} Usa \texttt{Noise Protocol Framework} basado en \texttt{X25519} para un intercambio rápido y seguro de claves.
+       \item \textbf{Derivación de claves:} Emplea \texttt{HKDF} (HMAC-based Extract-and-Expand Key Derivation Function) para generar claves derivadas seguras.
+       \item \textbf{Prevención de ataques de repetición:} Implementa un contador de \textit{nonce} monotónico por paquete para evitar reutilización de claves o aceptación de paquetes duplicados.
+   \end{itemize}
+   
+   \subsection*{Handshakes y Sesiones}
+   \begin{itemize}
+       \item \textbf{Intercambio de claves inicial (Handshake):} Los pares intercambian mensajes criptográficos para autenticarse y negociar claves efímeras para cifrado de sesión.
+       \item \textbf{Persistencia de claves:} Una vez establecido el \textit{handshake}, las claves de sesión se rotan periódicamente (cada 2 minutos por defecto) para aumentar la seguridad.
+   \end{itemize}
+   
+   \subsection*{Routing y Mapeo de Claves Públicas}
+   Cada clave pública está asociada a un conjunto de direcciones IP que el \textit{peer} puede representar. WireGuard utiliza esta asociación para decidir hacia qué \textit{peer} se enruta el tráfico basado en el destino del paquete.
+   
+   \section*{Flujo de Operación}
+   
+   \subsection*{Proceso de Inicialización}
+   \begin{enumerate}
+       \item Configuración de una interfaz virtual con una clave privada única.
+       \item Asociación de claves públicas de los \textit{peers} y direcciones IP correspondientes.
+       \item Establecimiento de reglas de enrutamiento que redirigen paquetes a través de la interfaz \texttt{wg0}.
+   \end{enumerate}
+   
+   \subsection*{Envío de un Paquete}
+   \begin{enumerate}
+       \item El paquete de datos se genera en el dispositivo y se dirige hacia la interfaz WireGuard.
+       \item \textbf{Routing criptográfico:} WireGuard verifica las reglas de enrutamiento y determina la clave pública del \textit{peer} correspondiente al destino del paquete.
+       \item \textbf{Cifrado:} Los datos se cifran utilizando \texttt{ChaCha20} con las claves derivadas del último \textit{handshake}.
+       \item \textbf{Encapsulamiento:} El paquete cifrado se encapsula en un datagrama UDP y se envía al puerto del \textit{peer} especificado.
+   \end{enumerate}
+   
+   \subsection*{Recepción de un Paquete}
+   \begin{enumerate}
+       \item El dispositivo escucha en el puerto UDP configurado para WireGuard.
+       \item \textbf{Validación de autenticidad:} El paquete entrante se verifica utilizando \texttt{Poly1305}.
+       \item \textbf{Desencriptado:} Los datos se descifran utilizando la clave compartida y el \textit{nonce} del paquete.
+       \item \textbf{Entrega de datos:} El paquete descifrado se reinyecta en la pila de red del sistema operativo como si fuera un paquete local.
+   \end{enumerate}
+   
+   \subsection*{Rotación de Claves}
+   WireGuard genera nuevas claves de sesión automáticamente cada pocos minutos (2 minutos por defecto) para evitar que una clave comprometida sea útil a largo plazo.
+   
+   \section*{Optimización y Características Avanzadas}
+   
+   \subsection*{Cero Administración de Estado de Conexión}
+   WireGuard no utiliza un canal de control persistente. Esto significa que:
+   \begin{itemize}
+       \item No necesita mantener una conexión activa; los pares pueden enviar paquetes en cualquier momento.
+       \item Si un \textit{peer} no ha enviado tráfico durante un tiempo prolongado, el \textit{handshake} se renegocia automáticamente en el próximo envío.
+   \end{itemize}
+   
+   \subsection*{Peering y Descubrimiento de Rutas Dinámicas}
+   WireGuard permite que los \textit{peers} cambien de dirección IP sin necesidad de renegociar la conexión (por ejemplo, en redes móviles), ya que asocia la clave pública con la dirección IP más reciente detectada.
+   
 
 \section{Tailscale}
 Tailscale es una solución de red privada virtual (VPN) que utiliza el protocolo WireGuard como base para construir una red privada de tipo "malla" (mesh) que conecta de forma segura dispositivos distribuidos. Está diseñada para ser fácil de usar, altamente segura y accesible sin necesidad de configurar infraestructura compleja.
@@ -79,6 +151,28 @@ Casos de uso de Tailscale:
 
 
 \section{NAT}
+NAT (Network Address Translation) es un mecanismo utilizado en redes de computadoras para modificar las direcciones IP en los encabezados de los paquetes mientras transitan por un router u otro dispositivo de red. Su principal propósito es permitir que múltiples dispositivos en una red privada compartan una única dirección IP pública, optimizando así el uso de las direcciones IPv4, que son un recurso limitado. NAT opera típicamente en la capa de red (capa 3 del modelo OSI) y puede aplicarse a nivel de dispositivos como routers o firewalls.
 
+Cuando un dispositivo en una red privada envía un paquete hacia Internet, el router con NAT reemplaza la dirección IP de origen (privada) con su propia dirección IP pública antes de reenviar el paquete. Asimismo, registra esta traducción en una tabla para poder revertir el proceso cuando se recibe una respuesta, reemplazando la dirección IP de destino (pública) en los paquetes entrantes con la dirección privada original del dispositivo interno.
+
+Existen diferentes tipos de NAT:
+
+NAT estático: Traduce una dirección IP privada a una única dirección IP pública de manera fija.
+NAT dinámico: Asigna direcciones IP públicas de un conjunto de direcciones disponibles a dispositivos internos según sea necesario.
+PAT (Port Address Translation), también conocido como NAT sobrecargado: Traduce múltiples direcciones IP privadas a una única dirección IP pública, diferenciando el tráfico mediante los números de puerto. Este es el método más común y eficiente.
+NAT introduce varios desafíos, como la dificultad para establecer conexiones entrantes hacia dispositivos internos, ya que no tienen direcciones IP públicas asignadas directamente. Esto se soluciona parcialmente mediante técnicas como el port forwarding, que asigna puertos específicos a dispositivos internos, y el NAT traversal, utilizado por protocolos como STUN, TURN o UPnP.
+
+Si bien NAT ha sido esencial en la era de IPv4 debido a la escasez de direcciones, con la adopción de IPv6 su relevancia está disminuyendo, ya que este protocolo ofrece un espacio de direcciones mucho más amplio y elimina la necesidad de compartir direcciones IP públicas. Sin embargo, sigue siendo una tecnología ampliamente utilizada por su simplicidad, seguridad implícita (al ocultar dispositivos internos) y compatibilidad con sistemas existentes.
 
 \section{Firewall}
+Un firewall es un sistema de seguridad, ya sea software o hardware, que actúa como una barrera protectora entre una red confiable y redes externas, como Internet. Su objetivo principal es controlar y filtrar el tráfico de red según un conjunto de reglas predefinidas, permitiendo únicamente el acceso autorizado mientras bloquea o rechaza el tráfico no deseado o sospechoso.
+
+A nivel técnico, un firewall analiza los paquetes de datos que entran o salen de una red. Este análisis puede realizarse en diferentes niveles del modelo OSI. En la capa de red (nivel 3), el firewall examina las direcciones IP de origen y destino para determinar si el tráfico es permitido. En la capa de transporte (nivel 4), evalúa los puertos y protocolos utilizados, como TCP, UDP o ICMP. En la capa de aplicación (nivel 7), inspecciona el contenido del tráfico, como solicitudes HTTP, para detectar patrones o comportamientos maliciosos.
+
+Existen distintos tipos de firewalls según su nivel de complejidad y funcionalidad. Los firewalls de filtrado básico de paquetes aplican reglas simples para permitir o bloquear el tráfico. Los firewalls con inspección de estado (stateful inspection) monitorean el estado de las conexiones y permiten únicamente tráfico relacionado con sesiones previamente establecidas. Los firewalls de próxima generación (NGFW) incluyen capacidades avanzadas como inspección profunda de paquetes (DPI), control de aplicaciones, detección y prevención de intrusiones (IDS/IPS) y filtrado basado en identidad de usuario.
+
+Los firewalls también pueden usar diversas metodologías de filtrado. Algunos emplean listas blancas, que permiten tráfico solo desde fuentes autorizadas, o listas negras, que bloquean tráfico de fuentes específicas. Otros aplican reglas más complejas basadas en criterios como rangos de IP, tipos de protocolos o contenido específico. Además, los firewalls que implementan Network Address Translation (NAT) proporcionan una capa adicional de seguridad al ocultar las direcciones IP internas mediante la traducción entre direcciones públicas y privadas.
+
+En cuanto a su implementación, un firewall puede presentarse como un dispositivo hardware dedicado (por ejemplo, Cisco ASA o Palo Alto), software configurado en sistemas operativos como iptables en Linux o Windows Defender Firewall, o incluso como un servicio en la nube ofrecido por proveedores como AWS o Azure.
+
+En resumen, un firewall es una herramienta fundamental para proteger redes frente a accesos no autorizados, ataques cibernéticos y otras amenazas externas, asegurando la integridad y confidencialidad del tráfico que transita por la red.
