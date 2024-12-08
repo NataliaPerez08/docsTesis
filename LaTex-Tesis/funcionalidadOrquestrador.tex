@@ -15,21 +15,23 @@ Describo a continuación los comandos y sus parámetros:
     Esta función consulta y devuelve la dirección IP pública asociada al cliente que ejecuta el comando. Es útil para identificar dinámicamente la IP pública actual del cliente, especialmente en redes con direcciones asignadas dinámicamente por el proveedor de servicios de Internet.
     
     % Registrar un peer en una red privada
-\begin{verbatim}
-    python3 main.py register_as_peer <name> <private_network_id> <client_ip> <client_port>
+    \begin{verbatim}
+        python3 main.py register_as_peer <name> <private_network_id> <client_ip> <client_port>
     \end{verbatim}
-    Funcionalidad:  
-    Permite registrar un nuevo peer en una red privada específica.  
-    - `<name>`: Nombre asignado al peer.
-    - `<private_network_id>`: Identificador único de la red privada.
-    - `<client_ip>`: Dirección IP del cliente a registrar.
-    - `<client_port>`: Puerto del cliente que se usará para las comunicaciones.
-    
+        
+    Permite registrar un nuevo \textit{peer} en una red privada específica con los siguientes parámetros:  
+    \begin{itemize}
+        \item \texttt{<name>}: Nombre asignado al \textit{peer}.
+        \item \texttt{<private\_network\_id>}: Identificador único de la red privada.
+        \item \texttt{<client\_ip>}: Dirección IP del cliente a registrar.
+        \item \texttt{<client\_port>}: Puerto del cliente que se usará para las comunicaciones.
+    \end{itemize}
+        
+
     % Obtener la clave pública de un cliente
     \begin{verbatim}
     python3 main.py get_client_public_key
-    \end{verbatim}
-    Funcionalidad:  
+    \end{verbatim} 
     Recupera la clave pública del cliente que ejecuta el comando, necesaria para autenticar las comunicaciones en redes privadas mediante WireGuard.
     
    
@@ -37,30 +39,30 @@ Describo a continuación los comandos y sus parámetros:
     % Inicializar una interfaz WireGuard
     \begin{verbatim}
     python3 main.py init_wireguard_interface <client_ip>
-    \end{verbatim}
-    Funcionalidad:  
+    \end{verbatim} 
     Configura e inicializa una interfaz WireGuard usando la dirección IP proporcionada. Esto permite que el cliente participe en redes privadas gestionadas por WireGuard.
     
    
     
     % Crear un peer en la configuración de WireGuard
     \begin{verbatim}
-    python3 main.py create_peer <public_key> <allowed_ips> <client_ip> <listen_port>
+        python3 main.py create_peer <public_key> <allowed_ips> <client_ip> <listen_port>
     \end{verbatim}
-    Funcionalidad:  
-    Agrega un nuevo peer a la configuración de WireGuard.  
-    - `<public_key>`: Clave pública del peer a agregar.
-    - `<allowed_ips>`: Rango de direcciones IP permitidas para el peer.
-    - `<client_ip>`: Dirección IP asociada al cliente.
-    - `<listen_port>`: Puerto de escucha configurado para el peer.
-    
+        
+    Agrega un nuevo \textit{peer} a la configuración de WireGuard con los siguientes parámetros:  
+        \begin{itemize}
+            \item \texttt{<public\_key>}: Clave pública del \textit{peer} a agregar.
+            \item \texttt{<allowed\_ips>}: Rango de direcciones IP permitidas para el \textit{peer}.
+            \item \texttt{<client\_ip>}: Dirección IP asociada al cliente.
+            \item \texttt{<listen\_port>}: Puerto de escucha configurado para el \textit{peer}.
+        \end{itemize}
+        
    
     
     % Cerrar sesión o terminar una sesión
     \begin{verbatim}
     python3 main.py logout
-    \end{verbatim}
-    Funcionalidad:  
+    \end{verbatim} 
     Cierra la sesión activa del cliente o usuario. Es útil para garantizar la seguridad del sistema y liberar recursos asociados a la sesión.
     
    
@@ -70,39 +72,34 @@ Describo a continuación los comandos y sus parámetros:
     % Eliminar una red privada
     \begin{verbatim}
     python3 main.py delete_private_network <private_network_id>
-    \end{verbatim}
-    Funcionalidad:  
-    Elimina una red privada identificada por `<private_network_id>`. Este comando elimina todas las configuraciones y peers asociados a la red.
+    \end{verbatim} 
+    Elimina una red privada identificada por `<private\_network\_id>`. Este comando elimina todas las configuraciones y peers asociados a la red.
     
     % Eliminar un peer de una red privada
     \begin{verbatim}
     python3 main.py delete_network_peer <private_network_id> <endpoint_id>
-    \end{verbatim}
-    Funcionalidad:  
-    Elimina un peer específico, identificado por `<endpoint_id>`, de una red privada identificada por `<private_network_id>`.
+    \end{verbatim} 
+    Elimina un peer específico, identificado por `<endpoint\_id>`, de una red privada identificada por `<private\_network\_id>`.
     
     % Editar una red:
     
     % Actualizar el segmento de la red
     \begin{verbatim}
     python3 main.py edit_vpn_segment <private_network_id> <new_segment>
-    \end{verbatim}
-    Funcionalidad:  
+    \end{verbatim} 
     Modifica el segmento de red de una red privada. Este cambio afecta a todos los hosts conectados a la red y desencadena una actualización en tiempo real.
     
     % Actualizar la máscara de red
     \begin{verbatim}
     python3 main.py edit_vpn_mask <private_network_id> <new_mask>
-    \end{verbatim}
-    Funcionalidad:  
+    \end{verbatim} 
     Cambia la máscara de red de una red privada. Este cambio también desencadena una actualización en todos los hosts conectados.
     
     % Actualizar el nombre de la red
     \begin{verbatim}
     python3 main.py edit_vpn_name <private_network_id> <new_name>
-    \end{verbatim}
-    Funcionalidad:  
-    Renombra una red privada especificada por `<private_network_id>` al nuevo nombre proporcionado en `<new_name>`.
+    \end{verbatim} 
+    Renombra una red privada especificada por `<private\_network\_id>` al nuevo nombre proporcionado en `<new\_name>`.
     
    
     
@@ -111,164 +108,139 @@ Describo a continuación los comandos y sus parámetros:
     % Modificar el nombre del peer
     \begin{verbatim}
     python3 main.py edit_peer_name <private_network_id> <peer_id> <new_name>
-    \end{verbatim}
-    Funcionalidad:  
+    \end{verbatim} 
     Actualiza el nombre asignado a un peer dentro de una red privada.
     
     % Modificar la IP pública del endpoint del peer
     \begin{verbatim}
     python3 main.py edit_peer_endpoint_ip <private_network_id> <peer_id> <new_ip>
-    \end{verbatim}
-    Funcionalidad:  
+    \end{verbatim} 
     Cambia la dirección IP pública asociada al endpoint de un peer en una red privada.
     
     % Modificar el puerto del endpoint del peer
     \begin{verbatim}
     python3 main.py edit_peer_endpoint_port <private_network_id> <peer_id> <new_port>
-    \end{verbatim}
-    Funcionalidad:  
+    \end{verbatim} 
     Actualiza el puerto usado por el endpoint del peer en una red privada.
     
     % Modificar las IPs permitidas del peer
     \begin{verbatim}
     python3 main.py edit_peer_allowed_ips <private_network_id> <peer_id> <new_allowed_ips>
-    \end{verbatim}
-    Funcionalidad:  
+    \end{verbatim} 
     Actualiza las direcciones IP permitidas asociadas a un peer en una red privada.
     
     % Modificar la clave pública del peer
     \begin{verbatim}
     python3 main.py edit_peer_public_key <private_network_id> <peer_id> <new_public_key>
     \end{verbatim}
-    Funcionalidad:  
-    Reemplaza la clave pública de un peer en una red privada con la nueva clave proporcionada en `<new_public_key>`.
+    Reemplaza la clave pública de un peer en una red privada con la nueva clave proporcionada en `<new\_public\_key>`.
      
     % Registrar un peer en una red privada
-\begin{verbatim}
-    python3 main.py register_as_peer <name> <private_network_id> <client_ip> <client_port>
+    \begin{verbatim}
+        python3 main.py register_as_peer <name> <private_network_id> <client_ip> <client_port>
     \end{verbatim}
-    Funcionalidad:  
-    Registra un nuevo peer en una red privada especificada por `<private_network_id>`.  
-    - `<name>`: Nombre del peer.
-    - `<client_ip>`: Dirección IP del cliente que actuará como peer.
-    - `<client_port>`: Puerto usado por el cliente para comunicarse.
     
-   
-    
+    Registra un nuevo \textit{peer} en una red privada especificada por \texttt{<private\_network\_id>}.  
+        \begin{itemize}
+            \item \texttt{<name>}: Nombre del \textit{peer}.
+            \item \texttt{<private\_network\_id>}: Identificador único de la red privada donde se registrará el \textit{peer}.
+            \item \texttt{<client\_ip>}: Dirección IP del cliente que actuará como \textit{peer}.
+            \item \texttt{<client\_port>}: Puerto utilizado por el cliente para comunicarse.
+        \end{itemize}
+        
     % Obtener la clave pública de un cliente
     \begin{verbatim}
-    python3 main.py get_client_public_key
+        python3 main.py get_client_public_key
     \end{verbatim}
-    Funcionalidad:  
     Devuelve la clave pública del cliente que ejecuta el comando, la cual es utilizada para autenticar al cliente dentro de una red privada.
-    
-   
     
     % Inicializar una interfaz WireGuard
     \begin{verbatim}
     python3 main.py init_wireguard_interface <client_ip>
     \end{verbatim}
-    Funcionalidad:  
-    Configura e inicializa una interfaz WireGuard utilizando la dirección IP del cliente proporcionada en `<client_ip>`. Esto permite gestionar las comunicaciones en redes privadas a través de WireGuard.
+    Configura e inicializa una interfaz WireGuard utilizando la dirección IP del cliente proporcionada en `<client\_ip>`. Esto permite gestionar las comunicaciones en redes privadas a través de WireGuard.
     
    
     
     % Crear un peer en la configuración de WireGuard
     \begin{verbatim}
-    python3 main.py create_peer <public_key> <allowed_ips> <client_ip> <listen_port>
-    \end{verbatim}
-    Funcionalidad:  
-    Añade un nuevo peer en la configuración de WireGuard.  
-    - `<public_key>`: Clave pública del peer.
-    - `<allowed_ips>`: Rango de direcciones IP permitidas para este peer.
-    - `<client_ip>`: Dirección IP del cliente.
-    - `<listen_port>`: Puerto de escucha del peer.
-    
+        python3 main.py create_peer <public_key> <allowed_ips> <client_ip> <listen_port>
+        \end{verbatim}
+        
+        El comando anterior añade un nuevo \textit{peer} en la configuración de WireGuard con los siguientes parámetros:  
+        \begin{itemize}
+            \item \texttt{<public\_key>}: Clave pública del \textit{peer}.
+            \item \texttt{<allowed\_ips>}: Rango de direcciones IP permitidas para este \textit{peer}.
+            \item \texttt{<client\_ip>}: Dirección IP asignada al cliente.
+            \item \texttt{<listen\_port>}: Puerto de escucha del \textit{peer}.
+        \end{itemize}     
    
-    
     % Cerrar sesión o terminar una sesión
     \begin{verbatim}
-    python3 main.py logout
+        python3 main.py logout
     \end{verbatim}
-    Funcionalidad:  
-    Cierra la sesión activa del usuario. Útil para mantener la seguridad en el acceso al orquestador.
-    
-   
+    Cierra la sesión activa del usuario. 
     
     % Eliminar entidades:
     % Eliminar una red privada
     \begin{verbatim}
-    python3 main.py delete_private_network <private_network_id>
+        python3 main.py delete_private_network <private_network_id>
     \end{verbatim}
-    Funcionalidad:  
-    Elimina una red privada identificada por `<private_network_id>`. Esto incluye todos los peers y configuraciones asociadas a la red.
+    Elimina una red privada identificada por <private-network-id>. Esto incluye todos los peers y configuraciones asociadas a la red.
     
     % Eliminar un peer de una red privada
     \begin{verbatim}
-    python3 main.py delete_network_peer <private_network_id> <endpoint_id>
+        python3 main.py delete_network_peer <private_network_id> <endpoint_id>
     \end{verbatim}
-    Funcionalidad:  
-    Elimina un peer específico identificado por `<endpoint_id>` de la red privada `<private_network_id>`.
-    
-   
+    Elimina un peer específico identificado por id de la red privada.
     
     % Editar una red:
     % Actualizar el segmento de la red
     \begin{verbatim}
     python3 main.py edit_vpn_segment <private_network_id> <new_segment>
     \end{verbatim}
-    Funcionalidad:  
     Cambia el segmento de la red privada especificada. El cambio dispara una actualización en todos los hosts conectados.
     
     % Actualizar la máscara de red
     \begin{verbatim}
     python3 main.py edit_vpn_mask <private_network_id> <new_mask>
-    \end{verbatim}
-    Funcionalidad:  
+    \end{verbatim} 
     Modifica la máscara de red de la red privada indicada, con una actualización inmediata en todos los hosts conectados.
     
     % Actualizar el nombre de la red
     \begin{verbatim}
-    python3 main.py edit_vpn_name <private_network_id> <new_name>
+        python3 main.py edit_vpn_name <private_network_id> <new_name>
     \end{verbatim}
-    Funcionalidad:  
-    Renombra la red privada identificada por `<private_network_id>` al nuevo nombre `<new_name>`.
-    
-   
+    Renombra la red privada identificada nuevo nombre.
     
     % Editar un peer en una red:
     % Modificar el nombre del peer
     \begin{verbatim}
-    python3 main.py edit_peer_name <private_network_id> <peer_id> <new_name>
+        python3 main.py edit_peer_name <private_network_id> <peer_id> <new_name>
     \end{verbatim}
-    Funcionalidad:  
     Cambia el nombre de un peer específico dentro de una red privada.
     
     % Modificar la IP pública del endpoint del peer
     \begin{verbatim}
     python3 main.py edit_peer_endpoint_ip <private_network_id> <peer_id> <new_ip>
     \end{verbatim}
-    Funcionalidad:  
     Actualiza la dirección IP pública asociada al endpoint de un peer.
     
     % Modificar el puerto del endpoint del peer
     \begin{verbatim}
-    python3 main.py edit_peer_endpoint_port <private_network_id> <peer_id> <new_port>
+        python3 main.py edit_peer_endpoint_port <private_network_id> <peer_id> <new_port>
     \end{verbatim}
-    Funcionalidad:  
     Cambia el puerto de conexión del endpoint asociado a un peer.
     
     % Modificar las IPs permitidas del peer
     \begin{verbatim}
-    python3 main.py edit_peer_allowed_ips <private_network_id> <peer_id> <new_allowed_ips>
+        python3 main.py edit_peer_allowed_ips <private_network_id> <peer_id> <new_allowed_ips>
     \end{verbatim}
-    Funcionalidad:  
     Actualiza la lista de direcciones IP permitidas para un peer en una red privada.
     
     % Modificar la clave pública del peer
     \begin{verbatim}
-    python3 main.py edit_peer_public_key <private_network_id> <peer_id> <new_public_key>
+        python3 main.py edit_peer_public_key <private_network_id> <peer_id> <new_public_key>
     \end{verbatim}
-    Funcionalidad:  
     Reemplaza la clave pública asociada a un peer en la red privada.
     
